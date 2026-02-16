@@ -1,5 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import { db } from '@/lib/db';
+import { db, type TransactionItemRecord } from '@/lib/db';
 import { useState } from 'react';
 import { BarChart3, TrendingUp, ShoppingCart, Package, DollarSign, ArrowDown, ArrowUp, Minus } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,6 +16,15 @@ export default function Laporan() {
     return db.transactions.where('date').aboveOrEqual(since).toArray();
   }, [days]);
 
+  // Query transaction items for the filtered transactions
+  const txItems = useLiveQuery(async () => {
+    if (!transactions || transactions.length === 0) return [];
+    const txIds = transactions.map(t => t.id!).filter(Boolean);
+    return db.transactionItems.where('transactionId').anyOf(txIds).toArray();
+  }, [transactions]);
+
+  const allItems = txItems ?? [];
+
   const totalSales = transactions?.reduce((s, t) => s + t.total, 0) ?? 0;
   const totalProfit = transactions?.reduce((s, t) => s + t.profit, 0) ?? 0;
   const txCount = transactions?.length ?? 0;
@@ -23,9 +32,7 @@ export default function Laporan() {
   // P&L breakdown
   const totalRevenue = transactions?.reduce((s, t) => s + t.subtotal, 0) ?? 0;
   const totalDiscount = transactions?.reduce((s, t) => s + t.discountAmount, 0) ?? 0;
-  const totalHpp = transactions?.reduce((s, t) => {
-    return s + t.items.reduce((is, item) => is + item.hpp * item.quantity, 0);
-  }, 0) ?? 0;
+  const totalHpp = allItems.reduce((s, item) => s + item.hpp * item.quantity, 0);
   const netSales = totalRevenue - totalDiscount; // same as totalSales
   const grossProfit = netSales - totalHpp;
   const marginPercent = netSales > 0 ? (grossProfit / netSales * 100) : 0;
@@ -46,13 +53,11 @@ export default function Laporan() {
 
   // Top products
   const productSales: Record<string, { name: string; qty: number; revenue: number; profit: number }> = {};
-  transactions?.forEach(t => {
-    t.items.forEach(item => {
-      if (!productSales[item.productName]) productSales[item.productName] = { name: item.productName, qty: 0, revenue: 0, profit: 0 };
-      productSales[item.productName].qty += item.quantity;
-      productSales[item.productName].revenue += item.subtotal;
-      productSales[item.productName].profit += (item.price - item.hpp) * item.quantity - item.discountAmount;
-    });
+  allItems.forEach(item => {
+    if (!productSales[item.productName]) productSales[item.productName] = { name: item.productName, qty: 0, revenue: 0, profit: 0 };
+    productSales[item.productName].qty += item.quantity;
+    productSales[item.productName].revenue += item.subtotal;
+    productSales[item.productName].profit += (item.price - item.hpp) * item.quantity - item.discountAmount;
   });
   const topProducts = Object.values(productSales).sort((a, b) => b.revenue - a.revenue).slice(0, 5);
 

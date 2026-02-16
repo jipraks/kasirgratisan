@@ -22,7 +22,7 @@ export default function SupplierPage() {
   const [address, setAddress] = useState('');
   const [notes, setNotes] = useState('');
 
-  const suppliers = useLiveQuery(() => db.suppliers.toArray());
+  const suppliers = useLiveQuery(() => db.suppliers.where('isDeleted').equals(0).toArray());
 
   const filtered = suppliers?.filter(s =>
     s.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -48,14 +48,14 @@ export default function SupplierPage() {
       await db.suppliers.update(editSupplier.id, data);
       toast.success('Supplier diperbarui');
     } else {
-      await db.suppliers.add({ ...data, createdAt: new Date() });
+      await db.suppliers.add({ ...data, createdAt: new Date(), isDeleted: false, deletedAt: null });
       toast.success('Supplier ditambahkan');
     }
     setDialogOpen(false);
   };
 
   const handleDelete = async () => {
-    if (deleteId) { await db.suppliers.delete(deleteId); setDeleteId(null); toast.success('Supplier dihapus'); }
+    if (deleteId) { await db.suppliers.update(deleteId, { isDeleted: true, deletedAt: new Date() }); setDeleteId(null); toast.success('Supplier dihapus'); }
   };
 
   return (

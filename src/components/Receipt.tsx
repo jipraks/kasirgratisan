@@ -6,17 +6,18 @@ import { Download, Share2, Printer, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { toast } from 'sonner';
-import type { Transaction, StoreSettings, PaymentMethod } from '@/lib/db';
+import type { Transaction, StoreSettings, TransactionItemRecord } from '@/lib/db';
 
 interface ReceiptProps {
   open: boolean;
   onClose: () => void;
   transaction: Transaction;
+  items: TransactionItemRecord[];
   storeSettings: StoreSettings | undefined;
   paymentMethodName: string;
 }
 
-export default function Receipt({ open, onClose, transaction, storeSettings, paymentMethodName }: ReceiptProps) {
+export default function Receipt({ open, onClose, transaction, items, storeSettings, paymentMethodName }: ReceiptProps) {
   const receiptRef = useRef<HTMLDivElement>(null);
   const [generating, setGenerating] = useState(false);
 
@@ -109,7 +110,7 @@ export default function Receipt({ open, onClose, transaction, storeSettings, pay
       lines.push('--------------------------------\n');
       
       lines.push('\x1B\x61\x00'); // Left align
-      for (const item of transaction.items) {
+      for (const item of items) {
         lines.push(`${item.productName}\n`);
         lines.push(`  ${item.quantity} x Rp ${item.price.toLocaleString('id-ID')}  Rp ${item.subtotal.toLocaleString('id-ID')}\n`);
       }
@@ -175,7 +176,7 @@ export default function Receipt({ open, onClose, transaction, storeSettings, pay
           <div className="border-t border-dashed border-gray-400 my-2" />
 
           {/* Items */}
-          {transaction.items.map((item, i) => (
+          {items.map((item, i) => (
             <div key={i} className="mb-1">
               <p className="text-[11px] font-medium">{item.productName}</p>
               <div className="flex justify-between text-[10px]">

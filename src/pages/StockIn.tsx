@@ -23,8 +23,8 @@ export default function StockInPage() {
   const [filterSupplier, setFilterSupplier] = useState('all');
 
   const stockIns = useLiveQuery(() => db.stockIns.orderBy('date').reverse().toArray());
-  const products = useLiveQuery(() => db.products.toArray());
-  const suppliers = useLiveQuery(() => db.suppliers.toArray());
+  const products = useLiveQuery(() => db.products.where('isDeleted').equals(0).toArray());
+  const suppliers = useLiveQuery(() => db.suppliers.where('isDeleted').equals(0).toArray());
 
   const filtered = stockIns?.filter(si =>
     filterSupplier === 'all' || si.supplierId === Number(filterSupplier)

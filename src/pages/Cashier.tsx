@@ -1,5 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import { db, type Product, type Category, type Transaction } from '@/lib/db';
+import { db, type Product, type Category, type Transaction, type TransactionItemRecord } from '@/lib/db';
 import { useState } from 'react';
 import { Search, Plus, Minus, ShoppingCart, X, Percent, Tag, CreditCard, Banknote, Check } from 'lucide-react';
 import Receipt from '@/components/Receipt';
@@ -35,10 +35,11 @@ export default function Kasir() {
   const [paymentAmount, setPaymentAmount] = useState('');
   const [receiptOpen, setReceiptOpen] = useState(false);
   const [lastTransaction, setLastTransaction] = useState<Transaction | null>(null);
+  const [lastTxItems, setLastTxItems] = useState<TransactionItemRecord[]>([]);
   const [remarks, setRemarks] = useState('');
 
-  const products = useLiveQuery(() => db.products.toArray());
-  const categories = useLiveQuery(() => db.categories.toArray());
+  const products = useLiveQuery(() => db.products.where('isDeleted').equals(0).toArray());
+  const categories = useLiveQuery(() => db.categories.where('isDeleted').equals(0).toArray());
   const paymentMethods = useLiveQuery(() => db.paymentMethods.toArray());
   const storeSettings = useLiveQuery(() => db.storeSettings.toCollection().first());
 
@@ -96,17 +97,6 @@ export default function Kasir() {
     const receiptNumber = `TX${Date.now()}`;
 
     const txData: Transaction = {
-      items: cart.map(c => ({
-        productId: c.product.id!,
-        productName: c.product.name,
-        quantity: c.qty,
-        price: c.product.price,
-        hpp: c.product.hpp,
-        discountType: c.discountType,
-        discountValue: c.discountValue,
-        discountAmount: c.discountType === 'percentage' ? c.product.price * c.qty * c.discountValue / 100 : c.discountType === 'nominal' ? c.discountValue : 0,
-        subtotal: getItemSubtotal(c),
-      })),
       subtotal,
       discountType: txDiscountType,
       discountValue: Number(txDiscountValue) || 0,
@@ -121,7 +111,22 @@ export default function Kasir() {
       remarks: remarks.trim() || undefined,
     };
 
-    await db.transactions.add(txData);
+    const txId = await db.transactions.add(txData);
+
+    // Save items to transactionItems table
+    const itemRecords: TransactionItemRecord[] = cart.map(c => ({
+      transactionId: txId as number,
+      productId: c.product.id!,
+      productName: c.product.name,
+      quantity: c.qty,
+      price: c.product.price,
+      hpp: c.product.hpp,
+      discountType: c.discountType,
+      discountValue: c.discountValue,
+      discountAmount: c.discountType === 'percentage' ? c.product.price * c.qty * c.discountValue / 100 : c.discountType === 'nominal' ? c.discountValue : 0,
+      subtotal: getItemSubtotal(c),
+    }));
+    await db.transactionItems.bulkAdd(itemRecords);
 
     // Update stock
     for (const item of cart) {
@@ -129,7 +134,8 @@ export default function Kasir() {
     }
 
     toast.success(`Transaksi berhasil! ${receiptNumber}`);
-    setLastTransaction(txData);
+    setLastTransaction({ ...txData, id: txId as number });
+    setLastTxItems(itemRecords);
     setReceiptOpen(true);
     setCart([]);
     setCheckoutOpen(false);
@@ -430,6 +436,7 @@ export default function Kasir() {
           open={receiptOpen}
           onClose={() => setReceiptOpen(false)}
           transaction={lastTransaction}
+          items={lastTxItems}
           storeSettings={storeSettings}
           paymentMethodName={paymentMethods?.find(pm => pm.id === lastTransaction.paymentMethodId)?.name || 'Tunai'}
         />

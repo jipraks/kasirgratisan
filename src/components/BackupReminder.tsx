@@ -61,7 +61,7 @@ export function shouldShowBackupReminder(lastBackupAt: Date | null): boolean {
 // Export all data as JSON and trigger download
 export async function exportBackupData() {
   const data = {
-    version: 1,
+    version: 2,
     exportedAt: new Date().toISOString(),
     categories: await db.categories.toArray(),
     products: await db.products.toArray(),
@@ -71,6 +71,7 @@ export async function exportBackupData() {
     hppHistory: await db.hppHistory.toArray(),
     paymentMethods: await db.paymentMethods.toArray(),
     transactions: await db.transactions.toArray(),
+    transactionItems: await db.transactionItems.toArray(),
     storeSettings: await db.storeSettings.toArray(),
   };
 

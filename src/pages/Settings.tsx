@@ -1,7 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, type PaymentMethod, type Category } from '@/lib/db';
-import { useState } from 'react';
-import { Settings, Store, CreditCard, Tag, Download, Upload, Plus, Trash2, Edit2, Info, Truck, ArrowDownToLine, ArrowUpFromLine, ChevronRight, Receipt, Palette } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Settings, Store, CreditCard, Tag, Download, Upload, Plus, Trash2, Edit2, Info, Truck, ArrowDownToLine, ArrowUpFromLine, ChevronRight, Receipt, Palette, HardDrive } from 'lucide-react';
 import ThemeColorPicker from '@/components/ThemeColorPicker';
 import { setThemeColor } from '@/hooks/use-theme-color';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -17,7 +17,7 @@ import { exportBackupData } from '@/components/BackupReminder';
 export default function Pengaturan() {
   const storeSettings = useLiveQuery(() => db.storeSettings.toCollection().first());
   const paymentMethods = useLiveQuery(() => db.paymentMethods.toArray());
-  const categories = useLiveQuery(() => db.categories.toArray());
+  const categories = useLiveQuery(() => db.categories.where('isDeleted').equals(0).toArray());
 
   // Store edit
   const [storeDialog, setStoreDialog] = useState(false);
@@ -37,6 +37,16 @@ export default function Pengaturan() {
   const [catIcon, setCatIcon] = useState('📦');
   const [catColor, setCatColor] = useState('#FF6B35');
   const [catEditId, setCatEditId] = useState<number | null>(null);
+
+  // Storage info (CR-9)
+  const [storageUsage, setStorageUsage] = useState<{ usage: number; quota: number } | null>(null);
+  useEffect(() => {
+    if (navigator.storage?.estimate) {
+      navigator.storage.estimate().then(est => {
+        setStorageUsage({ usage: est.usage ?? 0, quota: est.quota ?? 0 });
+      });
+    }
+  }, []);
 
   const openStoreEdit = () => {
     setStoreName(storeSettings?.storeName ?? '');
@@ -69,11 +79,11 @@ export default function Pengaturan() {
   const saveCat = async () => {
     if (!catName.trim()) return;
     if (catEditId) await db.categories.update(catEditId, { name: catName.trim(), icon: catIcon, color: catColor });
-    else await db.categories.add({ name: catName.trim(), icon: catIcon, color: catColor, createdAt: new Date() });
+    else await db.categories.add({ name: catName.trim(), icon: catIcon, color: catColor, createdAt: new Date(), isDeleted: false, deletedAt: null });
     setCatDialog(false);
     toast.success('Kategori disimpan');
   };
-  const deleteCat = async (id: number) => { await db.categories.delete(id); toast.success('Dihapus'); };
+  const deleteCat = async (id: number) => { await db.categories.update(id, { isDeleted: true, deletedAt: new Date() }); toast.success('Dihapus'); };
 
   const handleImport = () => {
     const input = document.createElement('input');
@@ -84,28 +94,111 @@ export default function Pengaturan() {
       if (!file) return;
       try {
         const text = await file.text();
+        if (!text.trim()) { toast.error('File kosong'); return; }
         const data = JSON.parse(text);
         if (!data.version) { toast.error('File tidak valid'); return; }
-        // Clear and restore
-        await db.categories.clear(); await db.products.clear(); await db.suppliers.clear();
-        await db.stockIns.clear(); await db.stockOuts.clear(); await db.hppHistory.clear();
-        await db.paymentMethods.clear(); await db.transactions.clear(); await db.storeSettings.clear();
-        if (data.categories?.length) await db.categories.bulkAdd(data.categories);
-        if (data.products?.length) await db.products.bulkAdd(data.products);
-        if (data.suppliers?.length) await db.suppliers.bulkAdd(data.suppliers);
-        if (data.stockIns?.length) await db.stockIns.bulkAdd(data.stockIns);
-        if (data.stockOuts?.length) await db.stockOuts.bulkAdd(data.stockOuts);
-        if (data.hppHistory?.length) await db.hppHistory.bulkAdd(data.hppHistory);
-        if (data.paymentMethods?.length) await db.paymentMethods.bulkAdd(data.paymentMethods);
-        if (data.transactions?.length) await db.transactions.bulkAdd(data.transactions);
-        if (data.storeSettings?.length) await db.storeSettings.bulkAdd(data.storeSettings);
-        toast.success('Data berhasil di-restore!');
+
+        // Validate at least 1 table has data
+        const hasSomeData = ['categories', 'products', 'suppliers', 'transactions', 'paymentMethods'].some(
+          key => Array.isArray(data[key]) && data[key].length > 0
+        );
+        if (!hasSomeData) { toast.error('File backup tidak berisi data'); return; }
+
+        // CR-7: Snapshot existing data before clearing
+        const snapshot = {
+          categories: await db.categories.toArray(),
+          products: await db.products.toArray(),
+          suppliers: await db.suppliers.toArray(),
+          stockIns: await db.stockIns.toArray(),
+          stockOuts: await db.stockOuts.toArray(),
+          hppHistory: await db.hppHistory.toArray(),
+          paymentMethods: await db.paymentMethods.toArray(),
+          transactions: await db.transactions.toArray(),
+          transactionItems: await db.transactionItems.toArray(),
+          storeSettings: await db.storeSettings.toArray(),
+        };
+
+        try {
+          // Clear all tables
+          await db.categories.clear(); await db.products.clear(); await db.suppliers.clear();
+          await db.stockIns.clear(); await db.stockOuts.clear(); await db.hppHistory.clear();
+          await db.paymentMethods.clear(); await db.transactions.clear(); await db.transactionItems.clear();
+          await db.storeSettings.clear();
+
+          // BulkAdd from file
+          if (data.categories?.length) await db.categories.bulkAdd(data.categories);
+          if (data.products?.length) await db.products.bulkAdd(data.products);
+          if (data.suppliers?.length) await db.suppliers.bulkAdd(data.suppliers);
+          if (data.stockIns?.length) await db.stockIns.bulkAdd(data.stockIns);
+          if (data.stockOuts?.length) await db.stockOuts.bulkAdd(data.stockOuts);
+          if (data.hppHistory?.length) await db.hppHistory.bulkAdd(data.hppHistory);
+          if (data.paymentMethods?.length) await db.paymentMethods.bulkAdd(data.paymentMethods);
+          if (data.transactions?.length) await db.transactions.bulkAdd(data.transactions);
+          if (data.storeSettings?.length) await db.storeSettings.bulkAdd(data.storeSettings);
+
+          // Handle transactionItems
+          if (data.transactionItems?.length) {
+            // v2 format: items already in separate table
+            await db.transactionItems.bulkAdd(data.transactionItems);
+          } else if (data.version === 1 && data.transactions?.length) {
+            // v1 format: migrate embedded items[] to transactionItems
+            for (const t of data.transactions) {
+              if (Array.isArray(t.items) && t.items.length > 0) {
+                const records = t.items.map((item: any) => ({
+                  transactionId: t.id,
+                  productId: item.productId,
+                  productName: item.productName,
+                  quantity: item.quantity,
+                  price: item.price,
+                  hpp: item.hpp,
+                  discountType: item.discountType,
+                  discountValue: item.discountValue,
+                  discountAmount: item.discountAmount,
+                  subtotal: item.subtotal,
+                }));
+                await db.transactionItems.bulkAdd(records);
+              }
+            }
+          }
+
+          toast.success('Data berhasil di-restore!');
+        } catch (importErr) {
+          // CR-7: Rollback — restore from snapshot
+          try {
+            await db.categories.clear(); await db.products.clear(); await db.suppliers.clear();
+            await db.stockIns.clear(); await db.stockOuts.clear(); await db.hppHistory.clear();
+            await db.paymentMethods.clear(); await db.transactions.clear(); await db.transactionItems.clear();
+            await db.storeSettings.clear();
+
+            if (snapshot.categories.length) await db.categories.bulkAdd(snapshot.categories);
+            if (snapshot.products.length) await db.products.bulkAdd(snapshot.products);
+            if (snapshot.suppliers.length) await db.suppliers.bulkAdd(snapshot.suppliers);
+            if (snapshot.stockIns.length) await db.stockIns.bulkAdd(snapshot.stockIns);
+            if (snapshot.stockOuts.length) await db.stockOuts.bulkAdd(snapshot.stockOuts);
+            if (snapshot.hppHistory.length) await db.hppHistory.bulkAdd(snapshot.hppHistory);
+            if (snapshot.paymentMethods.length) await db.paymentMethods.bulkAdd(snapshot.paymentMethods);
+            if (snapshot.transactions.length) await db.transactions.bulkAdd(snapshot.transactions);
+            if (snapshot.transactionItems.length) await db.transactionItems.bulkAdd(snapshot.transactionItems);
+            if (snapshot.storeSettings.length) await db.storeSettings.bulkAdd(snapshot.storeSettings);
+
+            toast.error('Import gagal, data dikembalikan');
+          } catch {
+            toast.error('Import gagal dan rollback gagal. Coba restore dari file backup.');
+          }
+        }
       } catch { toast.error('Gagal membaca file'); }
     };
     input.click();
   };
 
   const emojiOptions = ['📦', '🍕', '🥤', '🍜', '🧃', '🎽', '💊', '🧹', '📱', '🛒', '🎁', '✂️'];
+
+  const formatBytes = (bytes: number): string => {
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    if (bytes < 1024 * 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+    return `${(bytes / (1024 * 1024 * 1024)).toFixed(1)} GB`;
+  };
 
   return (
     <div className="px-4 pt-6 pb-4 space-y-5">
@@ -250,10 +343,27 @@ export default function Pengaturan() {
 
       {/* About */}
       <Card className="border-0 shadow-sm">
-        <CardContent className="p-4 text-center">
+        <CardContent className="p-4 text-center space-y-2">
            <p className="text-sm font-bold">KasirGratisan</p>
            <p className="text-xs text-muted-foreground">POS Gratis untuk UMKM Indonesia 🇮🇩</p>
-           <p className="text-[10px] text-muted-foreground mt-1">v1.0 • Data tersimpan di perangkat</p>
+           <p className="text-[10px] text-muted-foreground">v1.0 • Data tersimpan di perangkat</p>
+           {storageUsage && (
+             <div className="pt-2 border-t">
+               <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground mb-1.5">
+                 <HardDrive className="w-3.5 h-3.5" />
+                 <span>Penyimpanan Terpakai</span>
+               </div>
+               <p className="text-xs font-semibold">
+                 {formatBytes(storageUsage.usage)} / {formatBytes(storageUsage.quota)}
+               </p>
+               <div className="w-full h-1.5 bg-muted rounded-full mt-1.5 overflow-hidden">
+                 <div
+                   className="h-full bg-primary rounded-full transition-all"
+                   style={{ width: `${Math.min(100, (storageUsage.usage / storageUsage.quota) * 100)}%` }}
+                 />
+               </div>
+             </div>
+           )}
         </CardContent>
       </Card>
 

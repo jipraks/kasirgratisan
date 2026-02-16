@@ -1,5 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import { db, seedDefaultData } from '@/lib/db';
+import { db, seedDefaultData, type TransactionItemRecord } from '@/lib/db';
 import { useEffect, useState } from 'react';
 import { ShoppingCart, Package, BarChart3, TrendingUp, AlertTriangle, Receipt, ChevronRight } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -26,11 +26,24 @@ export default function Dashboard() {
     return db.transactions.where('date').aboveOrEqual(today).toArray();
   }, []);
 
-  const lowStockProducts = useLiveQuery(() => db.products.filter(p => p.stock <= 5).toArray());
+  const lowStockProducts = useLiveQuery(() => db.products.filter(p => !p.isDeleted && p.stock <= 5).toArray());
 
   const recentTransactions = useLiveQuery(() =>
     db.transactions.orderBy('date').reverse().limit(5).toArray()
   );
+
+  // Query items for recent transactions
+  const recentTxItems = useLiveQuery(async () => {
+    if (!recentTransactions || recentTransactions.length === 0) return {};
+    const txIds = recentTransactions.map(t => t.id!).filter(Boolean);
+    const items = await db.transactionItems.where('transactionId').anyOf(txIds).toArray();
+    const map: Record<number, TransactionItemRecord[]> = {};
+    for (const item of items) {
+      if (!map[item.transactionId]) map[item.transactionId] = [];
+      map[item.transactionId].push(item);
+    }
+    return map;
+  }, [recentTransactions]);
 
   const paymentMethods = useLiveQuery(() => db.paymentMethods.toArray());
 
@@ -136,7 +149,7 @@ export default function Dashboard() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
-                        <p className="text-xs text-muted-foreground truncate">{tx.items.map(i => i.productName).join(', ')}</p>
+                        <p className="text-xs text-muted-foreground truncate">{(recentTxItems?.[tx.id!] ?? []).map(i => i.productName).join(', ')}</p>
                         <p className="text-[10px] text-muted-foreground shrink-0 ml-2">{format(new Date(tx.date), 'HH:mm')}</p>
                       </div>
                       <div className="flex items-center justify-between mt-0.5">

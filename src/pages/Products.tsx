@@ -29,8 +29,8 @@ export default function Produk() {
   const [unit, setUnit] = useState('pcs');
   const [barcode, setBarcode] = useState('');
 
-  const products = useLiveQuery(() => db.products.toArray());
-  const categories = useLiveQuery(() => db.categories.toArray());
+  const products = useLiveQuery(() => db.products.where('isDeleted').equals(0).toArray());
+  const categories = useLiveQuery(() => db.categories.where('isDeleted').equals(0).toArray());
 
   const filtered = products?.filter(p => {
     const matchSearch = p.name.toLowerCase().includes(search.toLowerCase()) || p.sku.toLowerCase().includes(search.toLowerCase());
@@ -70,14 +70,14 @@ export default function Produk() {
     if (editProduct?.id) {
       await db.products.update(editProduct.id, data);
     } else {
-      await db.products.add({ ...data, createdAt: new Date() } as Product);
+      await db.products.add({ ...data, createdAt: new Date(), isDeleted: false, deletedAt: null } as Product);
     }
     setDialogOpen(false);
   };
 
   const handleDelete = async () => {
     if (deleteId) {
-      await db.products.delete(deleteId);
+      await db.products.update(deleteId, { isDeleted: true, deletedAt: new Date() });
       setDeleteId(null);
     }
   };

@@ -23,7 +23,7 @@ export default function StockOutPage() {
   const [notes, setNotes] = useState('');
 
   const stockOuts = useLiveQuery(() => db.stockOuts.orderBy('date').reverse().toArray());
-  const products = useLiveQuery(() => db.products.toArray());
+  const products = useLiveQuery(() => db.products.where('isDeleted').equals(0).toArray());
 
   const getProductName = (pid: number) => products?.find(p => p.id === pid)?.name ?? '-';
   const selectedProduct = products?.find(p => p.id === Number(productId));

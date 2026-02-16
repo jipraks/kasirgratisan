@@ -1,5 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import { db, type Transaction } from '@/lib/db';
+import { db, type Transaction, type TransactionItemRecord } from '@/lib/db';
 import { useState, useEffect } from 'react';
 import { format, startOfDay, endOfDay } from 'date-fns';
 import { id as localeId } from 'date-fns/locale';
@@ -28,6 +28,20 @@ export default function TransactionHistory() {
   const transactions = useLiveQuery(() =>
     db.transactions.orderBy('date').reverse().toArray()
   );
+
+  // Query all transaction items and build lookup map
+  const txItemsMap = useLiveQuery(async () => {
+    const items = await db.transactionItems.toArray();
+    const map: Record<number, TransactionItemRecord[]> = {};
+    for (const item of items) {
+      if (!map[item.transactionId]) map[item.transactionId] = [];
+      map[item.transactionId].push(item);
+    }
+    return map;
+  });
+
+  const getTxItems = (txId: number | undefined): TransactionItemRecord[] =>
+    txId ? (txItemsMap?.[txId] ?? []) : [];
   const paymentMethods = useLiveQuery(() => db.paymentMethods.toArray());
   const storeSettings = useLiveQuery(() => db.storeSettings.toCollection().first());
 
@@ -59,9 +73,10 @@ export default function TransactionHistory() {
     // Search filter
     if (search) {
       const q = search.toLowerCase();
+      const items = getTxItems(tx.id);
       return (
         tx.receiptNumber.toLowerCase().includes(q) ||
-        tx.items.some(it => it.productName.toLowerCase().includes(q))
+        items.some(it => it.productName.toLowerCase().includes(q))
       );
     }
     return true;
@@ -225,7 +240,7 @@ export default function TransactionHistory() {
                         </div>
                         <p className="text-sm font-bold text-primary">{rp(tx.total)}</p>
                         <p className="text-[10px] text-muted-foreground truncate">
-                          {tx.items.map(it => it.productName).join(', ')}
+                          {getTxItems(tx.id).map(it => it.productName).join(', ')}
                         </p>
                       </div>
                       <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
@@ -269,7 +284,7 @@ export default function TransactionHistory() {
 
               <div className="space-y-2">
                 <p className="text-xs font-semibold text-muted-foreground">Item</p>
-                {selectedTx.items.map((item, i) => (
+                {getTxItems(selectedTx.id).map((item, i) => (
                   <div key={i} className="flex justify-between items-start bg-muted/30 p-2.5 rounded-lg">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium">{item.productName}</p>
@@ -327,6 +342,7 @@ export default function TransactionHistory() {
           open={receiptOpen}
           onClose={() => setReceiptOpen(false)}
           transaction={selectedTx}
+          items={getTxItems(selectedTx.id)}
           storeSettings={storeSettings}
           paymentMethodName={getPaymentName(selectedTx.paymentMethodId)}
         />
