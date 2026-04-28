@@ -3,7 +3,7 @@ import { db, type Transaction, type TransactionItemRecord } from '@/lib/db';
 import { useState, useEffect } from 'react';
 import { format, startOfDay, endOfDay } from 'date-fns';
 import { id as localeId } from 'date-fns/locale';
-import { ArrowLeft, Search, Receipt as ReceiptIcon, Calendar, ChevronRight, ShoppingBag, CalendarIcon, X, Trash2 } from 'lucide-react';
+import { ArrowLeft, Search, Receipt as ReceiptIcon, Calendar, ChevronRight, ShoppingBag, CalendarIcon, X, Trash2, ShoppingCart } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -29,6 +29,7 @@ export default function TransactionHistory() {
   const [dateTo, setDateTo] = useState<Date | undefined>(undefined);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [restoreStock, setRestoreStock] = useState(true);
+  const [filterStatus, setFilterStatus] = useState<'all' | 'completed' | 'open'>('all');
 
   const transactions = useLiveQuery(() =>
     db.transactions.orderBy('date').reverse().toArray()
@@ -66,6 +67,8 @@ export default function TransactionHistory() {
     paymentMethods?.find(pm => pm.id === pmId)?.name || 'Tunai';
 
   const filtered = transactions?.filter(tx => {
+    // Status filter
+    if (filterStatus !== 'all' && tx.status !== filterStatus) return false;
     // Date filter
     if (dateFrom) {
       const txDate = new Date(tx.date);
@@ -97,7 +100,7 @@ export default function TransactionHistory() {
 
   const dateKeys = Object.keys(grouped).sort((a, b) => b.localeCompare(a));
 
-  const filteredTotal = filtered.reduce((s, t) => s + t.total, 0);
+  const filteredTotal = filtered.filter(t => t.status !== 'open').reduce((s, t) => s + t.total, 0);
   const hasDateFilter = dateFrom || dateTo;
 
   const openDetail = (tx: Transaction) => {
@@ -211,6 +214,26 @@ export default function TransactionHistory() {
         )}
       </div>
 
+      {/* Status filter tabs */}
+      <div className="flex gap-1.5 mb-4">
+        {([
+          { value: 'all', label: 'Semua' },
+          { value: 'open', label: 'Open Bill' },
+          { value: 'completed', label: 'Lunas' },
+        ] as const).map(tab => (
+          <button
+            key={tab.value}
+            onClick={() => setFilterStatus(tab.value)}
+            className={cn(
+              'px-3 py-1.5 rounded-full text-xs font-semibold transition-colors',
+              filterStatus === tab.value ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+            )}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
       {/* Summary */}
       {filtered.length > 0 && (
         <div className="grid grid-cols-2 gap-2 mb-4">
@@ -258,12 +281,19 @@ export default function TransactionHistory() {
                     onClick={() => openDetail(tx)}
                   >
                     <CardContent className="p-3 flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                        <ReceiptIcon className="w-4 h-4" />
+                      <div className={cn('w-9 h-9 rounded-lg flex items-center justify-center shrink-0', tx.status === 'open' ? 'bg-warning/10 text-warning' : 'bg-primary/10 text-primary')}>
+                        {tx.status === 'open' ? <ShoppingCart className="w-4 h-4" /> : <ReceiptIcon className="w-4 h-4" />}
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
-                          <p className="text-xs font-mono text-muted-foreground truncate">{tx.receiptNumber}</p>
+                          <div className="flex items-center gap-1.5">
+                            <p className="text-xs font-mono text-muted-foreground truncate">{tx.receiptNumber}</p>
+                            {tx.status === 'open' ? (
+                              <Badge variant="secondary" className="text-[9px] h-4 px-1.5 bg-warning/20 text-warning border-warning/30">Open</Badge>
+                            ) : (
+                              <Badge variant="secondary" className="text-[9px] h-4 px-1.5 bg-success/20 text-success border-success/30">Lunas</Badge>
+                            )}
+                          </div>
                           <p className="text-xs text-muted-foreground">{format(new Date(tx.date), 'HH:mm')}</p>
                         </div>
                         <p className="text-sm font-bold text-primary">{rp(tx.total)}</p>
@@ -291,6 +321,12 @@ export default function TransactionHistory() {
             <div className="mt-4 space-y-4 overflow-y-auto pb-6">
               <div className="bg-muted/50 rounded-xl p-3 space-y-1">
                 <div className="flex justify-between text-xs">
+                  <span className="text-muted-foreground">Status</span>
+                  <span className={cn('font-semibold', selectedTx.status === 'open' ? 'text-warning' : 'text-success')}>
+                    {selectedTx.status === 'open' ? 'Open Bill' : 'Lunas'}
+                  </span>
+                </div>
+                <div className="flex justify-between text-xs">
                   <span className="text-muted-foreground">No. Struk</span>
                   <span className="font-mono font-medium">{selectedTx.receiptNumber}</span>
                 </div>
@@ -300,15 +336,27 @@ export default function TransactionHistory() {
                 </div>
                  <div className="flex justify-between text-xs">
                    <span className="text-muted-foreground">Pembayaran</span>
-                   <span>{getPaymentName(selectedTx.paymentMethodId)}</span>
+                   <span>{selectedTx.status === 'open' ? '-' : getPaymentName(selectedTx.paymentMethodId)}</span>
                  </div>
-                 {selectedTx.remarks && (
+                 {selectedTx.customerName && (
                    <div className="flex justify-between text-xs">
-                     <span className="text-muted-foreground">Catatan</span>
-                     <span className="text-right max-w-[60%]">{selectedTx.remarks}</span>
+                     <span className="text-muted-foreground">Pelanggan</span>
+                     <span>👤 {selectedTx.customerName}</span>
                    </div>
                  )}
-               </div>
+                 {selectedTx.tableNumber && (
+                   <div className="flex justify-between text-xs">
+                     <span className="text-muted-foreground">Meja</span>
+                     <span>{selectedTx.tableNumber}</span>
+                   </div>
+                 )}
+                  {selectedTx.remarks && (
+                    <div className="flex justify-between text-xs">
+                      <span className="text-muted-foreground">Catatan</span>
+                      <span className="text-right max-w-[60%]">{selectedTx.remarks}</span>
+                    </div>
+                  )}
+                </div>
 
               <div className="space-y-2">
                 <p className="text-xs font-semibold text-muted-foreground">Item</p>
@@ -320,6 +368,9 @@ export default function TransactionHistory() {
                         {item.quantity} × {rp(item.price)}
                         {item.discountAmount > 0 && ` (diskon ${rp(item.discountAmount)})`}
                       </p>
+                      {item.notes && (
+                        <p className="text-[10px] text-accent mt-0.5">📝 {item.notes}</p>
+                      )}
                     </div>
                     <p className="text-sm font-semibold">{rp(item.subtotal)}</p>
                   </div>
@@ -341,24 +392,37 @@ export default function TransactionHistory() {
                   <span>Total</span>
                   <span className="text-primary">{rp(selectedTx.total)}</span>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Bayar</span>
-                  <span>{rp(selectedTx.paymentAmount)}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Kembali</span>
-                  <span className="text-success font-medium">{rp(selectedTx.change)}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Profit</span>
-                  <span className="text-success font-medium">{rp(selectedTx.profit)}</span>
-                </div>
+                {selectedTx.status !== 'open' ? (
+                  <>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Bayar</span>
+                      <span>{rp(selectedTx.paymentAmount)}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Kembali</span>
+                      <span className="text-success font-medium">{rp(selectedTx.change)}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Profit</span>
+                      <span className="text-success font-medium">{rp(selectedTx.profit)}</span>
+                    </div>
+                  </>
+                ) : (
+                  <p className="text-xs text-warning italic">Bill belum dibayar</p>
+                )}
               </div>
 
-              <Button className="w-full h-11" onClick={openReceipt}>
-                <ReceiptIcon className="w-4 h-4 mr-2" />
-                Lihat & Cetak Struk
-              </Button>
+              {selectedTx.status === 'open' ? (
+                <Button className="w-full h-11" onClick={() => { setDetailOpen(false); navigate('/cashier'); }}>
+                  <ShoppingCart className="w-4 h-4 mr-2" />
+                  Lanjutkan di Kasir
+                </Button>
+              ) : (
+                <Button className="w-full h-11" onClick={openReceipt}>
+                  <ReceiptIcon className="w-4 h-4 mr-2" />
+                  Lihat & Cetak Struk
+                </Button>
+              )}
 
               <Button
                 variant="outline"

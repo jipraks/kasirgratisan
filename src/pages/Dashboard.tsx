@@ -1,7 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, type TransactionItemRecord } from '@/lib/db';
 import { useState } from 'react';
-import { ShoppingCart, Package, BarChart3, TrendingUp, AlertTriangle, Receipt, ChevronRight } from 'lucide-react';
+import { ShoppingCart, Package, BarChart3, TrendingUp, AlertTriangle, Receipt, ChevronRight, ClipboardList } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
@@ -18,7 +18,13 @@ export default function Dashboard() {
   today.setHours(0, 0, 0, 0);
 
   const todayTransactions = useLiveQuery(async () => {
-    return db.transactions.where('date').aboveOrEqual(today).toArray();
+    const all = await db.transactions.where('date').aboveOrEqual(today).toArray();
+    return all.filter(t => t.status !== 'open');
+  }, []);
+
+  const openBillsCount = useLiveQuery(async () => {
+    const open = await db.transactions.where('status').equals('open').toArray();
+    return open.length;
   }, []);
 
   const lowStockProducts = useLiveQuery(() => db.products.filter(p => p.isDeleted === 0 && p.stock <= 5).toArray());
@@ -93,6 +99,24 @@ export default function Dashboard() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Open Bills */}
+      {openBillsCount != null && openBillsCount > 0 && (
+        <Link to="/cashier">
+          <Card className="border-0 shadow-sm bg-warning/10 hover:shadow-md transition-shadow cursor-pointer">
+            <CardContent className="p-4 flex items-center gap-4">
+              <div className="w-10 h-10 rounded-xl bg-warning/20 text-warning flex items-center justify-center shrink-0">
+                <ClipboardList className="w-5 h-5" />
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-semibold">Open Bills</p>
+                <p className="text-xs text-muted-foreground">{openBillsCount} bill menunggu pembayaran</p>
+              </div>
+              <ChevronRight className="w-4 h-4 text-muted-foreground" />
+            </CardContent>
+          </Card>
+        </Link>
+      )}
 
       {/* Quick Actions */}
       <div>

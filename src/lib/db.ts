@@ -90,7 +90,13 @@ export interface Transaction {
   profit: number;
   date: Date;
   receiptNumber: string;
+  status: 'open' | 'completed';
+  orderNumber?: string;
+  customerName?: string;
+  tableNumber?: string;
   remarks?: string;
+  openedAt?: Date;
+  closedAt?: Date;
 }
 
 export interface TransactionItemRecord {
@@ -105,6 +111,7 @@ export interface TransactionItemRecord {
   discountValue: number;
   discountAmount: number;
   subtotal: number;
+  notes?: string;
 }
 
 export interface StoreSettings {
@@ -214,6 +221,25 @@ class PosDatabase extends Dexie {
         delete (t as any).items;
         await txTable.put(t);
       }
+    });
+
+    // Version 3 — Open Bill: status, orderNumber, customer/table, item notes
+    this.version(3).stores({
+      categories:       '++id, name, isDeleted',
+      products:         '++id, name, sku, categoryId, barcode, isDeleted',
+      suppliers:        '++id, name, isDeleted',
+      stockIns:         '++id, productId, supplierId, date',
+      stockOuts:        '++id, productId, date',
+      hppHistory:       '++id, productId, date',
+      paymentMethods:   '++id, name, category',
+      transactions:     '++id, date, &receiptNumber, paymentMethodId, status, orderNumber',
+      transactionItems: '++id, transactionId, productId',
+      storeSettings:    '++id',
+    }).upgrade(async (tx) => {
+      // Set all existing transactions to 'completed' status
+      await tx.table('transactions').toCollection().modify((t: any) => {
+        t.status = 'completed';
+      });
     });
   }
 }
