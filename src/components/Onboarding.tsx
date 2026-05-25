@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { db } from '@/lib/db';
+import { markAllFeaturesSeen } from '@/lib/whats-new';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import ThemeColorPicker from '@/components/ThemeColorPicker';
@@ -169,6 +170,11 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
       if (loadDummy) {
         await seedDummyData();
       }
+
+      // Fresh installs shouldn't see the "What's New" modal for shipped
+      // features that exist at install time — those aren't new to them.
+      // Mark every current feature id as seen so they only get future ones.
+      await markAllFeaturesSeen();
 
       onComplete();
     } finally {

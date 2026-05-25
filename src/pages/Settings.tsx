@@ -1,7 +1,9 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, type PaymentMethod, type Category, type Unit, type ExpenseCategory } from '@/lib/db';
-import { useState, useEffect, useRef } from 'react';
-import { Settings, Store, CreditCard, Tag, Download, Upload, Plus, Trash2, Edit2, Info, Truck, ArrowDownToLine, ArrowUpFromLine, ChevronRight, Receipt, Palette, HardDrive, Package, Camera, X, Ruler, Users as UsersIcon, ShieldCheck, LogOut, Smartphone, CheckCircle2, Globe, Share2, Wallet } from 'lucide-react';
+import { useState, useEffect, useMemo, useRef } from 'react';
+import { Settings, Store, CreditCard, Tag, Download, Upload, Plus, Trash2, Edit2, Info, Truck, ArrowDownToLine, ArrowUpFromLine, ChevronRight, Receipt, Palette, HardDrive, Package, Camera, X, Ruler, Users as UsersIcon, ShieldCheck, LogOut, Smartphone, CheckCircle2, Globe, Share2, Wallet, Sparkles } from 'lucide-react';
+import WhatsNewModal from '@/components/WhatsNewModal';
+import { FEATURES, getUnseenFeatures } from '@/lib/whats-new';
 import ThemeColorPicker from '@/components/ThemeColorPicker';
 import { setThemeColor } from '@/hooks/use-theme-color';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -94,6 +96,13 @@ export default function Pengaturan() {
       });
     }
   }, []);
+
+  // What's New
+  const [whatsNewOpen, setWhatsNewOpen] = useState(false);
+  const unseenFeatures = useMemo(
+    () => getUnseenFeatures(storeSettings?.seenWhatsNewIds),
+    [storeSettings?.seenWhatsNewIds],
+  );
 
   const openStoreEdit = () => {
     setStoreName(storeSettings?.storeName ?? '');
@@ -851,6 +860,19 @@ export default function Pengaturan() {
 
            {/* Links */}
            <div className="flex flex-col gap-2 pt-2">
+             <button
+               type="button"
+               onClick={() => setWhatsNewOpen(true)}
+               className="flex items-center justify-center gap-2 w-full h-9 rounded-lg border border-primary/30 bg-primary/5 text-xs font-semibold text-primary hover:bg-primary/10 transition-colors"
+             >
+               <Sparkles className="w-3.5 h-3.5" />
+               Yang Baru di KasirGratisan
+               {unseenFeatures.length > 0 && (
+                 <span className="ml-1 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-primary text-primary-foreground text-[10px] font-bold">
+                   {unseenFeatures.length}
+                 </span>
+               )}
+             </button>
              <a
                href="https://kasirgratisan.fider.io"
                target="_blank"
@@ -1250,6 +1272,14 @@ export default function Pengaturan() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* What's New (manual open from Settings — show full catalog, do not auto-mark seen) */}
+      <WhatsNewModal
+        open={whatsNewOpen}
+        onOpenChange={setWhatsNewOpen}
+        features={FEATURES}
+        markSeenOnClose={false}
+      />
     </div>
   );
 }

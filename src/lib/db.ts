@@ -206,6 +206,7 @@ export interface StoreSettings {
   logo?: string; // base64 JPEG compressed via compressImage()
   deviceId: string;
   multiUserEnabled?: boolean; // CR-multiuser: opt-in flag
+  seenWhatsNewIds?: string[]; // IDs of "What's New" features the user has dismissed
 }
 
 // === Database ===
@@ -468,6 +469,34 @@ class PosDatabase extends Dexie {
       users:             '++id, &username, role, isActive',
       expenseCategories: '++id, name, isDeleted',
       expenses:          '++id, date, categoryId, paymentMethodId, createdBy, isDeleted',
+    });
+
+    // Version 8 — "What's New" tracking
+    // Notes:
+    //   * Pure data migration; schema (indexes) unchanged.
+    //   * Default `seenWhatsNewIds = []` for existing rows so the announcement
+    //     modal will show all current entries to existing users on first launch
+    //     after upgrade — which is exactly what we want.
+    this.version(8).stores({
+      categories:        '++id, name, isDeleted',
+      products:          '++id, name, &sku, categoryId, barcode, isDeleted, createdBy, updatedBy',
+      suppliers:         '++id, name, isDeleted',
+      stockIns:          '++id, productId, supplierId, date, createdBy',
+      stockOuts:         '++id, productId, date, createdBy',
+      hppHistory:        '++id, productId, date',
+      paymentMethods:    '++id, name, category',
+      transactions:      '++id, date, &receiptNumber, paymentMethodId, status, orderNumber, createdBy',
+      transactionItems:  '++id, transactionId, productId',
+      storeSettings:     '++id',
+      units:             '++id, &name, isDeleted',
+      users:             '++id, &username, role, isActive',
+      expenseCategories: '++id, name, isDeleted',
+      expenses:          '++id, date, categoryId, paymentMethodId, createdBy, isDeleted',
+    }).upgrade(async (tx) => {
+      const storeTable = tx.table('storeSettings');
+      await storeTable.toCollection().modify((s: Partial<StoreSettings>) => {
+        if (!Array.isArray(s.seenWhatsNewIds)) s.seenWhatsNewIds = [];
+      });
     });
   }
 }

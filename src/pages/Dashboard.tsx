@@ -1,6 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, type TransactionItemRecord } from '@/lib/db';
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { ShoppingCart, Package, BarChart3, TrendingUp, AlertTriangle, Receipt, ChevronRight, ClipboardList, Wallet } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
@@ -8,14 +8,37 @@ import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import { Button } from '@/components/ui/button';
 import BackupReminder, { shouldShowBackupReminder, exportBackupData } from '@/components/BackupReminder';
+import WhatsNewModal from '@/components/WhatsNewModal';
+import { getUnseenFeatures } from '@/lib/whats-new';
 import { useAuth } from '@/hooks/use-auth';
 import type { PermissionKey } from '@/lib/db';
 
 export default function Dashboard() {
   const { can } = useAuth();
   const [backupDismissed, setBackupDismissed] = useState(false);
+  const [whatsNewOpen, setWhatsNewOpen] = useState(false);
 
   const storeSettings = useLiveQuery(() => db.storeSettings.toCollection().first());
+
+  // Compute unseen features once storeSettings loaded. Memoized so the array
+  // identity is stable until seenWhatsNewIds actually changes.
+  const unseenFeatures = useMemo(
+    () => getUnseenFeatures(storeSettings?.seenWhatsNewIds),
+    [storeSettings?.seenWhatsNewIds],
+  );
+
+  // Auto-show modal once on landing if there are unseen features.
+  // Only fires when onboarding is done (existing user, not first-launch flow).
+  useEffect(() => {
+    if (!storeSettings) return;
+    if (!storeSettings.onboardingDone) return;
+    if (unseenFeatures.length === 0) return;
+    setWhatsNewOpen(true);
+    // Intentionally only run when unseen list transitions from empty → non-empty
+    // for the *current* settings doc. The dependency on the array length
+    // guards against re-opening after dismissal in the same session.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [storeSettings?.id, unseenFeatures.length > 0]);
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -227,6 +250,12 @@ export default function Dashboard() {
           </div>
         </div>
       )}
+
+      <WhatsNewModal
+        open={whatsNewOpen}
+        onOpenChange={setWhatsNewOpen}
+        features={unseenFeatures}
+      />
     </div>
   );
 }
