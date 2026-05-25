@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 import { checkVersion } from "@/lib/version-check";
 import { AuthProvider } from "@/hooks/use-auth";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import AppLayout from "./components/layout/AppLayout";
 import Dashboard from "./pages/Dashboard";
 import Cashier from "./pages/Cashier";
@@ -28,32 +29,111 @@ const App = () => {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <AuthProvider>
-            <Routes>
-              <Route element={<AppLayout />}>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/cashier" element={<Cashier />} />
-                <Route path="/products" element={<Products />} />
-                <Route path="/reports" element={<Reports />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="/supplier" element={<SupplierPage />} />
-                <Route path="/stock-in" element={<StockInPage />} />
-                <Route path="/stock-out" element={<StockOutPage />} />
-                <Route path="/history" element={<TransactionHistory />} />
-                <Route path="/stock-report" element={<StockReport />} />
-                <Route path="/users" element={<UsersPage />} />
-              </Route>
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </AuthProvider>
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <AuthProvider>
+              <Routes>
+                <Route element={<AppLayout />}>
+                  <Route
+                    path="/"
+                    element={
+                      <ErrorBoundary>
+                        <Dashboard />
+                      </ErrorBoundary>
+                    }
+                  />
+                  <Route
+                    path="/cashier"
+                    element={
+                      <ErrorBoundary>
+                        <Cashier />
+                      </ErrorBoundary>
+                    }
+                  />
+                  <Route
+                    path="/products"
+                    element={
+                      <ErrorBoundary>
+                        <Products />
+                      </ErrorBoundary>
+                    }
+                  />
+                  <Route
+                    path="/reports"
+                    element={
+                      <ErrorBoundary>
+                        <Reports />
+                      </ErrorBoundary>
+                    }
+                  />
+                  <Route
+                    path="/settings"
+                    element={
+                      <ErrorBoundary>
+                        <Settings />
+                      </ErrorBoundary>
+                    }
+                  />
+                  <Route
+                    path="/supplier"
+                    element={
+                      <ErrorBoundary>
+                        <SupplierPage />
+                      </ErrorBoundary>
+                    }
+                  />
+                  <Route
+                    path="/stock-in"
+                    element={
+                      <ErrorBoundary>
+                        <StockInPage />
+                      </ErrorBoundary>
+                    }
+                  />
+                  <Route
+                    path="/stock-out"
+                    element={
+                      <ErrorBoundary>
+                        <StockOutPage />
+                      </ErrorBoundary>
+                    }
+                  />
+                  <Route
+                    path="/history"
+                    element={
+                      <ErrorBoundary>
+                        <TransactionHistory />
+                      </ErrorBoundary>
+                    }
+                  />
+                  <Route
+                    path="/stock-report"
+                    element={
+                      <ErrorBoundary>
+                        <StockReport />
+                      </ErrorBoundary>
+                    }
+                  />
+                  <Route
+                    path="/users"
+                    element={
+                      <ErrorBoundary>
+                        <UsersPage />
+                      </ErrorBoundary>
+                    }
+                  />
+                </Route>
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </AuthProvider>
+          </BrowserRouter>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 };
 
