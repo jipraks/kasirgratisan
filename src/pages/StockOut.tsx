@@ -77,7 +77,7 @@ export default function StockOutPage() {
     <div className="px-4 pt-6 pb-4 space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Link to="/pengaturan">
+          <Link to="/settings">
             <Button variant="ghost" size="icon" className="h-8 w-8"><ChevronLeft className="w-4 h-4" /></Button>
           </Link>
           <h1 className="text-xl font-bold flex items-center gap-2">
