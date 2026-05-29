@@ -1,4 +1,4 @@
-import { Wallet, AlertTriangle, type LucideIcon } from 'lucide-react';
+import { Wallet, AlertTriangle, Infinity as InfinityIcon, type LucideIcon } from 'lucide-react';
 import { db } from './db';
 
 /**
@@ -28,6 +28,16 @@ export interface WhatsNewFeature {
 }
 
 export const FEATURES: WhatsNewFeature[] = [
+  {
+    id: '2026-05-unmanaged-stock',
+    title: 'Produk Tanpa Stok',
+    description:
+      'Sekarang kamu bisa menjual produk tanpa mengelola stok, cocok untuk jasa atau makanan yang dibuat dadakan. Aktifkan lewat tombol "Kelola Stok" saat menambah/mengedit produk. Produk ini akan selalu tersedia di kasir.',
+    icon: InfinityIcon,
+    iconColor: 'text-primary bg-primary/10',
+    publishedAt: '2026-05-29',
+    cta: { label: 'Atur Produk', to: '/products' },
+  },
   {
     id: '2026-05-expense-tracking',
     title: 'Pencatatan Pengeluaran',

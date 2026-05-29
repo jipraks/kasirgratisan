@@ -1,5 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import { db, type TransactionItemRecord } from '@/lib/db';
+import { db, isStockManaged, type TransactionItemRecord } from '@/lib/db';
 import { useState, useEffect, useMemo } from 'react';
 import { ShoppingCart, Package, BarChart3, TrendingUp, AlertTriangle, Receipt, ChevronRight, ClipboardList, Wallet } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -53,7 +53,7 @@ export default function Dashboard() {
     return open.length;
   }, []);
 
-  const lowStockProducts = useLiveQuery(() => db.products.filter(p => p.isDeleted === 0 && p.stock <= 5).toArray());
+  const lowStockProducts = useLiveQuery(() => db.products.filter(p => p.isDeleted === 0 && isStockManaged(p) && p.stock <= 5).toArray());
 
   const todayExpenses = useLiveQuery(async () => {
     const all = await db.expenses.where('date').aboveOrEqual(today).toArray();

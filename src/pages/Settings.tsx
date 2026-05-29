@@ -1,5 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import { db, type PaymentMethod, type Category, type Unit, type ExpenseCategory } from '@/lib/db';
+import { db, type PaymentMethod, type Category, type Unit, type ExpenseCategory, type Product } from '@/lib/db';
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { Settings, Store, CreditCard, Tag, Download, Upload, Plus, Trash2, Edit2, Info, Truck, ArrowDownToLine, ArrowUpFromLine, ChevronRight, Receipt, Palette, HardDrive, Package, Camera, X, Ruler, Users as UsersIcon, ShieldCheck, LogOut, Smartphone, CheckCircle2, Globe, Share2, Wallet, Sparkles } from 'lucide-react';
 import WhatsNewModal from '@/components/WhatsNewModal';
@@ -391,7 +391,12 @@ export default function Pengaturan() {
 
           // BulkAdd from file
           if (data.categories?.length) await db.categories.bulkAdd(data.categories);
-          if (data.products?.length) await db.products.bulkAdd(data.products);
+          if (data.products?.length) {
+            const normalizedProducts = (data.products as Product[]).map((p) =>
+              p && p.trackStock === undefined ? { ...p, trackStock: true } : p
+            );
+            await db.products.bulkAdd(normalizedProducts);
+          }
           if (data.suppliers?.length) await db.suppliers.bulkAdd(data.suppliers);
           if (data.stockIns?.length) await db.stockIns.bulkAdd(data.stockIns);
           if (data.stockOuts?.length) await db.stockOuts.bulkAdd(data.stockOuts);

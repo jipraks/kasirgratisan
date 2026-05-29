@@ -1,5 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import { db } from '@/lib/db';
+import { db, isStockManaged } from '@/lib/db';
 import { useState } from 'react';
 import { ArrowDownToLine, Plus, Search, ChevronLeft } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -161,7 +161,7 @@ export default function StockInPage() {
               <Label>Produk *</Label>
               <Select value={productId} onValueChange={setProductId}>
                 <SelectTrigger className="h-11"><SelectValue placeholder="Pilih produk" /></SelectTrigger>
-                <SelectContent>{products?.map(p => <SelectItem key={p.id} value={p.id!.toString()}>{p.name} (stok: {p.stock})</SelectItem>)}</SelectContent>
+                <SelectContent>{products?.filter(p => isStockManaged(p)).map(p => <SelectItem key={p.id} value={p.id!.toString()}>{p.name} (stok: {p.stock})</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div className="space-y-1.5">

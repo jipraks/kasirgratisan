@@ -1,11 +1,12 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import { db, type Product, type Category } from '@/lib/db';
+import { db, isStockManaged, type Product, type Category } from '@/lib/db';
 import { useState, useRef } from 'react';
-import { Plus, Search, Edit2, Trash2, Package as PackageIcon, Camera, X, Copy } from 'lucide-react';
+import { Plus, Search, Edit2, Trash2, Package as PackageIcon, Camera, X, Copy, Infinity as InfinityIcon } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -33,6 +34,7 @@ export default function Produk() {
   const [price, setPrice] = useState('');
   const [hpp, setHpp] = useState('');
   const [stock, setStock] = useState('');
+  const [trackStock, setTrackStock] = useState(true);
   const [unit, setUnit] = useState('pcs');
   const [barcode, setBarcode] = useState('');
   const [description, setDescription] = useState('');
@@ -65,13 +67,13 @@ export default function Produk() {
 
   const openAdd = () => {
     setEditProduct(null);
-    setName(''); setSku(''); setCategoryId(categories?.[0]?.id?.toString() ?? ''); setPrice(''); setHpp(''); setStock(''); setUnit('pcs'); setBarcode(''); setDescription(''); setPhoto(undefined);
+    setName(''); setSku(''); setCategoryId(categories?.[0]?.id?.toString() ?? ''); setPrice(''); setHpp(''); setStock(''); setTrackStock(true); setUnit('pcs'); setBarcode(''); setDescription(''); setPhoto(undefined);
     setDialogOpen(true);
   };
 
   const openEdit = (p: Product) => {
     setEditProduct(p);
-    setName(p.name); setSku(p.sku); setCategoryId(p.categoryId.toString()); setPrice(p.price.toString()); setHpp(p.hpp.toString()); setStock(p.stock.toString()); setUnit(p.unit); setBarcode(p.barcode ?? ''); setDescription(p.description ?? ''); setPhoto(p.photo);
+    setName(p.name); setSku(p.sku); setCategoryId(p.categoryId.toString()); setPrice(p.price.toString()); setHpp(p.hpp.toString()); setStock(p.stock.toString()); setTrackStock(isStockManaged(p)); setUnit(p.unit); setBarcode(p.barcode ?? ''); setDescription(p.description ?? ''); setPhoto(p.photo);
     setDialogOpen(true);
   };
 
@@ -113,6 +115,7 @@ export default function Produk() {
       price: Number(price) || 0,
       hpp: Number(hpp) || 0,
       stock: Number(stock) || 0,
+      trackStock,
       unit: unit.trim() || 'pcs',
       description: description.trim() || undefined,
       barcode: barcode.trim() || undefined,
@@ -232,9 +235,16 @@ export default function Produk() {
                       <span className="text-xs text-muted-foreground">HPP: Rp {p.hpp.toLocaleString('id-ID')}</span>
                     </div>
                     <div className="flex items-center gap-2 mt-1">
-                      <span className={cn('text-xs font-medium px-1.5 py-0.5 rounded', p.stock <= 5 ? 'bg-destructive/10 text-destructive' : 'bg-success/10 text-success')}>
-                        Stok: {p.stock} {p.unit}
-                      </span>
+                      {isStockManaged(p) ? (
+                        <span className={cn('text-xs font-medium px-1.5 py-0.5 rounded', p.stock <= 5 ? 'bg-destructive/10 text-destructive' : 'bg-success/10 text-success')}>
+                          Stok: {p.stock} {p.unit}
+                        </span>
+                      ) : (
+                        <span className="text-xs font-medium px-1.5 py-0.5 rounded bg-primary/10 text-primary flex items-center gap-1">
+                          <InfinityIcon className="w-3 h-3" />
+                          Stok tidak dikelola
+                        </span>
+                      )}
                     </div>
                   </div>
                   <div className="flex flex-col gap-1">
@@ -342,12 +352,25 @@ export default function Produk() {
                 <Input type="number" value={hpp} onChange={e => setHpp(e.target.value)} placeholder="10000" className="h-11" />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1.5">
-                <Label>Stok Awal</Label>
-                <Input type="number" value={stock} onChange={e => setStock(e.target.value)} placeholder="0" className="h-11" />
+            <div className="flex items-center justify-between rounded-xl border border-border p-3">
+              <div className="space-y-0.5 pr-3">
+                <Label className="text-sm">Kelola Stok</Label>
+                <p className="text-[11px] text-muted-foreground leading-snug">
+                  {trackStock
+                    ? 'Stok dihitung otomatis & dibatasi saat jualan.'
+                    : 'Produk selalu tersedia, stok tidak dihitung (mis. jasa, makanan dadakan).'}
+                </p>
               </div>
-              <div className="space-y-1.5">
+              <Switch checked={trackStock} onCheckedChange={setTrackStock} />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {trackStock && (
+                <div className="space-y-1.5">
+                  <Label>Stok Awal</Label>
+                  <Input type="number" value={stock} onChange={e => setStock(e.target.value)} placeholder="0" className="h-11" />
+                </div>
+              )}
+              <div className={cn('space-y-1.5', !trackStock && 'col-span-2')}>
                 <Label>Satuan</Label>
                 <Select value={unit} onValueChange={setUnit}>
                   <SelectTrigger className="h-11"><SelectValue /></SelectTrigger>

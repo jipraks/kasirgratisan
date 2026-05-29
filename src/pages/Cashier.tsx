@@ -1,5 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import { db, type Product, type Category, type Transaction, type TransactionItemRecord } from '@/lib/db';
+import { db, isStockManaged, type Product, type Category, type Transaction, type TransactionItemRecord } from '@/lib/db';
 import { useState, useRef, useEffect } from 'react';
 import { Search, Plus, Minus, ShoppingCart, X, Percent, Tag, CreditCard, Banknote, Check, ScanBarcode, Package as PackageIcon, ClipboardList, Save, Pencil, User, Hash, Trash2, Barcode } from 'lucide-react';
 import Receipt from '@/components/Receipt';
@@ -79,7 +79,8 @@ export default function Kasir() {
   const filtered = products?.filter(p => {
     const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
     const matchCategory = filterCategory === 'all' || p.categoryId === Number(filterCategory);
-    return matchSearch && matchCategory && (p.stock > 0 || cartProductIds.has(p.id!));
+    const available = !isStockManaged(p) || p.stock > 0 || cartProductIds.has(p.id!);
+    return matchSearch && matchCategory && available;
   }) ?? [];
 
   const doFullReset = () => {
@@ -101,7 +102,7 @@ export default function Kasir() {
     setCart(prev => {
       const existing = prev.find(c => c.product.id === product.id);
       if (existing) {
-        if (existing.qty >= product.stock) {
+        if (isStockManaged(product) && existing.qty >= product.stock) {
           toast.error('Stok tidak cukup');
           return prev;
         }
@@ -116,7 +117,7 @@ export default function Kasir() {
       if (c.product.id !== productId) return c;
       const newQty = c.qty + delta;
       if (newQty <= 0) return c;
-      if (newQty > c.product.stock) { toast.error('Stok tidak cukup'); return c; }
+      if (isStockManaged(c.product) && newQty > c.product.stock) { toast.error('Stok tidak cukup'); return c; }
       return { ...c, qty: newQty };
     }));
   };
@@ -236,6 +237,7 @@ export default function Kasir() {
 
       // Adjust stock deltas
       for (const cartItem of cart) {
+        if (!isStockManaged(cartItem.product)) continue;
         const oldItem = oldItems.find(oi => oi.productId === cartItem.product.id);
         const oldQty = oldItem?.quantity ?? 0;
         const newQty = cartItem.qty;
@@ -249,7 +251,7 @@ export default function Kasir() {
         const stillInCart = cart.find(c => c.product.id === oldItem.productId);
         if (!stillInCart) {
           const product = await db.products.get(oldItem.productId);
-          if (product) {
+          if (product && isStockManaged(product)) {
             await db.products.update(oldItem.productId, { stock: product.stock + oldItem.quantity });
           }
         }
@@ -298,6 +300,7 @@ export default function Kasir() {
       await db.transactionItems.bulkAdd(itemRecords);
 
       for (const item of cart) {
+        if (!isStockManaged(item.product)) continue;
         await db.products.update(item.product.id!, { stock: item.product.stock - item.qty, updatedAt: new Date() });
       }
 
@@ -341,7 +344,7 @@ export default function Kasir() {
     const items = await db.transactionItems.where('transactionId').equals(tx.id).toArray();
     for (const item of items) {
       const product = await db.products.get(item.productId);
-      if (product) {
+      if (product && isStockManaged(product)) {
         await db.products.update(item.productId, { stock: product.stock + item.quantity });
       }
     }
@@ -413,6 +416,7 @@ export default function Kasir() {
 
       // Adjust stock deltas (same as saveOpenBill)
       for (const cartItem of cart) {
+        if (!isStockManaged(cartItem.product)) continue;
         const oldItem = oldItems.find(oi => oi.productId === cartItem.product.id);
         const oldQty = oldItem?.quantity ?? 0;
         const newQty = cartItem.qty;
@@ -425,7 +429,7 @@ export default function Kasir() {
         const stillInCart = cart.find(c => c.product.id === oldItem.productId);
         if (!stillInCart) {
           const product = await db.products.get(oldItem.productId);
-          if (product) {
+          if (product && isStockManaged(product)) {
             await db.products.update(oldItem.productId, { stock: product.stock + oldItem.quantity });
           }
         }
@@ -476,6 +480,7 @@ export default function Kasir() {
       await db.transactionItems.bulkAdd(itemRecords);
 
       for (const item of cart) {
+        if (!isStockManaged(item.product)) continue;
         await db.products.update(item.product.id!, { stock: item.product.stock - item.qty, updatedAt: new Date() });
       }
 
@@ -497,7 +502,7 @@ export default function Kasir() {
     setScannerOpen(false);
     const product = products?.find(p => p.sku === barcode || p.barcode === barcode);
     if (product) {
-      if (product.stock <= 0) {
+      if (isStockManaged(product) && product.stock <= 0) {
         toast.error(`Stok ${product.name} habis`);
         return;
       }
@@ -514,7 +519,7 @@ export default function Kasir() {
       setScanInput('');
       const product = products?.find(p => p.sku === code || p.barcode === code);
       if (product) {
-        if (product.stock <= 0) {
+        if (isStockManaged(product) && product.stock <= 0) {
           toast.error(`Stok ${product.name} habis`);
           return;
         }
@@ -640,7 +645,11 @@ export default function Kasir() {
                         {p.description}
                       </p>
                     )}
-                    <p className="text-[10px] text-muted-foreground mt-0.5">Stok: {p.stock} {p.unit}</p>
+                    {isStockManaged(p) ? (
+                      <p className="text-[10px] text-muted-foreground mt-0.5">Stok: {p.stock} {p.unit}</p>
+                    ) : (
+                      <p className="text-[10px] text-primary mt-0.5">Selalu tersedia</p>
+                    )}
                   </div>
                 </CardContent>
               </Card>

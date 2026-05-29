@@ -60,6 +60,7 @@ export interface Product {
   price: number; // harga jual
   hpp: number; // harga pokok penjualan
   stock: number;
+  trackStock?: boolean; // true/undefined = stok dikelola (default lama), false = stok tidak dikelola (selalu tersedia)
   unit: string; // satuan: pcs, kg, liter, dll
   description?: string; // deskripsi/catatan produk (opsional, multi-line)
   photo?: string; // base64 or blob URL
@@ -498,10 +499,45 @@ class PosDatabase extends Dexie {
         if (!Array.isArray(s.seenWhatsNewIds)) s.seenWhatsNewIds = [];
       });
     });
+
+    // Version 9 — Produk tanpa stok ("Unmanaged Stock")
+    // Notes:
+    //   * `trackStock` ditambahkan ke setiap produk lama dengan nilai `true`
+    //     sehingga perilaku persis sama seperti sebelumnya (stok dikelola).
+    //   * Schema (indexes) tidak berubah; ini murni back-fill data.
+    //   * Pembacaan di UI memakai pola `trackStock !== false` agar produk yang
+    //     entah kenapa belum ter-migrasi (undefined) tetap dianggap "managed".
+    this.version(9).stores({
+      categories:        '++id, name, isDeleted',
+      products:          '++id, name, &sku, categoryId, barcode, isDeleted, createdBy, updatedBy',
+      suppliers:         '++id, name, isDeleted',
+      stockIns:          '++id, productId, supplierId, date, createdBy',
+      stockOuts:         '++id, productId, date, createdBy',
+      hppHistory:        '++id, productId, date',
+      paymentMethods:    '++id, name, category',
+      transactions:      '++id, date, &receiptNumber, paymentMethodId, status, orderNumber, createdBy',
+      transactionItems:  '++id, transactionId, productId',
+      storeSettings:     '++id',
+      units:             '++id, &name, isDeleted',
+      users:             '++id, &username, role, isActive',
+      expenseCategories: '++id, name, isDeleted',
+      expenses:          '++id, date, categoryId, paymentMethodId, createdBy, isDeleted',
+    }).upgrade(async (tx) => {
+      const prodTable = tx.table('products');
+      await prodTable.toCollection().modify((p: Partial<Product>) => {
+        if (p.trackStock === undefined) p.trackStock = true;
+      });
+    });
   }
 }
 
 export const db = new PosDatabase();
+
+// Apakah stok produk dikelola? `undefined`/`true` = dikelola (perilaku lama),
+// `false` = tidak dikelola (produk selalu tersedia, stok diabaikan).
+export function isStockManaged(product: Pick<Product, 'trackStock'>): boolean {
+  return product.trackStock !== false;
+}
 
 // Seed default data
 export async function seedDefaultData() {
