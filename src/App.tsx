@@ -5,8 +5,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 import { checkVersion } from "@/lib/version-check";
+import { initAnalytics } from "@/lib/analytics";
 import { AuthProvider } from "@/hooks/use-auth";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import AnalyticsTracker from "@/components/AnalyticsTracker";
 import AppLayout from "./components/layout/AppLayout";
 import Dashboard from "./pages/Dashboard";
 import Cashier from "./pages/Cashier";
@@ -27,6 +29,7 @@ const queryClient = new QueryClient();
 const App = () => {
   useEffect(() => {
     checkVersion();
+    initAnalytics();
   }, []);
 
   return (
@@ -37,6 +40,7 @@ const App = () => {
           <Sonner />
           <BrowserRouter>
             <AuthProvider>
+              <AnalyticsTracker />
               <Routes>
                 <Route element={<AppLayout />}>
                   <Route

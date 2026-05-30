@@ -17,6 +17,7 @@ import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { id as localeId } from 'date-fns/locale';
 import { useAuth } from '@/hooks/use-auth';
+import { trackEvent } from '@/lib/analytics';
 import LockedPage from '@/components/LockedPage';
 
 interface CartItem {
@@ -437,6 +438,7 @@ export default function Kasir() {
 
       const updatedTx = await db.transactions.get(editingTxId);
       toast.success(`Transaksi berhasil! ${updatedTx?.receiptNumber}`);
+      trackEvent('create_transaction');
       setLastTransaction(updatedTx || null);
       setLastTxItems(itemRecords);
       setReceiptOpen(true);
@@ -485,6 +487,7 @@ export default function Kasir() {
       }
 
       toast.success(`Transaksi berhasil! ${receiptNumber}`);
+      trackEvent('create_transaction');
       setLastTransaction({ ...txData, id: txId as number });
       setLastTxItems(itemRecords);
       setReceiptOpen(true);

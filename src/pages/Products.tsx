@@ -14,6 +14,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { compressImage } from '@/lib/image-utils';
+import { trackEvent } from '@/lib/analytics';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/use-auth';
 
@@ -126,6 +127,7 @@ export default function Produk() {
 
     if (editProduct?.id) {
       await db.products.update(editProduct.id, data);
+      trackEvent('edit_product');
     } else {
       await db.products.add({
         ...data,
@@ -134,6 +136,7 @@ export default function Produk() {
         isDeleted: 0,
         deletedAt: null,
       } as Product);
+      trackEvent('create_product');
     }
     setDialogOpen(false);
   };

@@ -1,7 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, type PaymentMethod, type Category, type Unit, type ExpenseCategory, type Product } from '@/lib/db';
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { Settings, Store, CreditCard, Tag, Download, Upload, Plus, Trash2, Edit2, Info, Truck, ArrowDownToLine, ArrowUpFromLine, ChevronRight, Receipt, Palette, HardDrive, Package, Camera, X, Ruler, Users as UsersIcon, ShieldCheck, LogOut, Smartphone, CheckCircle2, Globe, Share2, Wallet, Sparkles } from 'lucide-react';
+import { Settings, Store, CreditCard, Tag, Download, Upload, Plus, Trash2, Edit2, Info, Truck, ArrowDownToLine, ArrowUpFromLine, ChevronRight, Receipt, Palette, HardDrive, Package, Camera, X, Ruler, Users as UsersIcon, ShieldCheck, LogOut, Smartphone, CheckCircle2, Globe, Share2, Wallet, Sparkles, LineChart } from 'lucide-react';
 import WhatsNewModal from '@/components/WhatsNewModal';
 import { FEATURES, getUnseenFeatures } from '@/lib/whats-new';
 import ThemeColorPicker from '@/components/ThemeColorPicker';
@@ -20,6 +20,7 @@ import { exportBackupData } from '@/components/BackupReminder';
 import { compressImage } from '@/lib/image-utils';
 import { useAuth } from '@/hooks/use-auth';
 import { createUser, isValidPin, isValidUsername, saveSession } from '@/lib/auth';
+import { isAnalyticsEnabled, setAnalyticsEnabled } from '@/lib/analytics';
 import { usePWAInstall } from '@/hooks/use-pwa-install';
 
 export default function Pengaturan() {
@@ -51,6 +52,15 @@ export default function Pengaturan() {
 
   // Logout confirmation
   const [logoutOpen, setLogoutOpen] = useState(false);
+
+  // Analytics opt-out (default: tracking on)
+  const [analyticsOn, setAnalyticsOn] = useState(isAnalyticsEnabled());
+
+  const handleToggleAnalytics = (enabled: boolean) => {
+    setAnalyticsOn(enabled);
+    setAnalyticsEnabled(enabled);
+    toast.success(enabled ? 'Analitik diaktifkan' : 'Analitik dinonaktifkan');
+  };
 
   // Store edit
   const [storeDialog, setStoreDialog] = useState(false);
@@ -855,6 +865,24 @@ export default function Pengaturan() {
         </CardContent>
       </Card>
       )}
+
+      {/* Privasi & Analitik */}
+      <Card className="border-0 shadow-sm">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm flex items-center gap-1.5"><LineChart className="w-4 h-4" /> Privasi & Analitik</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-between gap-3">
+            <div className="space-y-0.5 pr-3">
+              <Label className="text-sm">Bantu Kami dengan Data Anonim</Label>
+              <p className="text-[11px] text-muted-foreground leading-snug">
+                Mengirim statistik penggunaan anonim (halaman yang dibuka & aksi seperti buat produk/transaksi) untuk membantu pengembangan. Data bisnis seperti nama produk, harga, dan nominal transaksi tidak pernah dikirim.
+              </p>
+            </div>
+            <Switch checked={analyticsOn} onCheckedChange={handleToggleAnalytics} />
+          </div>
+        </CardContent>
+      </Card>
 
       {/* About */}
       <Card className="border-0 shadow-sm">
