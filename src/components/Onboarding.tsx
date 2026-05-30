@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Store, MapPin, Phone, ChevronRight, ChevronLeft, ShoppingCart, Package, BarChart3, Shield, Database, Palette, Download, CheckCircle2, Globe, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 import ThemeColorPicker from '@/components/ThemeColorPicker';
 import { applyThemeColor } from '@/hooks/use-theme-color';
 import { usePWAInstall } from '@/hooks/use-pwa-install';
+import { isNativePlatform } from '@/lib/printer';
 
 interface OnboardingProps {
   onComplete: () => void;
@@ -44,7 +45,9 @@ const tutorialSlides = [
 ];
 
 export default function Onboarding({ onComplete }: OnboardingProps) {
-  // Steps: tutorial slides (0-3), install (4), store setup (5)
+  const isNative = useMemo(() => isNativePlatform(), []);
+  // Web/PWA: tutorial slides (0-3), install (4), store setup (5)
+  // APK/native: tutorial slides (0-3), store setup (4)
   const [step, setStep] = useState(0);
   const [storeName, setStoreName] = useState('');
   const [address, setAddress] = useState('');
@@ -56,10 +59,11 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
   const [installDone, setInstallDone] = useState(false);
   const { canInstall, isInstalled, install } = usePWAInstall();
 
-  const totalSteps = tutorialSlides.length + 2; // tutorials + install + store setup
+  const hasInstallStep = !isNative;
+  const totalSteps = tutorialSlides.length + (hasInstallStep ? 2 : 1); // tutorials + (install) + store setup
   const isTutorialStep = step < tutorialSlides.length;
-  const isInstallStep = step === tutorialSlides.length;
-  const isStoreStep = step === tutorialSlides.length + 1;
+  const isInstallStep = hasInstallStep && step === tutorialSlides.length;
+  const isStoreStep = step === tutorialSlides.length + (hasInstallStep ? 1 : 0);
   const tutorialIndex = step;
 
   const seedDummyData = async () => {

@@ -4,6 +4,10 @@ import { Button } from '@/components/ui/button';
 import { db } from '@/lib/db';
 import { formatDistanceToNow } from 'date-fns';
 import { id } from 'date-fns/locale';
+import { Capacitor } from '@capacitor/core';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
+import { toast } from 'sonner';
 
 interface BackupReminderProps {
   lastBackupAt: Date | string | null;
@@ -81,13 +85,41 @@ export async function exportBackupData() {
     expenses: await db.expenses.toArray(),
   };
 
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `kasirgratisan-backup-${new Date().toISOString().slice(0, 10)}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
+  const fileName = `kasirgratisan-backup-${new Date().toISOString().slice(0, 10)}.json`;
+  const jsonString = JSON.stringify(data, null, 2);
+
+  if (Capacitor.isNativePlatform()) {
+    try {
+      // Save JSON file in cache directory so we can share it
+      const result = await Filesystem.writeFile({
+        path: fileName,
+        data: jsonString,
+        directory: Directory.Cache,
+        encoding: Encoding.UTF8,
+      });
+
+      // Share the written file using Android system share dialog
+      await Share.share({
+        title: 'Backup KasirGratisan',
+        text: 'File backup data KasirGratisan (JSON)',
+        url: result.uri,
+        dialogTitle: 'Simpan / Bagikan Backup',
+      });
+
+      toast.success('Backup berhasil dibuat!');
+    } catch {
+      toast.error('Gagal membuat / membagikan file backup');
+    }
+  } else {
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success('Backup berhasil diunduh');
+  }
 
   // Update last backup time
   const settings = await db.storeSettings.toCollection().first();

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import type { Transaction, StoreSettings, TransactionItemRecord } from '@/lib/db';
+import { isNativePlatform, printNativeBluetooth, getESCPOSData } from '@/lib/printer';
 
 interface ReceiptProps {
   open: boolean;
@@ -81,6 +82,13 @@ export default function Receipt({ open, onClose, transaction, items, storeSettin
   };
 
   const handleBluetoothPrint = async () => {
+    const printData = { transaction, items, storeSettings, paymentMethodName, cashierName };
+
+    if (isNativePlatform()) {
+      await printNativeBluetooth(printData, toast);
+      return;
+    }
+
     if (!('bluetooth' in navigator)) {
       toast.error('Bluetooth tidak tersedia di browser ini. Gunakan Chrome di Android.');
       return;
@@ -97,46 +105,8 @@ export default function Receipt({ open, onClose, transaction, items, storeSettin
       const server = await device.gatt.connect();
       const service = await server.getPrimaryService('000018f0-0000-1000-8000-00805f9b34fb');
       const characteristic = await service.getCharacteristic('00002af1-0000-1000-8000-00805f9b34fb');
-
-      // Build ESC/POS text
-      const encoder = new TextEncoder();
-      const lines: string[] = [];
+      const data = new TextEncoder().encode(getESCPOSData(printData));
       
-      lines.push('\x1B\x61\x01'); // Center align
-      lines.push(`${storeSettings?.storeName || 'Toko'}\n`);
-      if (storeSettings?.address) lines.push(`${storeSettings.address}\n`);
-      if (storeSettings?.phone) lines.push(`${storeSettings.phone}\n`);
-      lines.push('--------------------------------\n');
-      lines.push(`No: ${transaction.receiptNumber}\n`);
-      lines.push(`${format(new Date(transaction.date), 'dd/MM/yyyy HH:mm')}\n`);
-      if (cashierName) lines.push(`Kasir: ${cashierName}\n`);
-      if (transaction.customerName) lines.push(`Pelanggan: ${transaction.customerName}\n`);
-      if (transaction.tableNumber) lines.push(`Meja: ${transaction.tableNumber}\n`);
-      if (transaction.remarks) lines.push(`Catatan: ${transaction.remarks}\n`);
-      lines.push('--------------------------------\n');
-      
-      lines.push('\x1B\x61\x00'); // Left align
-      for (const item of items) {
-        lines.push(`${item.productName}\n`);
-        if (item.notes) lines.push(`  ${item.notes}\n`);
-        lines.push(`  ${item.quantity} x Rp ${item.price.toLocaleString('id-ID')}  Rp ${item.subtotal.toLocaleString('id-ID')}\n`);
-      }
-      
-      lines.push('--------------------------------\n');
-      lines.push(`Subtotal:  Rp ${transaction.subtotal.toLocaleString('id-ID')}\n`);
-      if (transaction.discountAmount > 0) {
-        lines.push(`Diskon:   -Rp ${transaction.discountAmount.toLocaleString('id-ID')}\n`);
-      }
-      lines.push(`TOTAL:     Rp ${transaction.total.toLocaleString('id-ID')}\n`);
-      lines.push(`Bayar:     Rp ${transaction.paymentAmount.toLocaleString('id-ID')}\n`);
-      lines.push(`Kembali:   Rp ${transaction.change.toLocaleString('id-ID')}\n`);
-      lines.push('--------------------------------\n');
-      lines.push('\x1B\x61\x01'); // Center
-      lines.push(`${storeSettings?.receiptFooter || 'Terima kasih!'}\n\n\n`);
-
-      const data = encoder.encode(lines.join(''));
-      
-      // Send in chunks of 100 bytes
       for (let i = 0; i < data.length; i += 100) {
         const chunk = data.slice(i, i + 100);
         await characteristic.writeValue(chunk);

@@ -120,6 +120,14 @@
   html {
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   }
+
+  html.is-native {
+    padding-top: max(env(safe-area-inset-top), 12px);
+  }
+
+  html.is-native [data-sonner-toaster][data-y-position="top"] {
+    top: max(env(safe-area-inset-top), 36px) !important;
+  }
 }
 
 @layer utilities {

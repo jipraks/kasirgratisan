@@ -22,8 +22,11 @@ import { useAuth } from '@/hooks/use-auth';
 import { createUser, isValidPin, isValidUsername, saveSession } from '@/lib/auth';
 import { isAnalyticsEnabled, setAnalyticsEnabled } from '@/lib/analytics';
 import { usePWAInstall } from '@/hooks/use-pwa-install';
+import { isNativePlatform, getDefaultBluetoothPrinter, setDefaultBluetoothPrinter, listPairedBluetoothDevices, type BluetoothPrinter } from '@/lib/printer';
+import { Printer } from 'lucide-react';
 
 export default function Pengaturan() {
+  const isNative = isNativePlatform();
   const storeSettings = useLiveQuery(() => db.storeSettings.toCollection().first());
   const paymentMethods = useLiveQuery(() => db.paymentMethods.toArray());
   const categories = useLiveQuery(() => db.categories.where('isDeleted').equals(0).toArray());
@@ -55,6 +58,38 @@ export default function Pengaturan() {
 
   // Analytics opt-out (default: tracking on)
   const [analyticsOn, setAnalyticsOn] = useState(isAnalyticsEnabled());
+
+  // Native Bluetooth printer settings
+  const [defaultPrinter, setDefaultPrinter] = useState<BluetoothPrinter | null>(() => getDefaultBluetoothPrinter());
+  const [pairedPrinters, setPairedPrinters] = useState<BluetoothPrinter[]>([]);
+  const [loadingPrinters, setLoadingPrinters] = useState(false);
+
+  const refreshPairedPrinters = async () => {
+    setLoadingPrinters(true);
+    try {
+      const devices = await listPairedBluetoothDevices();
+      setPairedPrinters(devices);
+      if (devices.length === 0) {
+        toast.error('Belum ada perangkat Bluetooth yang dipasangkan');
+      }
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Gagal membaca daftar printer');
+    } finally {
+      setLoadingPrinters(false);
+    }
+  };
+
+  const selectDefaultPrinter = (printer: BluetoothPrinter) => {
+    setDefaultBluetoothPrinter(printer);
+    setDefaultPrinter(printer);
+    toast.success(`Printer default: ${printer.name}`);
+  };
+
+  const clearDefaultPrinter = () => {
+    setDefaultBluetoothPrinter(null);
+    setDefaultPrinter(null);
+    toast.success('Printer default dihapus');
+  };
 
   const handleToggleAnalytics = (enabled: boolean) => {
     setAnalyticsOn(enabled);
@@ -851,6 +886,63 @@ export default function Pengaturan() {
           ))}
         </CardContent>
       </Card>
+
+      {/* Bluetooth Printer (APK only) */}
+      {isNative && can('manage_store_settings') && (
+      <Card className="border-0 shadow-sm">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm flex items-center gap-1.5"><Printer className="w-4 h-4" /> Printer Bluetooth</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <div className="rounded-lg bg-muted/60 p-3">
+            <p className="text-[11px] text-muted-foreground mb-1">Printer Default</p>
+            {defaultPrinter ? (
+              <div className="flex items-center justify-between gap-2">
+                <div className="min-w-0">
+                  <p className="text-sm font-medium truncate">{defaultPrinter.name}</p>
+                  <p className="text-[10px] text-muted-foreground truncate">{defaultPrinter.address}</p>
+                </div>
+                <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive shrink-0" onClick={clearDefaultPrinter}>
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground">Belum dipilih — struk akan dicetak ke printer terpasang pertama yang ditemukan.</p>
+            )}
+          </div>
+
+          <Button variant="outline" className="w-full h-10 text-sm gap-2" onClick={refreshPairedPrinters} disabled={loadingPrinters}>
+            <Printer className="w-4 h-4" /> {loadingPrinters ? 'Mencari...' : 'Cari Printer Terpasang'}
+          </Button>
+
+          {pairedPrinters.length > 0 && (
+            <div className="space-y-1">
+              <p className="text-[11px] text-muted-foreground">Pilih printer:</p>
+              {pairedPrinters.map(printer => {
+                const isSelected = defaultPrinter?.address === printer.address;
+                return (
+                  <button
+                    key={printer.address}
+                    type="button"
+                    onClick={() => selectDefaultPrinter(printer)}
+                    className={`flex items-center justify-between w-full text-left rounded-lg border px-3 py-2 transition-colors ${isSelected ? 'border-primary bg-primary/5' : 'border-border hover:bg-muted/50'}`}
+                  >
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium truncate">{printer.name || 'Tanpa Nama'}</p>
+                      <p className="text-[10px] text-muted-foreground truncate">{printer.address}</p>
+                    </div>
+                    {isSelected && <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+          <p className="text-[10px] text-muted-foreground leading-snug">
+            Pastikan printer sudah dipasangkan (paired) lewat Pengaturan Bluetooth Android terlebih dahulu.
+          </p>
+        </CardContent>
+      </Card>
+      )}
 
       {/* Theme Color */}
       {can('manage_store_settings') && (

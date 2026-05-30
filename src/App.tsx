@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 import { checkVersion } from "@/lib/version-check";
 import { initAnalytics } from "@/lib/analytics";
+import { Capacitor } from "@capacitor/core";
+import { StatusBar } from "@capacitor/status-bar";
 import { AuthProvider } from "@/hooks/use-auth";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
@@ -31,6 +33,13 @@ const App = () => {
   useEffect(() => {
     checkVersion();
     initAnalytics();
+
+    if (Capacitor.isNativePlatform()) {
+      StatusBar.setOverlaysWebView({ overlay: false }).catch(err => {
+        console.warn("Gagal mengatur StatusBar overlay:", err);
+      });
+      document.documentElement.classList.add('is-native');
+    }
   }, []);
 
   return (
