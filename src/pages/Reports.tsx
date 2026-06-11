@@ -132,9 +132,10 @@ export default function Laporan() {
   const paymentBreakdown = Object.values(paymentSummary).sort((a, b) => b.amount - a.amount);
 
   const rp = (n: number) => `Rp ${n.toLocaleString('id-ID')}`;
+  const compactRp = (n: number) => `Rp ${Intl.NumberFormat('id-ID', { notation: 'compact', maximumFractionDigits: 1 }).format(n)}`;
 
   return (
-    <div className="space-y-5 px-4 pb-24 pt-6">
+    <div className="space-y-5 px-4 pb-40 pt-6">
       <div className="flex items-center justify-between gap-3">
         <h1 className="flex items-center gap-2 text-2xl font-extrabold tracking-tight">
           <BarChart3 className="h-5 w-5 text-primary" />
@@ -183,26 +184,32 @@ export default function Laporan() {
         </Card>
       )}
 
-      <div className="grid grid-cols-3 gap-2.5">
-        <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm">
-          <CardContent className="p-3.5 text-center">
-            <div className="mx-auto mb-2 flex h-9 w-9 items-center justify-center rounded-2xl bg-primary/10 text-primary"><ShoppingCart className="h-4 w-4" /></div>
-            <p className="text-lg font-extrabold">{txCount}</p>
-            <p className="text-[10px] text-muted-foreground">Transaksi</p>
+      <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+        <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm sm:col-span-1">
+          <CardContent className="flex items-center gap-3 p-3.5 sm:block sm:text-center">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary sm:mx-auto sm:mb-2 sm:h-9 sm:w-9"><ShoppingCart className="h-4 w-4" /></div>
+            <div className="min-w-0">
+              <p className="text-lg font-extrabold leading-tight">{txCount}</p>
+              <p className="text-[10px] text-muted-foreground">Transaksi</p>
+            </div>
           </CardContent>
         </Card>
-        <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm">
-          <CardContent className="p-3.5 text-center">
-            <div className="mx-auto mb-2 flex h-9 w-9 items-center justify-center rounded-2xl bg-success/10 text-success"><TrendingUp className="h-4 w-4" /></div>
-            <p className="text-sm font-extrabold">{rp(totalSales)}</p>
-            <p className="text-[10px] text-muted-foreground">Penjualan</p>
+        <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm sm:col-span-1">
+          <CardContent className="flex items-center gap-3 p-3.5 sm:block sm:text-center">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-success/10 text-success sm:mx-auto sm:mb-2 sm:h-9 sm:w-9"><TrendingUp className="h-4 w-4" /></div>
+            <div className="min-w-0">
+              <p className="truncate text-base font-extrabold leading-tight sm:text-sm" title={rp(totalSales)}>{compactRp(totalSales)}</p>
+              <p className="text-[10px] text-muted-foreground">Penjualan</p>
+            </div>
           </CardContent>
         </Card>
-        <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm">
-          <CardContent className="p-3.5 text-center">
-            <div className="mx-auto mb-2 flex h-9 w-9 items-center justify-center rounded-2xl bg-accent/10 text-accent"><TrendingUp className="h-4 w-4" /></div>
-            <p className="text-sm font-extrabold">{rp(totalProfit)}</p>
-            <p className="text-[10px] text-muted-foreground">Profit</p>
+        <Card className="col-span-2 border-border/70 bg-card/80 shadow-soft backdrop-blur-sm sm:col-span-1">
+          <CardContent className="flex items-center gap-3 p-3.5 sm:block sm:text-center">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-accent/10 text-accent sm:mx-auto sm:mb-2 sm:h-9 sm:w-9"><TrendingUp className="h-4 w-4" /></div>
+            <div className="min-w-0">
+              <p className="truncate text-base font-extrabold leading-tight sm:text-sm" title={rp(totalProfit)}>{compactRp(totalProfit)}</p>
+              <p className="text-[10px] text-muted-foreground">Profit</p>
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -354,7 +361,20 @@ export default function Laporan() {
               <BarChart data={chartData}>
                 <XAxis dataKey="date" tick={{ fontSize: 10 }} axisLine={false} tickLine={false} />
                 <YAxis hide />
-                <Tooltip formatter={(v: number) => [`Rp ${v.toLocaleString('id-ID')}`, 'Penjualan']} contentStyle={{ fontSize: 12, borderRadius: 8 }} />
+                <Tooltip
+                  formatter={(v: number) => [`Rp ${v.toLocaleString('id-ID')}`, 'Penjualan']}
+                  contentStyle={{
+                    backgroundColor: 'hsl(var(--card))',
+                    border: '1px solid hsl(var(--border))',
+                    borderRadius: 12,
+                    boxShadow: '0 12px 32px rgba(0,0,0,0.28)',
+                    color: 'hsl(var(--foreground))',
+                    fontSize: 12,
+                  }}
+                  labelStyle={{ color: 'hsl(var(--foreground))', fontWeight: 700 }}
+                  itemStyle={{ color: 'hsl(var(--primary))', fontWeight: 600 }}
+                  cursor={{ fill: 'hsl(var(--muted) / 0.35)' }}
+                />
                 <Bar dataKey="sales" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>

@@ -22,7 +22,7 @@ import { useAuth } from '@/hooks/use-auth';
 
 export default function TransactionHistory() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { can, multiUserEnabled } = useAuth();
   const [search, setSearch] = useState('');
   const [selectedTx, setSelectedTx] = useState<Transaction | null>(null);
@@ -34,6 +34,10 @@ export default function TransactionHistory() {
   const [restoreStock, setRestoreStock] = useState(true);
   const [filterStatus, setFilterStatus] = useState<'all' | 'completed' | 'open'>('all');
   const [filterCashier, setFilterCashier] = useState<string>('all');
+  const [filterShift, setFilterShift] = useState<string>(() => {
+    const shiftId = searchParams.get('shiftId');
+    return shiftId ? `shift-${shiftId}` : 'all';
+  });
 
   const transactions = useLiveQuery(() =>
     db.transactions.orderBy('date').reverse().toArray()
@@ -55,9 +59,29 @@ export default function TransactionHistory() {
   const paymentMethods = useLiveQuery(() => db.paymentMethods.toArray());
   const storeSettings = useLiveQuery(() => db.storeSettings.toCollection().first());
   const users = useLiveQuery(() => db.users.toArray());
+  const shifts = useLiveQuery(() => db.shifts.orderBy('openedAt').reverse().toArray());
 
   const userById = (uid?: number) => (uid ? users?.find((u) => u.id === uid) : undefined);
   const cashierName = (uid?: number) => userById(uid)?.name ?? '—';
+  const shiftById = (shiftId?: number) => (shiftId ? shifts?.find((shift) => shift.id === shiftId) : undefined);
+  const shiftLabel = (shiftId?: number) => shiftById(shiftId)?.code ?? (shiftId ? `Shift #${shiftId}` : 'Tanpa Shift');
+
+  const shiftIdParam = searchParams.get('shiftId');
+
+  useEffect(() => {
+    setFilterShift(shiftIdParam ? `shift-${shiftIdParam}` : 'all');
+  }, [shiftIdParam]);
+
+  const handleShiftFilterChange = (value: string) => {
+    setFilterShift(value);
+    const next = new URLSearchParams(searchParams);
+    if (value.startsWith('shift-')) {
+      next.set('shiftId', value.replace('shift-', ''));
+    } else {
+      next.delete('shiftId');
+    }
+    setSearchParams(next, { replace: true });
+  };
 
   // Auto-open detail if txId is in URL
   const txIdParam = searchParams.get('txId');
@@ -84,6 +108,15 @@ export default function TransactionHistory() {
       } else if (String(tx.createdBy) !== filterCashier) {
         return false;
       }
+    }
+    // Shift filter
+    if (filterShift === 'active') {
+      const activeShift = shifts?.find((shift) => shift.status === 'open');
+      if (!activeShift?.id || tx.shiftId !== activeShift.id) return false;
+    } else if (filterShift === 'none') {
+      if (tx.shiftId !== undefined && tx.shiftId !== null) return false;
+    } else if (filterShift.startsWith('shift-')) {
+      if (String(tx.shiftId) !== filterShift.replace('shift-', '')) return false;
     }
     // Date filter
     if (dateFrom) {
@@ -250,6 +283,28 @@ export default function TransactionHistory() {
         ))}
       </div>
 
+      {/* Shift filter */}
+      <div>
+        <Select value={filterShift} onValueChange={handleShiftFilterChange}>
+          <SelectTrigger className="h-10 rounded-2xl border-border/70 bg-card/80 text-xs shadow-soft">
+            <div className="flex items-center gap-1.5">
+              <ReceiptIcon className="h-3.5 w-3.5 text-muted-foreground" />
+              <SelectValue placeholder="Filter Shift" />
+            </div>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Semua Shift</SelectItem>
+            <SelectItem value="active">Shift Aktif</SelectItem>
+            {shifts?.map((shift) => (
+              <SelectItem key={shift.id} value={`shift-${shift.id}`}>
+                {shift.code} · {shift.status === 'open' ? 'Aktif' : 'Ditutup'}
+              </SelectItem>
+            ))}
+            <SelectItem value="none">Tanpa Shift</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
       {/* Cashier filter (only when multi-user is on) */}
       {multiUserEnabled && users && users.length > 0 && (
         <div>
@@ -332,6 +387,9 @@ export default function TransactionHistory() {
                             ) : (
                               <Badge variant="secondary" className="h-4 border-success/30 bg-success/20 px-1.5 text-[9px] text-success">Lunas</Badge>
                             )}
+                            <Badge variant="outline" className="h-4 max-w-36 truncate px-1.5 text-[9px]">
+                              {shiftLabel(tx.shiftId)}
+                            </Badge>
                           </div>
                           <p className="text-xs text-muted-foreground">{format(new Date(tx.date), 'HH:mm')}</p>
                         </div>
@@ -383,6 +441,10 @@ export default function TransactionHistory() {
                 <div className="flex justify-between gap-4 text-xs">
                   <span className="text-muted-foreground">Tanggal</span>
                   <span>{format(new Date(selectedTx.date), 'dd MMM yyyy, HH:mm', { locale: localeId })}</span>
+                </div>
+                <div className="flex justify-between gap-4 text-xs">
+                  <span className="text-muted-foreground">Shift</span>
+                  <span className="max-w-[60%] truncate text-right">{shiftLabel(selectedTx.shiftId)}</span>
                 </div>
                  <div className="flex justify-between gap-4 text-xs">
                    <span className="text-muted-foreground">Pembayaran</span>

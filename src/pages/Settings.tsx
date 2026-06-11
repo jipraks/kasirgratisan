@@ -1,7 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '@/lib/db';
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { Settings, Store, CreditCard, Tag, Download, Edit2, Info, Truck, ArrowDownToLine, ArrowUpFromLine, ChevronRight, Receipt, Palette, HardDrive, Package, Camera, X, Ruler, Users as UsersIcon, ShieldCheck, LogOut, Smartphone, CheckCircle2, Globe, Share2, Wallet, Sparkles, LineChart, Cloud } from 'lucide-react';
+import { Settings, Store, CreditCard, Tag, Download, Edit2, Info, Truck, ArrowDownToLine, ArrowUpFromLine, ChevronRight, Receipt, Palette, HardDrive, Package, Camera, X, Ruler, Users as UsersIcon, ShieldCheck, LogOut, Smartphone, CheckCircle2, Globe, Share2, Wallet, Sparkles, LineChart, Cloud, Clock3 } from 'lucide-react';
 import WhatsNewModal from '@/components/WhatsNewModal';
 import { FEATURES, getUnseenFeatures } from '@/lib/whats-new';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -436,8 +436,8 @@ export default function Pengaturan() {
       )}
 
       {/* Transaksi & Stok */}
-      <div className="space-y-2">
-        <h2 className="text-xs font-extrabold uppercase tracking-[0.18em] text-muted-foreground">Transaksi & Stok</h2>
+      <div className="space-y-3">
+        <h2 className="mb-4 text-xs font-extrabold uppercase tracking-[0.18em] text-muted-foreground">Transaksi & Stok</h2>
         <Link to="/history">
           <Card className="cursor-pointer border-border/70 bg-card/80 shadow-soft backdrop-blur-sm transition-shadow hover:shadow-card mb-2">
             <CardContent className="flex items-center gap-3 p-3.5">
@@ -516,8 +516,20 @@ export default function Pengaturan() {
       </div>
 
       {/* Master Data & Preferensi */}
-      <div className="space-y-2">
-        <h2 className="text-xs font-extrabold uppercase tracking-[0.18em] text-muted-foreground">Master Data & Preferensi</h2>
+      <div className="space-y-3">
+        <h2 className="mb-4 text-xs font-extrabold uppercase tracking-[0.18em] text-muted-foreground">Master Data & Preferensi</h2>
+
+        {can('manage_shifts') && (
+          <Link to="/shifts">
+            <Card className="cursor-pointer border-border/70 bg-card/80 shadow-soft backdrop-blur-sm transition-shadow hover:shadow-card mb-2">
+              <CardContent className="flex items-center gap-3 p-3.5">
+                <div className="flex h-9 w-9 rounded-2xl bg-primary/10 text-primary items-center justify-center"><Clock3 className="h-4 w-4" /></div>
+                <div className="flex-1"><p className="text-sm font-semibold">Shift Kasir</p><p className="text-[10px] text-muted-foreground">Buka, tutup, dan cetak laporan shift</p></div>
+                <ChevronRight className="h-4 w-4 text-muted-foreground" />
+              </CardContent>
+            </Card>
+          </Link>
+        )}
 
         {can('manage_categories_payments') && (
           <Link to="/settings/payment-methods">

@@ -1,7 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, isStockManaged, type Product, type Category, type Transaction, type TransactionItemRecord } from '@/lib/db';
 import { useState, useRef, useEffect } from 'react';
-import { Search, Plus, Minus, ShoppingCart, X, Percent, Tag, CreditCard, Banknote, Check, ScanBarcode, Package as PackageIcon, ClipboardList, Save, Pencil, User, Hash, Trash2, Barcode } from 'lucide-react';
+import { Search, Plus, Minus, ShoppingCart, X, Percent, Tag, CreditCard, Banknote, Check, ScanBarcode, Package as PackageIcon, ClipboardList, Save, Pencil, User, Hash, Trash2, Barcode, Clock3 } from 'lucide-react';
 import Receipt from '@/components/Receipt';
 import BarcodeScanner from '@/components/BarcodeScanner';
 import { Card, CardContent } from '@/components/ui/card';
@@ -76,6 +76,7 @@ export default function Kasir() {
   const openBills = useLiveQuery(() => db.transactions.where('status').equals('open').reverse().sortBy('date'));
   const allUsers = useLiveQuery(() => db.users.toArray());
   const customers = useLiveQuery(() => db.customers.where('isDeleted').equals(0).toArray());
+  const activeShift = useLiveQuery(() => db.shifts.where('status').equals('open').first());
 
   // Permission gate — kept render-side (not redirect) so the bottom nav stays
   // intact. All hooks above run unconditionally; we just swap the rendered tree.
@@ -209,6 +210,7 @@ export default function Kasir() {
 
   const saveOpenBill = async () => {
     if (cart.length === 0) { toast.error('Keranjang kosong'); return; }
+    if (!activeShift?.id) { toast.error('Buka shift terlebih dahulu'); return; }
 
     const now = new Date();
 
@@ -290,6 +292,7 @@ export default function Kasir() {
         remarks: remarks.trim() || undefined,
         openedAt: now,
         createdBy: currentUser?.id,
+        shiftId: activeShift.id,
       };
 
       const txId = await db.transactions.add(txData);
@@ -387,9 +390,11 @@ export default function Kasir() {
 
   const handleCheckout = async () => {
     if (!paymentMethodId || paidAmount < total) return;
+    if (!activeShift?.id) { toast.error('Buka shift terlebih dahulu'); return; }
 
     if (editingTxId) {
       // Update existing open bill → paid
+      const existingTx = await db.transactions.get(editingTxId);
       const oldItems = await db.transactionItems.where('transactionId').equals(editingTxId).toArray();
 
       await db.transactions.update(editingTxId, {
@@ -408,6 +413,7 @@ export default function Kasir() {
         tableNumber: tableNumber.trim() || undefined,
         remarks: remarks.trim() || undefined,
         closedAt: new Date(),
+        shiftId: existingTx?.shiftId ?? activeShift.id,
       });
 
       await db.transactionItems.where('transactionId').equals(editingTxId).delete();
@@ -474,6 +480,7 @@ export default function Kasir() {
         tableNumber: tableNumber.trim() || undefined,
         remarks: remarks.trim() || undefined,
         createdBy: currentUser?.id,
+        shiftId: activeShift.id,
       };
 
       const txId = await db.transactions.add(txData);
@@ -567,6 +574,25 @@ export default function Kasir() {
   // placeholder instead of the kasir UI. Bottom nav stays visible.
   if (!allowed) {
     return <LockedPage title="Kasir" permissionLabel="Buat Transaksi" />;
+  }
+
+  if (!activeShift) {
+    return (
+      <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center px-4">
+        <Card className="w-full max-w-md border-border/70 bg-card/80 shadow-soft backdrop-blur-sm">
+          <CardContent className="space-y-4 p-6 text-center">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-3xl bg-primary/10 text-primary">
+              <Clock3 className="h-7 w-7" />
+            </div>
+            <div className="space-y-1">
+              <h1 className="text-xl font-extrabold">Shift belum dibuka</h1>
+              <p className="text-sm text-muted-foreground">Buka shift kasir terlebih dahulu sebelum membuat transaksi atau menyimpan open bill.</p>
+            </div>
+            <Button className="w-full rounded-full" onClick={() => navigate('/shifts')}>Buka Shift</Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
   }
 
   return (
