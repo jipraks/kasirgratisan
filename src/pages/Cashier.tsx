@@ -570,64 +570,76 @@ export default function Kasir() {
   }
 
   return (
-    <div className="px-4 pt-6 pb-4 h-[calc(100vh-4rem)]">
-      <div className="flex flex-col md:flex-row gap-0 md:gap-4 h-full">
-        <div className="flex-1 min-w-0 flex flex-col overflow-hidden">
+    <div className="h-[calc(100vh-5rem)] px-4 pb-4 pt-6">
+      <div className="flex h-full flex-col gap-0 md:flex-row md:gap-4">
+        <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
           {/* Header */}
-      <div className="flex items-center justify-between mb-4 pt-1">
-        <h1 className="text-xl font-bold flex items-center gap-2">
-          <ShoppingCart className="w-5 h-5 text-primary" />
-          Kasir
-          {editingTxId && (
-            <Badge variant="secondary" className="text-[10px] font-normal">
-              Editing Bill
-            </Badge>
-          )}
-        </h1>
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <div>
+          <h1 className="flex items-center gap-2 text-2xl font-extrabold tracking-tight">
+            <ShoppingCart className="h-5 w-5 text-primary" />
+            Kasir
+            {editingTxId && (
+              <Badge variant="secondary" className="text-[10px] font-normal">
+                Editing Bill
+              </Badge>
+            )}
+          </h1>
+        </div>
         <Button
-          variant="ghost"
+          variant="outline"
           size="sm"
-          className="h-9 gap-1.5 text-xs relative"
+          className="relative h-10 shrink-0 gap-1.5 rounded-full bg-card/80 px-3 text-xs shadow-soft"
           onClick={() => setOpenBillsOpen(true)}
         >
-          <ClipboardList className="w-4 h-4" />
-          Open Bill{openBillsCount > 0 && ` (${openBillsCount})`}
+          <ClipboardList className="h-4 w-4" />
+          Open Bill
+          {openBillsCount > 0 && (
+            <Badge className="absolute -right-1 -top-1 h-4 min-w-4 bg-destructive px-1 text-[9px] text-destructive-foreground">
+              {openBillsCount}
+            </Badge>
+          )}
         </Button>
       </div>
 
-      {/* Search */}
-      <div className="flex gap-2 mb-3">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input placeholder="Cari produk..." value={search} onChange={e => setSearch(e.target.value)} className="pl-9 h-10" />
+      <div className="mb-3 rounded-3xl border border-border/70 bg-card/80 p-2.5 shadow-soft backdrop-blur-sm">
+        {/* Search */}
+        <div className="flex gap-2">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input name="cashier-product-search" autoComplete="off" placeholder="Cari produk…" value={search} onChange={e => setSearch(e.target.value)} className="h-10 border-transparent bg-background/70 pl-9" />
+          </div>
+          <Button variant="outline" size="icon" aria-label="Buka pemindai barcode" className="h-10 w-10 shrink-0 rounded-xl bg-background/70" onClick={() => setScannerOpen(true)}>
+            <ScanBarcode className="h-5 w-5" />
+          </Button>
         </div>
-        <Button variant="outline" size="icon" className="h-10 w-10 shrink-0" onClick={() => setScannerOpen(true)}>
-          <ScanBarcode className="w-5 h-5" />
-        </Button>
-      </div>
 
-      {/* SKU / Barcode scan input */}
-      <div className="flex gap-2 mb-3">
-        <div className="relative flex-1">
-          <Barcode className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input
-            ref={scanInputRef}
-            placeholder="Scan / ketik SKU atau Barcode lalu Enter..."
-            value={scanInput}
-            onChange={e => setScanInput(e.target.value)}
-            onKeyDown={handleScanKeyDown}
-            className="pl-9 h-10 text-sm"
-          />
+        {/* SKU / Barcode scan input */}
+        <div className="mt-2 flex gap-2">
+          <div className="relative flex-1">
+            <Barcode className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              ref={scanInputRef}
+              name="cashier-barcode-input"
+              autoComplete="off"
+              spellCheck={false}
+              placeholder="Scan / ketik SKU atau Barcode lalu Enter…"
+              value={scanInput}
+              onChange={e => setScanInput(e.target.value)}
+              onKeyDown={handleScanKeyDown}
+              className="h-10 border-transparent bg-background/70 pl-9 text-sm"
+            />
+          </div>
         </div>
       </div>
 
       {/* Category chips */}
-      <div className="flex gap-2 overflow-x-auto scrollbar-hide mb-3 pb-1 pr-4" style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-x' }}>
-        <button onClick={() => setFilterCategory('all')} className={cn('shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold transition-colors', filterCategory === 'all' ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground')}>
+      <div className="mb-3 flex gap-2 overflow-x-auto pb-1 pr-4 scrollbar-hide" style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-x' }}>
+        <button onClick={() => setFilterCategory('all')} className={cn('shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold transition-[background-color,color,border-color,box-shadow] duration-150 ease-out', filterCategory === 'all' ? 'border-primary bg-primary text-primary-foreground' : 'border-border/70 bg-card/80 text-muted-foreground hover:text-foreground')}>
           Semua
         </button>
         {categories?.map(c => (
-          <button key={c.id} onClick={() => setFilterCategory(c.id!.toString())} className={cn('shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold transition-colors', filterCategory === c.id!.toString() ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground')}>
+          <button key={c.id} onClick={() => setFilterCategory(c.id!.toString())} className={cn('shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold transition-[background-color,color,border-color,box-shadow] duration-150 ease-out', filterCategory === c.id!.toString() ? 'border-primary bg-primary text-primary-foreground' : 'border-border/70 bg-card/80 text-muted-foreground hover:text-foreground')}>
             {c.icon} {c.name}
           </button>
         ))}
@@ -636,37 +648,47 @@ export default function Kasir() {
       {/* Product Grid */}
       <div className="flex-1 overflow-y-auto scrollbar-hide">
         {filtered.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-sm text-muted-foreground">
+          <div className="rounded-3xl border border-dashed border-border/80 bg-card/60 px-6 py-12 text-center shadow-soft">
+            <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+              <PackageIcon className="h-7 w-7" />
+            </div>
+            <p className="text-sm font-semibold text-muted-foreground">
               {products && products.length > 0
                 ? 'Semua produk stoknya habis. Tambah stok dulu di menu Stok Masuk.'
                 : 'Belum ada produk. Tambah produk dulu di menu Produk.'}
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+          <div className="grid grid-cols-2 gap-2.5 md:grid-cols-3 lg:grid-cols-4">
             {filtered.map(p => (
-              <Card key={p.id} className="border-0 shadow-sm cursor-pointer hover:shadow-md transition-shadow active:scale-[0.98]" onClick={() => addToCart(p)}>
+              <Card key={p.id} className="group cursor-pointer overflow-hidden rounded-3xl border-border/70 bg-card/80 shadow-soft backdrop-blur-sm transition-[box-shadow,transform] duration-150 ease-out hover:-translate-y-0.5 hover:shadow-card active:translate-y-0 active:scale-[0.98]" onClick={() => addToCart(p)}>
                 <CardContent className="p-0">
-                  <div className="w-full aspect-square bg-muted rounded-t-lg overflow-hidden flex items-center justify-center">
+                  <div className="relative flex aspect-square w-full items-center justify-center overflow-hidden bg-muted/60">
                     {p.photo ? (
-                      <img src={p.photo} alt={p.name} className="w-full h-full object-cover" />
+                      <img src={p.photo} alt={p.name} width={160} height={160} loading="lazy" className="h-full w-full object-cover transition-transform duration-200 ease-out group-hover:scale-[1.03]" />
                     ) : (
-                      <PackageIcon className="w-8 h-8 text-muted-foreground/30" />
+                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-background/80 text-muted-foreground/40 shadow-soft">
+                        <PackageIcon className="h-7 w-7" />
+                      </div>
+                    )}
+                    {isStockManaged(p) && p.stock <= 5 && (
+                      <span className="absolute right-2 top-2 rounded-full bg-destructive/90 px-2 py-0.5 text-[10px] font-bold text-destructive-foreground shadow-soft">
+                        {p.stock} {p.unit}
+                      </span>
                     )}
                   </div>
-                  <div className="p-2.5">
-                    <h3 className="text-xs font-semibold truncate">{p.name}</h3>
-                    <p className="text-sm font-bold text-primary mt-0.5">Rp {p.price.toLocaleString('id-ID')}</p>
+                  <div className="space-y-1 p-3">
+                    <h3 className="truncate text-xs font-bold leading-tight">{p.name}</h3>
+                    <p className="text-sm font-extrabold tracking-tight text-primary">Rp {p.price.toLocaleString('id-ID')}</p>
                     {p.description && (
-                      <p className="text-[10px] text-muted-foreground mt-0.5 truncate" title={p.description}>
+                      <p className="truncate text-[10px] text-muted-foreground" title={p.description}>
                         {p.description}
                       </p>
                     )}
                     {isStockManaged(p) ? (
-                      <p className="text-[10px] text-muted-foreground mt-0.5">Stok: {p.stock} {p.unit}</p>
+                      <p className="text-[10px] font-medium text-muted-foreground">Stok: {p.stock} {p.unit}</p>
                     ) : (
-                      <p className="text-[10px] text-primary mt-0.5">Selalu tersedia</p>
+                      <p className="text-[10px] font-semibold text-primary">Selalu tersedia</p>
                     )}
                   </div>
                 </CardContent>
@@ -678,7 +700,7 @@ export default function Kasir() {
       </div>
 
       {/* Desktop Cart Panel */}
-      <div className="hidden md:flex md:w-80 lg:w-96 flex-col overflow-hidden bg-card rounded-xl border border-border shrink-0">
+      <div className="hidden shrink-0 flex-col overflow-hidden rounded-3xl border border-border/70 bg-card/90 shadow-soft backdrop-blur-sm md:flex md:w-80 lg:w-96">
         <div className="p-4 border-b border-border shrink-0">
           <h3 className="text-base font-bold flex items-center gap-2">
             <ShoppingCart className="w-4 h-4 text-primary" />
@@ -1158,7 +1180,7 @@ export default function Kasir() {
 
       {/* Checkout Dialog */}
       <Dialog open={checkoutOpen} onOpenChange={setCheckoutOpen}>
-        <DialogContent className="max-w-[95vw] rounded-xl">
+        <DialogContent className="max-w-md rounded-xl">
           <DialogHeader>
             <DialogTitle>Pembayaran</DialogTitle>
           </DialogHeader>
@@ -1265,7 +1287,7 @@ export default function Kasir() {
 
       {/* Discount Dialog */}
       <Dialog open={discountDialogOpen} onOpenChange={setDiscountDialogOpen}>
-        <DialogContent className="max-w-[95vw] rounded-xl">
+        <DialogContent className="max-w-md rounded-xl">
           <DialogHeader>
             <DialogTitle>Diskon Transaksi</DialogTitle>
           </DialogHeader>
@@ -1333,7 +1355,7 @@ export default function Kasir() {
 
       {/* Item Discount Dialog */}
       <Dialog open={itemDiscountTargetId !== null} onOpenChange={(open) => { if (!open) setItemDiscountTargetId(null); }}>
-        <DialogContent className="max-w-[95vw] rounded-xl">
+        <DialogContent className="max-w-md rounded-xl">
           <DialogHeader>
             <DialogTitle>Diskon Item</DialogTitle>
           </DialogHeader>
@@ -1436,7 +1458,7 @@ export default function Kasir() {
 
       {/* Cancel Open Bill Confirmation */}
       <AlertDialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
-        <AlertDialogContent className="max-w-[90vw] rounded-xl">
+        <AlertDialogContent className="max-w-sm rounded-xl">
           <AlertDialogHeader>
             <AlertDialogTitle>Batalkan Bill?</AlertDialogTitle>
             <AlertDialogDescription>

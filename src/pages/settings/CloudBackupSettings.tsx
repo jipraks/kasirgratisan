@@ -150,7 +150,7 @@ export default function CloudBackupSettings() {
               : null;
             const isCurrent = isSubscribed && plan.id === currentPlanId;
             return (
-              <div key={plan.id} className={`flex items-center justify-between rounded-xl border p-3 ${isCurrent ? 'border-primary/40 bg-primary/5' : ''}`}>
+              <div key={plan.id} className={`flex items-center justify-between rounded-2xl border p-3.5 ${isCurrent ? 'border-primary/40 bg-primary/5' : ''}`}>
                 <div>
                   <p className="text-sm font-semibold">
                     {plan.name}
@@ -168,7 +168,7 @@ export default function CloudBackupSettings() {
                   disabled={busy === `checkout:${plan.id}`}
                   onClick={() => handleSubscribe(plan.id)}
                 >
-                  {busy === `checkout:${plan.id}` ? <Loader2 className="w-4 h-4 animate-spin" /> : planButtonLabel(plan.id)}
+                  {busy === `checkout:${plan.id}` ? <Loader2 className="h-4 w-4 animate-spin" /> : planButtonLabel(plan.id)}
                 </Button>
               </div>
             );
@@ -188,19 +188,19 @@ export default function CloudBackupSettings() {
       : INTERVAL_LABEL[interval] ?? 'Nonaktif';
 
   return (
-    <div className="px-4 pt-6 pb-20 space-y-4">
+    <div className="space-y-4 px-4 pb-24 pt-6">
       <div className="flex items-center gap-2">
         <Link to="/settings">
-          <Button variant="ghost" size="icon" className="h-8 w-8"><ChevronLeft className="w-4 h-4" /></Button>
+          <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full"><ChevronLeft className="h-4 w-4" /></Button>
         </Link>
-        <h1 className="text-xl font-bold flex items-center gap-2">
-          <Cloud className="w-5 h-5 text-primary" />
+        <h1 className="flex items-center gap-2 text-2xl font-extrabold tracking-tight">
+          <Cloud className="h-5 w-5 text-primary" />
           Cloud Backup
         </h1>
       </div>
 
       {!isLoggedIn ? (
-        <Card className="border-0 shadow-sm">
+        <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm">
           <CardContent className="p-5 space-y-4 text-center">
             <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto">
               <Cloud className="w-8 h-8" />
@@ -214,7 +214,7 @@ export default function CloudBackupSettings() {
             <div className="flex justify-center">
               {isNativePlatform() ? (
                 <Button className="h-11 gap-2" disabled={busy === 'login'} onClick={handleNativeLogin}>
-                  {busy === 'login' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Cloud className="w-4 h-4" />}
+                  {busy === 'login' ? <Loader2 className="h-4 w-4 animate-spin" /> : <Cloud className="h-4 w-4" />}
                   Lanjut dengan Google
                 </Button>
               ) : (
@@ -232,8 +232,8 @@ export default function CloudBackupSettings() {
       ) : (
         <>
           {/* Account */}
-          <Card className="border-0 shadow-sm">
-            <CardContent className="p-4 flex items-center gap-3">
+          <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm">
+            <CardContent className="p-4 flex items-center gap-3.5">
               {googleUser?.picture ? (
                 <img src={googleUser.picture} alt="" className="w-10 h-10 rounded-full" referrerPolicy="no-referrer" />
               ) : (
@@ -246,13 +246,13 @@ export default function CloudBackupSettings() {
                 <p className="text-xs text-muted-foreground truncate">{googleUser?.email}</p>
               </div>
               <Button variant="ghost" size="sm" className="h-8 gap-1 text-muted-foreground" onClick={logout}>
-                <LogOut className="w-4 h-4" /> Keluar
+                <LogOut className="h-4 w-4" /> Keluar
               </Button>
             </CardContent>
           </Card>
 
           {/* Subscription / quota */}
-          <Card className="border-0 shadow-sm">
+          <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm">
             <CardContent className="p-4 space-y-3">
               {loadingProfile && !profile ? (
                 <div className="flex items-center justify-center py-4 text-muted-foreground">
@@ -262,7 +262,7 @@ export default function CloudBackupSettings() {
                 <>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-success" />
+                      <CheckCircle2 className="h-4 w-4 text-success" />
                       <span className="text-sm font-semibold">{profile?.subscription?.plan.name ?? 'Langganan aktif'}</span>
                     </div>
                     {profile?.subscription?.endDate && (
@@ -287,7 +287,7 @@ export default function CloudBackupSettings() {
                       disabled={!currentPlanId || busy === `checkout:${currentPlanId}`}
                       onClick={() => currentPlanId && handleSubscribe(currentPlanId)}
                     >
-                      {busy === `checkout:${currentPlanId}` ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Perpanjang'}
+                      {busy === `checkout:${currentPlanId}` ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Perpanjang'}
                     </Button>
                     <Button size="sm" variant="outline" className="flex-1 h-9" onClick={() => setShowPlans((v) => !v)}>
                       {showPlans ? 'Tutup' : 'Ubah Paket'}
@@ -317,7 +317,7 @@ export default function CloudBackupSettings() {
 
               {pendingTxId && (
                 <Button variant="outline" className="w-full h-10 gap-2" disabled={busy === 'verify'} onClick={handleVerify}>
-                  {busy === 'verify' ? <Loader2 className="w-4 h-4 animate-spin" /> : <CreditCard className="w-4 h-4" />}
+                  {busy === 'verify' ? <Loader2 className="h-4 w-4 animate-spin" /> : <CreditCard className="h-4 w-4" />}
                   Saya sudah bayar — Verifikasi
                 </Button>
               )}
@@ -330,13 +330,13 @@ export default function CloudBackupSettings() {
               <>
                 <MenuCard
                   to="/settings/cloud-backup/auto"
-                  icon={<Clock className="w-4 h-4" />}
+                  icon={<Clock className="h-4 w-4" />}
                   title="Pengaturan Backup Otomatis"
                   subtitle={intervalSubtitle}
                 />
                 <MenuCard
                   to="/settings/cloud-backup/backups"
-                  icon={<HardDrive className="w-4 h-4" />}
+                  icon={<HardDrive className="h-4 w-4" />}
                   title="Backup Tersimpan"
                   subtitle={
                     backupCount === null
@@ -349,7 +349,7 @@ export default function CloudBackupSettings() {
             {/* Riwayat transaksi selalu tampil saat login — agar bisa cek pembayaran PENDING walau belum berlangganan */}
             <MenuCard
               to="/settings/cloud-backup/history"
-              icon={<History className="w-4 h-4" />}
+              icon={<History className="h-4 w-4" />}
               title="Riwayat Transaksi"
               subtitle="Lihat pembelian & cek status pembayaran"
             />
@@ -363,14 +363,14 @@ export default function CloudBackupSettings() {
 function MenuCard({ to, icon, title, subtitle }: { to: string; icon: React.ReactNode; title: string; subtitle: string }) {
   return (
     <Link to={to}>
-      <Card className="border-0 shadow-sm cursor-pointer hover:shadow-md transition-shadow">
-        <CardContent className="p-3 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center">{icon}</div>
+      <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm cursor-pointer hover:shadow-md transition-shadow">
+        <CardContent className="p-3.5 flex items-center gap-3.5">
+          <div className="w-9 h-9 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">{icon}</div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-semibold">{title}</p>
             <p className="text-[10px] text-muted-foreground truncate">{subtitle}</p>
           </div>
-          <ChevronRight className="w-4 h-4 text-muted-foreground" />
+          <ChevronRight className="h-4 w-4 text-muted-foreground" />
         </CardContent>
       </Card>
     </Link>

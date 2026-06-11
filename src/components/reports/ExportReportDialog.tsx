@@ -75,7 +75,7 @@ export default function ExportReportDialog({
 
   return (
     <Dialog open={open} onOpenChange={(o) => !exporting && onOpenChange(o)}>
-      <DialogContent className="max-w-[95vw] sm:max-w-md rounded-xl">
+      <DialogContent className="max-w-md rounded-xl">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Download className="w-5 h-5 text-primary" />

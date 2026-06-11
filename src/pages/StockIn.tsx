@@ -99,19 +99,19 @@ export default function StockInPage() {
   };
 
   return (
-    <div className="px-4 pt-6 pb-4 space-y-4">
-      <div className="flex items-center justify-between">
+    <div className="space-y-5 px-4 pb-24 pt-6">
+      <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <Link to="/settings">
-            <Button variant="ghost" size="icon" className="h-8 w-8"><ChevronLeft className="w-4 h-4" /></Button>
+            <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full"><ChevronLeft className="h-4 w-4" /></Button>
           </Link>
-          <h1 className="text-xl font-bold flex items-center gap-2">
-            <ArrowDownToLine className="w-5 h-5 text-success" />
+          <h1 className="flex items-center gap-2 text-2xl font-extrabold tracking-tight">
+            <ArrowDownToLine className="h-5 w-5 text-success" />
             Stock In
           </h1>
         </div>
-        <Button size="sm" onClick={openAdd} className="h-9 gap-1.5">
-          <Plus className="w-4 h-4" /> Tambah
+        <Button size="sm" onClick={openAdd} className="h-10 gap-1.5 rounded-full px-4 shadow-glow">
+          <Plus className="h-4 w-4" /> Tambah
         </Button>
       </div>
 
@@ -126,24 +126,28 @@ export default function StockInPage() {
         ]}
       />
 
-      <p className="text-xs text-muted-foreground">{filtered.length} catatan</p>
+      <div className="rounded-2xl border border-border/70 bg-card/70 px-4 py-3 text-sm font-semibold shadow-soft backdrop-blur-sm">
+        {filtered.length} catatan stok masuk
+      </div>
 
       {filtered.length === 0 ? (
-        <div className="text-center py-12">
-          <ArrowDownToLine className="w-12 h-12 mx-auto text-muted-foreground/30 mb-3" />
-          <p className="text-sm text-muted-foreground">Belum ada data stock in</p>
+        <div className="rounded-3xl border border-dashed border-border/80 bg-card/60 px-6 py-12 text-center shadow-soft">
+          <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-success/10 text-success">
+            <ArrowDownToLine className="h-7 w-7" />
+          </div>
+          <p className="text-sm font-semibold text-muted-foreground">Belum ada data stock in</p>
         </div>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-2.5">
           {filtered.map(si => (
-            <Card key={si.id} className="border-0 shadow-sm">
-              <CardContent className="p-3">
+            <Card key={si.id} className="rounded-3xl border-border/70 bg-card/80 shadow-soft backdrop-blur-sm transition-shadow hover:shadow-card">
+              <CardContent className="p-3.5">
                 <div className="flex items-start justify-between">
                   <div>
                     <h3 className="text-sm font-semibold">{getProductName(si.productId)}</h3>
                     <p className="text-xs text-muted-foreground">dari {getSupplierName(si.supplierId)}</p>
                     <div className="flex items-center gap-3 mt-1.5">
-                      <span className="text-xs font-medium bg-success/10 text-success px-2 py-0.5 rounded">+{si.quantity}</span>
+                      <span className="rounded-full bg-success/10 px-2.5 py-1 text-xs font-bold text-success">+{si.quantity}</span>
                       <span className="text-xs text-muted-foreground">@ Rp {si.buyPrice.toLocaleString('id-ID')}</span>
                     </div>
                     {si.notes && <p className="text-xs text-muted-foreground mt-1 italic">{si.notes}</p>}
@@ -160,9 +164,9 @@ export default function StockInPage() {
       )}
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-[95vw] rounded-xl">
+        <DialogContent className="rounded-2xl sm:max-w-md">
           <DialogHeader><DialogTitle>Tambah Stock In</DialogTitle></DialogHeader>
-          <div className="space-y-4 mt-2">
+          <div className="mt-2 space-y-4">
             <div className="space-y-1.5">
               <Label>Produk *</Label>
               <ProductPicker

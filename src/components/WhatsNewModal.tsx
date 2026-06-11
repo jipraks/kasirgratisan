@@ -79,7 +79,7 @@ export default function WhatsNewModal({
         }
       }}
     >
-      <DialogContent className="max-w-[95vw] rounded-xl">
+      <DialogContent className="max-w-md rounded-xl">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-base">
             <Sparkles className="w-4 h-4 text-primary" />
