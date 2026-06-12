@@ -12,8 +12,8 @@ const navItems = [
 
 export default function BottomNav() {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-card/95 backdrop-blur-lg pb-[env(safe-area-inset-bottom)]">
-      <div className="flex items-end justify-around h-16 max-w-lg md:max-w-6xl mx-auto px-2 md:px-4">
+    <nav className="fixed inset-x-0 bottom-0 z-50 px-3 pb-[calc(env(safe-area-inset-bottom)+0.75rem)] md:px-4">
+      <div className="mx-auto grid h-16 max-w-lg grid-cols-5 items-center rounded-[2rem] border border-border/70 bg-card/95 px-2 shadow-[0_18px_60px_rgba(0,0,0,0.22)] backdrop-blur-xl md:max-w-xl">
         {navItems.map(({ to, icon: Icon, label, isCta }) => (
           <NavLink
             key={to}
@@ -21,42 +21,38 @@ export default function BottomNav() {
             end={to === '/'}
             className={({ isActive }) =>
               cn(
-                'flex flex-col items-center gap-0.5 transition-colors min-w-[52px]',
-                isCta
-                  ? 'relative -top-4'
-                  : cn(
-                      'px-2 py-1.5 rounded-xl',
-                      isActive
-                        ? 'text-primary'
-                        : 'text-muted-foreground hover:text-foreground'
-                    )
+                'group flex min-w-0 flex-col items-center justify-center gap-1 rounded-2xl text-center transition-all active:scale-95',
+                isCta ? 'relative -mt-5' : 'h-14 px-1.5',
+                !isCta && (isActive ? 'text-primary' : 'text-muted-foreground hover:text-foreground'),
               )
             }
           >
             {({ isActive }) =>
               isCta ? (
                 <>
-                  <div className={cn(
-                    'w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-transform active:scale-95',
-                    'bg-primary text-primary-foreground',
-                    isActive && 'ring-4 ring-primary/20'
-                  )}>
-                    <Icon className="w-6 h-6" strokeWidth={2.5} />
+                  <div
+                    className={cn(
+                      'flex h-[3.25rem] w-[3.25rem] items-center justify-center rounded-full bg-primary text-primary-foreground shadow-xl shadow-primary/25 transition-transform group-hover:-translate-y-0.5',
+                      isActive && 'ring-4 ring-primary/20',
+                    )}
+                  >
+                    <Icon className="h-6 w-6" strokeWidth={2.5} />
                   </div>
-                  <span className={cn(
-                    'text-[10px] font-bold leading-tight mt-0.5',
-                    isActive ? 'text-primary' : 'text-muted-foreground'
-                  )}>{label}</span>
+                  <span className={cn('text-[10px] font-extrabold leading-none', isActive ? 'text-primary' : 'text-muted-foreground')}>
+                    {label}
+                  </span>
                 </>
               ) : (
                 <>
-                  <div className={cn(
-                    'flex items-center justify-center w-10 h-7 rounded-full transition-colors',
-                    isActive && 'bg-primary/10'
-                  )}>
-                    <Icon className="w-5 h-5" strokeWidth={isActive ? 2.5 : 2} />
+                  <div
+                    className={cn(
+                      'flex h-8 w-11 items-center justify-center rounded-full transition-colors',
+                      isActive ? 'bg-primary/10' : 'group-hover:bg-muted',
+                    )}
+                  >
+                    <Icon className="h-5 w-5" strokeWidth={isActive ? 2.5 : 2} />
                   </div>
-                  <span className="text-[10px] font-semibold leading-tight">{label}</span>
+                  <span className="max-w-full truncate text-[10px] font-bold leading-none">{label}</span>
                 </>
               )
             }

@@ -39,24 +39,24 @@ export default function BackupRestoreSettings() {
   };
 
   return (
-    <div className="px-4 pt-6 pb-4 space-y-4">
+    <div className="space-y-4 px-4 pb-24 pt-6">
       <div className="flex items-center gap-2">
         <Link to="/settings">
-          <Button variant="ghost" size="icon" className="h-8 w-8"><ChevronLeft className="w-4 h-4" /></Button>
+          <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full"><ChevronLeft className="h-4 w-4" /></Button>
         </Link>
-        <h1 className="text-xl font-bold flex items-center gap-2">
-          <Download className="w-5 h-5 text-primary" />
+        <h1 className="flex items-center gap-2 text-2xl font-extrabold tracking-tight">
+          <Download className="h-5 w-5 text-primary" />
           Backup & Restore
         </h1>
       </div>
 
-      <Card className="border-0 shadow-sm">
+      <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm">
         <CardContent className="p-4 space-y-2">
           <Button variant="outline" className="w-full h-10 text-sm gap-2" onClick={exportBackupData}>
-            <Download className="w-4 h-4" /> Export Backup (JSON)
+            <Download className="h-4 w-4" /> Export Backup (JSON)
           </Button>
           <Button variant="outline" className="w-full h-10 text-sm gap-2" onClick={handleImport}>
-            <Upload className="w-4 h-4" /> Import / Restore Data
+            <Upload className="h-4 w-4" /> Import / Restore Data
           </Button>
           {storeSettings?.lastBackupAt && (
             <p className="text-[10px] text-muted-foreground text-center">Terakhir backup: {new Date(storeSettings.lastBackupAt).toLocaleString('id-ID')}</p>

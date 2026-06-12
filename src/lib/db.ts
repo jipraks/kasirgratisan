@@ -13,7 +13,8 @@ export type PermissionKey =
   | 'manage_backup'
   | 'manage_store_settings'
   | 'manage_expenses'
-  | 'view_expenses';
+  | 'view_expenses'
+  | 'manage_shifts';
 
 export const ALL_PERMISSIONS: PermissionKey[] = [
   'create_transaction',
@@ -28,6 +29,7 @@ export const ALL_PERMISSIONS: PermissionKey[] = [
   'manage_store_settings',
   'manage_expenses',
   'view_expenses',
+  'manage_shifts',
 ];
 
 // === Interfaces ===
@@ -159,6 +161,27 @@ export interface Transaction {
   openedAt?: Date;
   closedAt?: Date;
   createdBy?: number; // userId — kasir pembuat transaksi
+  shiftId?: number; // shift kasir saat transaksi diselesaikan/dibuat
+}
+
+export interface Shift {
+  id?: number;
+  code: string;
+  status: 'open' | 'closed';
+  openedAt: Date;
+  closedAt: Date | null;
+  openedBy?: number;
+  closedBy?: number;
+  openingCash: number;
+  closingCash?: number;
+  expectedCash?: number;
+  cashDifference?: number;
+  totalSales: number;
+  totalCashSales: number;
+  totalNonCashSales: number;
+  totalTransactions: number;
+  totalProfit: number;
+  notes?: string;
 }
 
 export interface TransactionItemRecord {
@@ -246,6 +269,7 @@ class PosDatabase extends Dexie {
   units!: Table<Unit>;
   expenseCategories!: Table<ExpenseCategory>;
   expenses!: Table<Expense>;
+  shifts!: Table<Shift>;
 
   constructor() {
     super('kasirgratisan-db');
@@ -571,6 +595,29 @@ class PosDatabase extends Dexie {
       users:             '++id, &username, role, isActive',
       expenseCategories: '++id, name, isDeleted',
       expenses:          '++id, date, categoryId, paymentMethodId, createdBy, isDeleted',
+    });
+
+    // Version 11 — Shift kasir dan relasi transaksi ke shift
+    // Notes:
+    //   * Tabel `shifts` BARU; data lama tidak disentuh.
+    //   * `shiftId` opsional pada transactions agar transaksi lama tetap valid.
+    this.version(11).stores({
+      categories:        '++id, name, isDeleted',
+      products:          '++id, name, &sku, categoryId, barcode, isDeleted, createdBy, updatedBy',
+      suppliers:         '++id, name, isDeleted',
+      customers:         '++id, name, isDeleted',
+      stockIns:          '++id, productId, supplierId, date, createdBy',
+      stockOuts:         '++id, productId, date, createdBy',
+      hppHistory:        '++id, productId, date',
+      paymentMethods:    '++id, name, category',
+      transactions:      '++id, date, &receiptNumber, paymentMethodId, status, orderNumber, createdBy, shiftId',
+      transactionItems:  '++id, transactionId, productId',
+      storeSettings:     '++id',
+      units:             '++id, &name, isDeleted',
+      users:             '++id, &username, role, isActive',
+      expenseCategories: '++id, name, isDeleted',
+      expenses:          '++id, date, categoryId, paymentMethodId, createdBy, isDeleted',
+      shifts:            '++id, status, openedAt, closedAt, openedBy, closedBy',
     });
   }
 }

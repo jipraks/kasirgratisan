@@ -50,17 +50,17 @@ export default function UsersPage() {
 
   if (!multiUserEnabled) {
     return (
-      <div className="px-4 pt-6 pb-4">
-        <div className="flex items-center gap-3 mb-4">
-          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => navigate(-1)}>
-            <ArrowLeft className="w-4 h-4" />
+      <div className="px-4 pb-24 pt-6">
+        <div className="flex items-center gap-3.5 mb-4">
+          <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full" onClick={() => navigate(-1)}>
+            <ArrowLeft className="h-4 w-4" />
           </Button>
-          <h1 className="text-xl font-bold flex items-center gap-2">
-            <UsersIcon className="w-5 h-5 text-primary" />
+          <h1 className="flex items-center gap-2 text-2xl font-extrabold tracking-tight">
+            <UsersIcon className="h-5 w-5 text-primary" />
             Karyawan & Akses
           </h1>
         </div>
-        <Card className="border-0 shadow-sm">
+        <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm">
           <CardContent className="p-6 text-center space-y-2">
             <p className="text-sm font-semibold">Multi-user belum aktif</p>
             <p className="text-xs text-muted-foreground">
@@ -77,17 +77,17 @@ export default function UsersPage() {
 
   if (!isOwner) {
     return (
-      <div className="px-4 pt-6 pb-4">
-        <div className="flex items-center gap-3 mb-4">
-          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => navigate(-1)}>
-            <ArrowLeft className="w-4 h-4" />
+      <div className="px-4 pb-24 pt-6">
+        <div className="flex items-center gap-3.5 mb-4">
+          <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full" onClick={() => navigate(-1)}>
+            <ArrowLeft className="h-4 w-4" />
           </Button>
-          <h1 className="text-xl font-bold flex items-center gap-2">
-            <UsersIcon className="w-5 h-5 text-primary" />
+          <h1 className="flex items-center gap-2 text-2xl font-extrabold tracking-tight">
+            <UsersIcon className="h-5 w-5 text-primary" />
             Karyawan & Akses
           </h1>
         </div>
-        <Card className="border-0 shadow-sm">
+        <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm">
           <CardContent className="p-6 text-center text-sm text-muted-foreground">
             Hanya pemilik toko yang dapat mengelola karyawan.
           </CardContent>
@@ -229,13 +229,13 @@ export default function UsersPage() {
   });
 
   return (
-    <div className="px-4 pt-6 pb-4 space-y-4">
-      <div className="flex items-center gap-3">
-        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => navigate(-1)}>
-          <ArrowLeft className="w-4 h-4" />
+    <div className="space-y-4 px-4 pb-24 pt-6">
+      <div className="flex items-center gap-3.5">
+        <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full" onClick={() => navigate(-1)}>
+          <ArrowLeft className="h-4 w-4" />
         </Button>
-        <h1 className="text-xl font-bold flex items-center gap-2">
-          <UsersIcon className="w-5 h-5 text-primary" />
+        <h1 className="flex items-center gap-2 text-2xl font-extrabold tracking-tight">
+          <UsersIcon className="h-5 w-5 text-primary" />
           Karyawan & Akses
         </h1>
       </div>
@@ -245,23 +245,23 @@ export default function UsersPage() {
       </p>
 
       <Button size="sm" className="w-full h-10 gap-1.5" onClick={openAdd}>
-        <Plus className="w-4 h-4" />
+        <Plus className="h-4 w-4" />
         Tambah Karyawan
       </Button>
 
       <div className="space-y-2">
         {sortedUsers.map((user) => (
-          <Card key={user.id} className="border-0 shadow-sm">
-            <CardContent className="p-3">
-              <div className="flex items-start gap-3">
+          <Card key={user.id} className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm">
+            <CardContent className="p-3.5">
+              <div className="flex items-start gap-3.5">
                 <div
-                  className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
+                  className={`h-10 w-10 rounded-2xl flex items-center justify-center shrink-0 ${
                     user.role === 'owner' ? 'bg-primary/10 text-primary' : 'bg-accent/10 text-accent'
                   }`}
                 >
                   {user.role === 'owner' ? <ShieldCheck className="w-5 h-5" /> : <UserCircle2 className="w-5 h-5" />}
                 </div>
-                <div className="flex-1 min-w-0">
+                <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 flex-wrap">
                     <p className="text-sm font-semibold">{user.name}</p>
                     {user.role === 'owner' && (
@@ -296,7 +296,7 @@ export default function UsersPage() {
                 </div>
                 <div className="flex flex-col gap-1">
                   <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => openEdit(user)} title="Edit">
-                    <Edit2 className="w-3.5 h-3.5" />
+                    <Edit2 className="h-3.5 w-3.5" />
                   </Button>
                   <Button
                     variant="ghost"
@@ -305,7 +305,7 @@ export default function UsersPage() {
                     onClick={() => openPinReset(user)}
                     title="Reset PIN"
                   >
-                    <KeyRound className="w-3.5 h-3.5" />
+                    <KeyRound className="h-3.5 w-3.5" />
                   </Button>
                   <Button
                     variant="ghost"
@@ -314,7 +314,7 @@ export default function UsersPage() {
                     onClick={() => toggleActive(user)}
                     title={user.isActive === 1 ? 'Nonaktifkan' : 'Aktifkan'}
                   >
-                    {user.isActive === 1 ? <UserCheck className="w-3.5 h-3.5" /> : <UserX className="w-3.5 h-3.5 text-muted-foreground" />}
+                    {user.isActive === 1 ? <UserCheck className="h-3.5 w-3.5" /> : <UserX className="h-3.5 w-3.5 text-muted-foreground" />}
                   </Button>
                   {user.id !== currentUser?.id && (
                     <Button
@@ -324,7 +324,7 @@ export default function UsersPage() {
                       onClick={() => setDeleteTarget(user)}
                       title="Hapus"
                     >
-                      <Trash2 className="w-3.5 h-3.5" />
+                      <Trash2 className="h-3.5 w-3.5" />
                     </Button>
                   )}
                 </div>
@@ -336,7 +336,7 @@ export default function UsersPage() {
 
       {/* Add/Edit dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-[95vw] rounded-xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-md rounded-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>{editing ? 'Edit Karyawan' : 'Tambah Karyawan'}</DialogTitle>
             <DialogDescription className="text-xs">
@@ -383,7 +383,7 @@ export default function UsersPage() {
             )}
 
             {editing?.role === 'owner' ? (
-              <div className="bg-primary/5 border border-primary/20 rounded-xl p-3 text-xs text-muted-foreground">
+              <div className="bg-primary/5 border border-primary/20 rounded-2xl p-3.5 text-xs text-muted-foreground">
                 Pemilik selalu memiliki akses penuh ke semua fitur.
               </div>
             ) : (
@@ -396,7 +396,7 @@ export default function UsersPage() {
                     return (
                       <label
                         key={key}
-                        className={`flex items-start gap-3 p-3 rounded-xl border-2 cursor-pointer transition-colors ${
+                        className={`flex items-start gap-3.5 p-3.5 rounded-2xl border-2 cursor-pointer transition-colors ${
                           checked ? 'border-primary/50 bg-primary/5' : 'border-muted bg-muted/30'
                         }`}
                       >
@@ -405,7 +405,7 @@ export default function UsersPage() {
                           onCheckedChange={(v) => togglePermission(key, v === true)}
                           className="mt-0.5 shrink-0"
                         />
-                        <div className="flex-1 min-w-0">
+                        <div className="min-w-0 flex-1">
                           <p className="text-sm font-semibold">{meta.title}</p>
                           <p className="text-[10px] text-muted-foreground leading-snug">{meta.desc}</p>
                         </div>
@@ -416,7 +416,7 @@ export default function UsersPage() {
               </div>
             )}
 
-            <Button className="w-full h-11" onClick={handleSave} disabled={saving}>
+            <Button className="h-11 w-full rounded-full" onClick={handleSave} disabled={saving}>
               {saving ? 'Menyimpan…' : editing ? 'Simpan Perubahan' : 'Tambah Karyawan'}
             </Button>
           </div>
@@ -425,7 +425,7 @@ export default function UsersPage() {
 
       {/* PIN reset dialog */}
       <Dialog open={pinDialogOpen} onOpenChange={setPinDialogOpen}>
-        <DialogContent className="max-w-[90vw] rounded-xl">
+        <DialogContent className="max-w-sm rounded-2xl">
           <DialogHeader>
             <DialogTitle>Reset PIN {pinTarget?.name}</DialogTitle>
             <DialogDescription className="text-xs">
@@ -444,7 +444,7 @@ export default function UsersPage() {
               className="h-12 font-mono text-center tracking-widest text-lg"
               autoFocus
             />
-            <Button className="w-full h-11" onClick={handlePinReset} disabled={!isValidPin(newPin)}>
+            <Button className="h-11 w-full rounded-full" onClick={handlePinReset} disabled={!isValidPin(newPin)}>
               Simpan PIN Baru
             </Button>
           </div>
@@ -453,7 +453,7 @@ export default function UsersPage() {
 
       {/* Delete confirmation */}
       <AlertDialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
-        <AlertDialogContent className="max-w-[90vw] rounded-xl">
+        <AlertDialogContent className="max-w-sm rounded-2xl">
           <AlertDialogHeader>
             <AlertDialogTitle>Hapus Akun {deleteTarget?.name}?</AlertDialogTitle>
             <AlertDialogDescription>

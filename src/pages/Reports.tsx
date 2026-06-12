@@ -142,16 +142,17 @@ export default function Laporan() {
   const paymentBreakdown = Object.values(paymentSummary).sort((a, b) => b.amount - a.amount);
 
   const rp = (n: number) => `Rp ${n.toLocaleString('id-ID')}`;
+  const compactRp = (n: number) => `Rp ${Intl.NumberFormat('id-ID', { notation: 'compact', maximumFractionDigits: 1 }).format(n)}`;
 
   return (
-    <div className="px-4 pt-6 pb-20 space-y-5">
-      <div className="flex items-center justify-between gap-2">
-        <h1 className="text-xl font-bold flex items-center gap-2">
-          <BarChart3 className="w-5 h-5 text-primary" />
+    <div className="space-y-5 px-4 pb-40 pt-6">
+      <div className="flex items-center justify-between gap-3">
+        <h1 className="flex items-center gap-2 text-2xl font-extrabold tracking-tight">
+          <BarChart3 className="h-5 w-5 text-primary" />
           Laporan
         </h1>
-        <Button size="sm" variant="outline" className="h-9 gap-1.5" onClick={() => setExportOpen(true)}>
-          <Download className="w-4 h-4" /> Export
+        <Button size="sm" variant="outline" className="h-10 gap-1.5 rounded-full bg-card/80 px-4 shadow-soft" onClick={() => setExportOpen(true)}>
+          <Download className="h-4 w-4" /> Export
         </Button>
       </div>
 
@@ -165,15 +166,15 @@ export default function Laporan() {
       <UserTypeModal open={surveyOpen} onClose={() => setSurveyOpen(false)} />
 
       <Tabs value={period} onValueChange={v => setPeriod(v as 'daily' | '7' | '30')}>
-        <TabsList className="w-full">
-          <TabsTrigger value="daily" className="flex-1">Harian</TabsTrigger>
-          <TabsTrigger value="7" className="flex-1">7 Hari</TabsTrigger>
-          <TabsTrigger value="30" className="flex-1">30 Hari</TabsTrigger>
+        <TabsList className="h-11 w-full rounded-2xl bg-muted/70 p-1">
+          <TabsTrigger value="daily" className="flex-1 rounded-xl">Harian</TabsTrigger>
+          <TabsTrigger value="7" className="flex-1 rounded-xl">7 Hari</TabsTrigger>
+          <TabsTrigger value="30" className="flex-1 rounded-xl">30 Hari</TabsTrigger>
         </TabsList>
       </Tabs>
 
       {period === 'daily' && (
-        <Card className="border-0 shadow-sm">
+        <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm">
           <CardContent className="p-4 space-y-3">
             <div className="space-y-1.5">
               <Label htmlFor="report-date" className="text-xs">Tanggal Laporan</Label>
@@ -184,7 +185,7 @@ export default function Laporan() {
                 onChange={e => setSelectedDate(e.target.value)}
               />
             </div>
-            <div className="flex items-center justify-between rounded-lg bg-muted/50 p-3">
+            <div className="flex items-center justify-between rounded-2xl bg-muted/50 p-3">
               <div>
                 <Label htmlFor="include-expenses" className="text-sm font-medium">Masukkan pengeluaran</Label>
                 <p className="text-[10px] text-muted-foreground">Pengeluaran akan mengurangi laba bersih</p>
@@ -195,47 +196,53 @@ export default function Laporan() {
         </Card>
       )}
 
-      <div className="grid grid-cols-3 gap-2">
-        <Card className="border-0 shadow-sm">
-          <CardContent className="p-3 text-center">
-            <ShoppingCart className="w-4 h-4 mx-auto text-primary mb-1" />
-            <p className="text-lg font-bold">{txCount}</p>
-            <p className="text-[10px] text-muted-foreground">Transaksi</p>
+      <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+        <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm sm:col-span-1">
+          <CardContent className="flex items-center gap-3 p-3.5 sm:block sm:text-center">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary sm:mx-auto sm:mb-2 sm:h-9 sm:w-9"><ShoppingCart className="h-4 w-4" /></div>
+            <div className="min-w-0">
+              <p className="text-lg font-extrabold leading-tight">{txCount}</p>
+              <p className="text-[10px] text-muted-foreground">Transaksi</p>
+            </div>
           </CardContent>
         </Card>
-        <Card className="border-0 shadow-sm">
-          <CardContent className="p-3 text-center">
-            <TrendingUp className="w-4 h-4 mx-auto text-success mb-1" />
-            <p className="text-sm font-bold">{rp(totalSales)}</p>
-            <p className="text-[10px] text-muted-foreground">Penjualan</p>
+        <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm sm:col-span-1">
+          <CardContent className="flex items-center gap-3 p-3.5 sm:block sm:text-center">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-success/10 text-success sm:mx-auto sm:mb-2 sm:h-9 sm:w-9"><TrendingUp className="h-4 w-4" /></div>
+            <div className="min-w-0">
+              <p className="truncate text-base font-extrabold leading-tight sm:text-sm" title={rp(totalSales)}>{compactRp(totalSales)}</p>
+              <p className="text-[10px] text-muted-foreground">Penjualan</p>
+            </div>
           </CardContent>
         </Card>
-        <Card className="border-0 shadow-sm">
-          <CardContent className="p-3 text-center">
-            <TrendingUp className="w-4 h-4 mx-auto text-accent mb-1" />
-            <p className="text-sm font-bold">{rp(totalProfit)}</p>
-            <p className="text-[10px] text-muted-foreground">Profit</p>
+        <Card className="col-span-2 border-border/70 bg-card/80 shadow-soft backdrop-blur-sm sm:col-span-1">
+          <CardContent className="flex items-center gap-3 p-3.5 sm:block sm:text-center">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-accent/10 text-accent sm:mx-auto sm:mb-2 sm:h-9 sm:w-9"><TrendingUp className="h-4 w-4" /></div>
+            <div className="min-w-0">
+              <p className="truncate text-base font-extrabold leading-tight sm:text-sm" title={rp(totalProfit)}>{compactRp(totalProfit)}</p>
+              <p className="text-[10px] text-muted-foreground">Profit</p>
+            </div>
           </CardContent>
         </Card>
       </div>
 
       {period === 'daily' && (
-        <Card className="border-0 shadow-sm">
+        <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm flex items-center gap-1.5">
-              <CreditCard className="w-4 h-4" />
+            <CardTitle className="flex items-center gap-1.5 text-sm font-extrabold">
+              <CreditCard className="h-4 w-4" />
               Total Penjualan Harian
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="grid grid-cols-2 gap-2">
-              <div className="rounded-lg bg-muted/50 p-3">
+              <div className="rounded-2xl bg-muted/50 p-3">
                 <p className="text-[10px] text-muted-foreground">Total Omzet</p>
-                <p className="text-sm font-bold">{rp(totalSales)}</p>
+                <p className="text-sm font-extrabold">{rp(totalSales)}</p>
               </div>
-              <div className="rounded-lg bg-muted/50 p-3">
+              <div className="rounded-2xl bg-muted/50 p-3">
                 <p className="text-[10px] text-muted-foreground">Rata-rata Transaksi</p>
-                <p className="text-sm font-bold">{rp(averageTransaction)}</p>
+                <p className="text-sm font-extrabold">{rp(averageTransaction)}</p>
               </div>
             </div>
             <div className="space-y-2">
@@ -255,17 +262,17 @@ export default function Laporan() {
         </Card>
       )}
 
-      <Card className="border-0 shadow-sm">
+      <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm">
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm flex items-center gap-1.5">
-            <DollarSign className="w-4 h-4" />
+          <CardTitle className="flex items-center gap-1.5 text-sm font-extrabold">
+            <DollarSign className="h-4 w-4" />
             Laba Rugi{period === 'daily' ? ' Harian' : ''}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
           <div className="flex justify-between items-center text-sm">
             <div className="flex items-center gap-2">
-              <ArrowUp className="w-3.5 h-3.5 text-success" />
+              <ArrowUp className="h-3.5 w-3.5 text-success" />
               <span>Pendapatan Kotor</span>
             </div>
             <span className="font-semibold">{rp(totalRevenue)}</span>
@@ -273,7 +280,7 @@ export default function Laporan() {
           {totalDiscount > 0 && (
             <div className="flex justify-between items-center text-sm text-destructive">
               <div className="flex items-center gap-2">
-                <Minus className="w-3.5 h-3.5" />
+                <Minus className="h-3.5 w-3.5" />
                 <span>Diskon</span>
               </div>
               <span className="font-semibold">-{rp(totalDiscount)}</span>
@@ -285,7 +292,7 @@ export default function Laporan() {
           </div>
           <div className="flex justify-between items-center text-sm text-destructive">
             <div className="flex items-center gap-2">
-              <ArrowDown className="w-3.5 h-3.5" />
+              <ArrowDown className="h-3.5 w-3.5" />
               <span>HPP (Modal)</span>
             </div>
             <span className="font-semibold">-{rp(totalHpp)}</span>
@@ -301,7 +308,7 @@ export default function Laporan() {
           {totalExpenses > 0 && (
             <div className={`flex justify-between items-center text-sm ${includeExpenses ? 'text-warning' : 'text-muted-foreground'}`}>
               <div className="flex items-center gap-2">
-                <Wallet className="w-3.5 h-3.5" />
+                <Wallet className="h-3.5 w-3.5" />
                 <span>Pengeluaran Operasional{!includeExpenses ? ' (tidak dihitung)' : ''}</span>
               </div>
               <span className="font-semibold">-{rp(totalExpenses)}</span>
@@ -319,10 +326,10 @@ export default function Laporan() {
       </Card>
 
       {topExpenseCategories.length > 0 && includeExpenses && (
-        <Card className="border-0 shadow-sm">
+        <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm flex items-center gap-1.5">
-              <Wallet className="w-4 h-4" />
+            <CardTitle className="flex items-center gap-1.5 text-sm font-extrabold">
+              <Wallet className="h-4 w-4" />
               Pengeluaran per Kategori
             </CardTitle>
           </CardHeader>
@@ -334,7 +341,7 @@ export default function Laporan() {
                   <div key={cat.name}>
                     <div className="flex items-center justify-between mb-1">
                       <div className="flex items-center gap-2">
-                        <span className="w-6 h-6 rounded flex items-center justify-center text-sm" style={{ backgroundColor: cat.color + '20' }}>{cat.icon}</span>
+                        <span className="h-6 w-6 rounded flex items-center justify-center text-sm" style={{ backgroundColor: cat.color + '20' }}>{cat.icon}</span>
                         <span className="text-sm">{cat.name}</span>
                       </div>
                       <div className="text-right">
@@ -342,7 +349,7 @@ export default function Laporan() {
                         <p className="text-[10px] text-muted-foreground">{percent.toFixed(0)}%</p>
                       </div>
                     </div>
-                    <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
+                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
                       <div className="h-full rounded-full transition-all" style={{ width: `${percent}%`, backgroundColor: cat.color }} />
                     </div>
                   </div>
@@ -354,16 +361,32 @@ export default function Laporan() {
       )}
 
       {period !== 'daily' && (
-        <Card className="border-0 shadow-sm">
+        <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm">Tren Penjualan</CardTitle>
+            <CardTitle className="flex items-center gap-1.5 text-sm font-extrabold">
+              <BarChart3 className="h-4 w-4" />
+              Tren Penjualan
+            </CardTitle>
           </CardHeader>
           <CardContent className="pb-4">
             <ResponsiveContainer width="100%" height={180}>
               <BarChart data={chartData}>
                 <XAxis dataKey="date" tick={{ fontSize: 10 }} axisLine={false} tickLine={false} />
                 <YAxis hide />
-                <Tooltip formatter={(v: number) => [`Rp ${v.toLocaleString('id-ID')}`, 'Penjualan']} contentStyle={{ fontSize: 12, borderRadius: 8 }} />
+                <Tooltip
+                  formatter={(v: number) => [`Rp ${v.toLocaleString('id-ID')}`, 'Penjualan']}
+                  contentStyle={{
+                    backgroundColor: 'hsl(var(--card))',
+                    border: '1px solid hsl(var(--border))',
+                    borderRadius: 12,
+                    boxShadow: '0 12px 32px rgba(0,0,0,0.28)',
+                    color: 'hsl(var(--foreground))',
+                    fontSize: 12,
+                  }}
+                  labelStyle={{ color: 'hsl(var(--foreground))', fontWeight: 700 }}
+                  itemStyle={{ color: 'hsl(var(--primary))', fontWeight: 600 }}
+                  cursor={{ fill: 'hsl(var(--muted) / 0.35)' }}
+                />
                 <Bar dataKey="sales" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
@@ -371,10 +394,10 @@ export default function Laporan() {
         </Card>
       )}
 
-      <Card className="border-0 shadow-sm">
+      <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm">
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm flex items-center gap-1.5">
-            <Package className="w-4 h-4" />
+          <CardTitle className="flex items-center gap-1.5 text-sm font-extrabold">
+            <Package className="h-4 w-4" />
             Produk Terlaris{period === 'daily' ? ' Harian' : ''}
           </CardTitle>
         </CardHeader>
@@ -386,7 +409,7 @@ export default function Laporan() {
               {topProducts.map((p, i) => (
                 <div key={p.name} className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className="w-5 h-5 rounded-full bg-primary/10 text-primary text-[10px] font-bold flex items-center justify-center">{i + 1}</span>
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary">{i + 1}</span>
                     <span className="text-sm">{p.name}</span>
                   </div>
                   <div className="text-right">

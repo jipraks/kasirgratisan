@@ -63,34 +63,34 @@ export default function ExpenseCategoriesSettings() {
   };
 
   return (
-    <div className="px-4 pt-6 pb-4 space-y-4">
+    <div className="space-y-4 px-4 pb-24 pt-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Link to="/settings">
-            <Button variant="ghost" size="icon" className="h-8 w-8"><ChevronLeft className="w-4 h-4" /></Button>
+            <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full"><ChevronLeft className="h-4 w-4" /></Button>
           </Link>
-          <h1 className="text-xl font-bold flex items-center gap-2">
-            <Wallet className="w-5 h-5 text-warning" />
+          <h1 className="flex items-center gap-2 text-2xl font-extrabold tracking-tight">
+            <Wallet className="h-5 w-5 text-warning" />
             Kategori Pengeluaran
           </h1>
         </div>
-        <Button size="sm" onClick={openExpCatAdd} className="h-9 gap-1.5"><Plus className="w-4 h-4" /> Tambah</Button>
+        <Button size="sm" onClick={openExpCatAdd} className="h-10 gap-1.5 rounded-full px-4 shadow-soft"><Plus className="h-4 w-4" /> Tambah</Button>
       </div>
 
-      <Card className="border-0 shadow-sm">
-        <CardContent className="p-3 space-y-1">
+      <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm">
+        <CardContent className="space-y-1 p-3.5.5">
           {expenseCategories && expenseCategories.length === 0 && (
-            <p className="text-xs text-muted-foreground py-1.5">Belum ada kategori pengeluaran</p>
+            <p className="text-xs text-muted-foreground py-2">Belum ada kategori pengeluaran</p>
           )}
           {expenseCategories?.map(c => (
-            <div key={c.id} className="flex items-center justify-between py-1.5">
+            <div key={c.id} className="flex items-center justify-between py-2">
               <div className="flex items-center gap-2">
-                <span className="w-6 h-6 rounded flex items-center justify-center text-sm" style={{ backgroundColor: c.color + '20' }}>{c.icon}</span>
+                <span className="flex h-8 w-8 items-center justify-center rounded-2xl text-sm" style={{ backgroundColor: c.color + '20' }}>{c.icon}</span>
                 <span className="text-sm font-medium">{c.name}</span>
               </div>
               <div className="flex gap-1">
-                <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => openExpCatEdit(c)}><Edit2 className="w-3 h-3" /></Button>
-                <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive" onClick={() => deleteExpCat(c)}><Trash2 className="w-3 h-3" /></Button>
+                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" onClick={() => openExpCatEdit(c)}><Edit2 className="h-3 w-3" /></Button>
+                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full text-destructive" onClick={() => deleteExpCat(c)}><Trash2 className="h-3 w-3" /></Button>
               </div>
             </div>
           ))}
@@ -98,7 +98,7 @@ export default function ExpenseCategoriesSettings() {
       </Card>
 
       <Dialog open={expCatDialog} onOpenChange={setExpCatDialog}>
-        <DialogContent className="max-w-[95vw] rounded-xl">
+        <DialogContent className="max-w-md rounded-2xl">
           <DialogHeader><DialogTitle>{expCatEditId ? 'Edit' : 'Tambah'} Kategori Pengeluaran</DialogTitle></DialogHeader>
           <div className="space-y-4 mt-2">
             <div className="space-y-1.5">
@@ -117,7 +117,7 @@ export default function ExpenseCategoriesSettings() {
                   <button
                     key={e}
                     onClick={() => setExpCatIcon(e)}
-                    className={`w-10 h-10 rounded-lg text-lg flex items-center justify-center border-2 transition-colors ${expCatIcon === e ? 'border-primary bg-primary/5' : 'border-muted'}`}
+                    className={`h-10 w-10 rounded-2xl text-lg flex items-center justify-center border-2 transition-colors ${expCatIcon === e ? 'border-primary bg-primary/5' : 'border-muted'}`}
                   >
                     {e}
                   </button>
@@ -128,7 +128,7 @@ export default function ExpenseCategoriesSettings() {
               <Label>Warna</Label>
               <Input type="color" value={expCatColor} onChange={e => setExpCatColor(e.target.value)} className="h-11 w-20" />
             </div>
-            <Button className="w-full h-11" onClick={saveExpCat} disabled={!expCatName.trim()}>Simpan</Button>
+            <Button className="h-11 w-full rounded-full" onClick={saveExpCat} disabled={!expCatName.trim()}>Simpan</Button>
           </div>
         </DialogContent>
       </Dialog>

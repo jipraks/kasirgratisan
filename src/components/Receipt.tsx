@@ -125,7 +125,7 @@ export default function Receipt({ open, onClose, transaction, items, storeSettin
 
   return (
     <Dialog open={open} onOpenChange={v => !v && onClose()}>
-      <DialogContent className="max-w-[95vw] max-h-[90vh] overflow-y-auto rounded-xl p-4">
+      <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto rounded-xl p-4">
         <DialogHeader>
           <DialogTitle className="text-center">Struk Transaksi</DialogTitle>
         </DialogHeader>

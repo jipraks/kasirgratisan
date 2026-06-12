@@ -75,6 +75,10 @@ export const PERMISSION_LABELS: Record<PermissionKey, { title: string; desc: str
     title: 'Lihat Pengeluaran',
     desc: 'Lihat daftar dan total pengeluaran toko',
   },
+  manage_shifts: {
+    title: 'Kelola Shift Kasir',
+    desc: 'Buka, tutup, dan cetak laporan shift kasir',
+  },
 };
 
 // Default permission set for new staff: create transaction only.

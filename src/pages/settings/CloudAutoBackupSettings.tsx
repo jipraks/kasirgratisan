@@ -50,25 +50,25 @@ export default function CloudAutoBackupSettings() {
   };
 
   return (
-    <div className="px-4 pt-6 pb-20 space-y-4">
+    <div className="space-y-4 px-4 pb-24 pt-6">
       <div className="flex items-center gap-2">
         <Link to="/settings/cloud-backup">
-          <Button variant="ghost" size="icon" className="h-8 w-8"><ChevronLeft className="w-4 h-4" /></Button>
+          <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full"><ChevronLeft className="h-4 w-4" /></Button>
         </Link>
-        <h1 className="text-xl font-bold flex items-center gap-2">
-          <Clock className="w-5 h-5 text-primary" />
+        <h1 className="flex items-center gap-2 text-2xl font-extrabold tracking-tight">
+          <Clock className="h-5 w-5 text-primary" />
           Backup Otomatis
         </h1>
       </div>
 
       {!isLoggedIn || !isSubscribed ? (
-        <Card className="border-0 shadow-sm">
+        <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm">
           <CardContent className="p-4 text-center text-sm text-muted-foreground">
             Aktifkan langganan cloud dulu untuk mengatur backup otomatis.
           </CardContent>
         </Card>
       ) : (
-        <Card className="border-0 shadow-sm">
+        <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm">
           <CardContent className="p-4 space-y-3">
             <div className="space-y-1.5">
               <p className="text-sm font-medium">Jadwal Backup Otomatis</p>

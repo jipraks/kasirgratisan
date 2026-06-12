@@ -160,53 +160,71 @@ export default function Produk() {
   };
 
   return (
-    <div className="px-4 pt-6 pb-4 space-y-4">
+    <div className="space-y-5 px-4 pb-24 pt-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold flex items-center gap-2">
-          <PackageIcon className="w-5 h-5 text-primary" />
-          Produk
-        </h1>
+      <div className="flex items-center justify-between gap-3">
+        <div>
+          <h1 className="flex items-center gap-2 text-2xl font-extrabold tracking-tight">
+            <PackageIcon className="h-5 w-5 text-primary" />
+            Produk
+          </h1>
+        </div>
         {canManage && (
-          <Button size="sm" onClick={openAdd} className="h-9 gap-1.5">
-            <Plus className="w-4 h-4" />
+          <Button size="sm" onClick={openAdd} className="h-10 gap-1.5 rounded-full px-4 shadow-glow">
+            <Plus className="h-4 w-4" />
             Tambah
           </Button>
         )}
       </div>
 
       {/* Search & Filter */}
-      <div className="flex gap-2">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input
-            placeholder="Cari produk..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            className="pl-9 h-10"
-          />
-        </div>
-        <Select value={filterCategory} onValueChange={setFilterCategory}>
-          <SelectTrigger className="w-[120px] h-10">
-            <SelectValue placeholder="Kategori" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Semua</SelectItem>
-            {categories?.map(c => (
-              <SelectItem key={c.id} value={c.id!.toString()}>{c.icon} {c.name}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+      <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm">
+        <CardContent className="flex gap-2 p-2.5">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              name="product-search"
+              autoComplete="off"
+              placeholder="Cari nama, SKU, atau deskripsi…"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              className="h-10 border-transparent bg-background/70 pl-9"
+            />
+          </div>
+          <Select value={filterCategory} onValueChange={setFilterCategory}>
+            <SelectTrigger className="h-10 w-[124px] border-transparent bg-background/70">
+              <SelectValue placeholder="Kategori" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Semua</SelectItem>
+              {categories?.map(c => (
+                <SelectItem key={c.id} value={c.id!.toString()}>{c.icon} {c.name}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </CardContent>
+      </Card>
 
       {/* Product count */}
-      <p className="text-xs text-muted-foreground">{filtered.length} produk ditemukan</p>
+      <div className="flex items-center justify-between rounded-2xl border border-border/70 bg-card/70 px-4 py-3 shadow-soft backdrop-blur-sm">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+            <PackageIcon className="h-5 w-5" />
+          </div>
+          <div>
+            <p className="text-sm font-extrabold">{filtered.length} produk</p>
+            <p className="text-xs text-muted-foreground">Ditemukan sesuai filter</p>
+          </div>
+        </div>
+      </div>
 
       {/* Product List */}
       {filtered.length === 0 ? (
-        <div className="text-center py-12">
-          <PackageIcon className="w-12 h-12 mx-auto text-muted-foreground/30 mb-3" />
-          <p className="text-sm text-muted-foreground">Belum ada produk</p>
+        <div className="rounded-3xl border border-dashed border-border/80 bg-card/60 px-6 py-12 text-center shadow-soft">
+          <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+            <PackageIcon className="h-7 w-7" />
+          </div>
+          <p className="text-sm font-semibold">Belum ada produk</p>
           {canManage && (
             <Button variant="outline" size="sm" className="mt-3" onClick={openAdd}>
               <Plus className="w-4 h-4 mr-1" /> Tambah Produk
@@ -214,17 +232,17 @@ export default function Produk() {
           )}
         </div>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-2.5">
           {filtered.map(p => (
-            <Card key={p.id} className="border-0 shadow-sm">
-              <CardContent className="p-3">
+            <Card key={p.id} className="overflow-hidden rounded-3xl border-border/70 bg-card/80 shadow-soft backdrop-blur-sm transition-shadow hover:shadow-card">
+              <CardContent className="p-3.5">
                 <div className="flex items-start gap-3">
                   {/* Product thumbnail */}
-                  <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center shrink-0 overflow-hidden">
+                  <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-muted/70 shadow-soft">
                     {p.photo ? (
-                      <img src={p.photo} alt={p.name} className="w-full h-full object-cover" />
+                      <img src={p.photo} alt={p.name} width={56} height={56} loading="lazy" className="h-full w-full object-cover" />
                     ) : (
-                      <PackageIcon className="w-5 h-5 text-muted-foreground/40" />
+                      <PackageIcon className="h-5 w-5 text-muted-foreground/40" />
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -260,11 +278,11 @@ export default function Produk() {
                   <div className="flex flex-col gap-1">
                     {canManage ? (
                       <>
-                        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEdit(p)}>
-                          <Edit2 className="w-3.5 h-3.5" />
+                        <Button variant="ghost" size="icon" aria-label={`Edit ${p.name}`} className="h-8 w-8 rounded-full hover:bg-primary/10 hover:text-primary" onClick={() => openEdit(p)}>
+                          <Edit2 className="h-3.5 w-3.5" />
                         </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => setDeleteId(p.id!)}>
-                          <Trash2 className="w-3.5 h-3.5" />
+                        <Button variant="ghost" size="icon" aria-label={`Hapus ${p.name}`} className="h-8 w-8 rounded-full text-destructive hover:bg-destructive/10 hover:text-destructive" onClick={() => setDeleteId(p.id!)}>
+                          <Trash2 className="h-3.5 w-3.5" />
                         </Button>
                       </>
                     ) : null}
@@ -278,21 +296,22 @@ export default function Produk() {
 
       {/* Add/Edit Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-[95vw] rounded-xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>{editProduct ? 'Edit Produk' : 'Tambah Produk'}</DialogTitle>
+        <DialogContent className="max-h-[90vh] overflow-y-auto rounded-2xl p-0 sm:max-w-xl">
+          <DialogHeader className="border-b border-border/70 px-5 py-4 text-left">
+            <DialogTitle className="text-xl font-extrabold tracking-tight">{editProduct ? 'Edit Produk' : 'Tambah Produk'}</DialogTitle>
+            <p className="text-sm text-muted-foreground">Lengkapi informasi produk agar kasir lebih cepat saat transaksi.</p>
           </DialogHeader>
-          <div className="space-y-4 mt-2">
+          <div className="space-y-4 p-5">
             {/* Photo picker */}
-            <div className="space-y-1.5">
+            <div className="rounded-2xl border border-border/70 bg-muted/20 p-3">
               <Label>Foto Produk</Label>
-              <div className="flex items-center gap-3">
+              <div className="mt-2 flex items-center gap-3">
                 <div
-                  className="w-20 h-20 rounded-xl bg-muted border-2 border-dashed border-border flex items-center justify-center overflow-hidden cursor-pointer hover:border-primary/50 transition-colors"
+                  className="flex h-20 w-20 cursor-pointer items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed border-border bg-background transition-colors hover:border-primary/50"
                   onClick={() => fileInputRef.current?.click()}
                 >
                   {photo ? (
-                    <img src={photo} alt="Preview" className="w-full h-full object-cover" />
+                    <img src={photo} alt="Preview foto produk" width={80} height={80} className="h-full w-full object-cover" />
                   ) : (
                     <Camera className="w-6 h-6 text-muted-foreground/50" />
                   )}
@@ -333,12 +352,12 @@ export default function Produk() {
 
             <div className="space-y-1.5">
               <Label>Nama Produk *</Label>
-              <Input value={name} onChange={e => setName(e.target.value)} placeholder="Contoh: Nasi Goreng" className="h-11" />
+              <Input name="product-name" autoComplete="off" value={name} onChange={e => setName(e.target.value)} placeholder="Contoh: Nasi Goreng" className="h-11" />
             </div>
             <div className="space-y-1.5">
               <Label>SKU *</Label>
               <div className="flex gap-2">
-                <Input value={sku} onChange={e => setSku(e.target.value)} placeholder="Wajib diisi, contoh: NG001" className="h-11 flex-1" />
+                <Input name="product-sku" autoComplete="off" value={sku} onChange={e => setSku(e.target.value)} placeholder="Wajib diisi, contoh: NG001" className="h-11 flex-1" />
                 <Button
                   type="button"
                   variant="outline"
@@ -411,7 +430,7 @@ export default function Produk() {
             <div className="space-y-1.5">
               <Label>Barcode</Label>
               <div className="flex gap-2">
-                <Input value={barcode} onChange={e => setBarcode(e.target.value)} placeholder="Opsional" className="h-11 flex-1" />
+                <Input name="product-barcode" autoComplete="off" value={barcode} onChange={e => setBarcode(e.target.value)} placeholder="Opsional" className="h-11 flex-1" />
                 <Button
                   type="button"
                   variant="outline"
@@ -454,7 +473,7 @@ export default function Produk() {
 
       {/* Delete Confirmation */}
       <AlertDialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
-        <AlertDialogContent className="max-w-[90vw] rounded-xl">
+        <AlertDialogContent className="rounded-xl sm:max-w-sm">
           <AlertDialogHeader>
             <AlertDialogTitle>Hapus Produk?</AlertDialogTitle>
             <AlertDialogDescription>Produk yang dihapus tidak bisa dikembalikan.</AlertDialogDescription>

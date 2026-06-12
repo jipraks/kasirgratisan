@@ -100,61 +100,61 @@ export default function CustomersPage() {
   };
 
   return (
-    <div className="px-4 pt-6 pb-4 space-y-4">
+    <div className="space-y-4 px-4 pb-24 pt-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold flex items-center gap-2">
-          <UsersIcon className="w-5 h-5 text-primary" />
+        <h1 className="flex items-center gap-2 text-2xl font-extrabold tracking-tight">
+          <UsersIcon className="h-5 w-5 text-primary" />
           Pelanggan
         </h1>
-        <Button size="sm" onClick={openAdd} className="h-9 gap-1.5">
-          <Plus className="w-4 h-4" /> Tambah
+        <Button size="sm" onClick={openAdd} className="h-10 gap-1.5 rounded-full px-4 shadow-soft">
+          <Plus className="h-4 w-4" /> Tambah
         </Button>
       </div>
 
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-        <Input placeholder="Cari pelanggan..." value={search} onChange={e => setSearch(e.target.value)} className="pl-9 h-10" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Input placeholder="Cari pelanggan..." value={search} onChange={e => setSearch(e.target.value)} className="h-11 rounded-2xl border-border/70 bg-card/80 pl-9 shadow-soft" />
       </div>
 
       <p className="text-xs text-muted-foreground">{filtered.length} pelanggan</p>
 
       {filtered.length === 0 ? (
-        <div className="text-center py-12">
-          <UsersIcon className="w-12 h-12 mx-auto text-muted-foreground/30 mb-3" />
+        <div className="rounded-3xl border border-dashed border-border/70 bg-card/50 py-12 text-center">
+          <UsersIcon className="mx-auto mb-3 h-12 w-12 text-muted-foreground/30" />
           <p className="text-sm text-muted-foreground">Belum ada pelanggan</p>
-          <Button variant="outline" size="sm" className="mt-3" onClick={openAdd}>
-            <Plus className="w-4 h-4 mr-1" /> Tambah Pelanggan
+          <Button variant="outline" size="sm" className="mt-3 rounded-full" onClick={openAdd}>
+            <Plus className="h-4 w-4 mr-1" /> Tambah Pelanggan
           </Button>
         </div>
       ) : (
         <div className="space-y-2">
           {filtered.map(c => (
-            <Card key={c.id} className="border-0 shadow-sm">
-              <CardContent className="p-3">
+            <Card key={c.id} className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm">
+              <CardContent className="p-3.5">
                 <div className="flex items-start justify-between gap-2">
-                  <div className="flex-1 min-w-0">
+                  <div className="min-w-0 flex-1">
                     <h3 className="text-sm font-semibold">{c.name}</h3>
                     {c.phone && (
                       <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
-                        <Phone className="w-3 h-3" /> {c.phone}
+                        <Phone className="h-3 w-3" /> {c.phone}
                       </p>
                     )}
                     {c.email && (
                       <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
-                        <Mail className="w-3 h-3" /> {c.email}
+                        <Mail className="h-3 w-3" /> {c.email}
                       </p>
                     )}
                     {c.address && (
                       <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
-                        <MapPin className="w-3 h-3" /> {c.address}
+                        <MapPin className="h-3 w-3" /> {c.address}
                       </p>
                     )}
                     {c.notes && <p className="text-xs text-muted-foreground mt-1 italic">{c.notes}</p>}
                   </div>
                   <div className="flex gap-1">
-                    <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setViewCustomer(c)}><Eye className="w-3.5 h-3.5" /></Button>
-                    <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEdit(c)}><Edit2 className="w-3.5 h-3.5" /></Button>
-                    <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => setDeleteId(c.id!)}><Trash2 className="w-3.5 h-3.5" /></Button>
+                    <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full" onClick={() => setViewCustomer(c)}><Eye className="h-3.5 w-3.5" /></Button>
+                    <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full" onClick={() => openEdit(c)}><Edit2 className="h-3.5 w-3.5" /></Button>
+                    <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full text-destructive" onClick={() => setDeleteId(c.id!)}><Trash2 className="h-3.5 w-3.5" /></Button>
                   </div>
                 </div>
               </CardContent>
@@ -164,7 +164,7 @@ export default function CustomersPage() {
       )}
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-[95vw] rounded-xl">
+        <DialogContent className="max-w-md rounded-2xl">
           <DialogHeader><DialogTitle>{editCustomer ? 'Edit' : 'Tambah'} Pelanggan</DialogTitle></DialogHeader>
           <div className="space-y-4 mt-2">
             <div className="space-y-1.5"><Label>Nama Pelanggan *</Label><Input value={name} onChange={e => setName(e.target.value)} placeholder="Contoh: Budi Santoso" className="h-11" /></div>
@@ -172,13 +172,13 @@ export default function CustomersPage() {
             <div className="space-y-1.5"><Label>Email</Label><Input value={email} onChange={e => setEmail(e.target.value)} placeholder="nama@email.com" className="h-11" type="email" /></div>
             <div className="space-y-1.5"><Label>Alamat</Label><Input value={address} onChange={e => setAddress(e.target.value)} placeholder="Alamat pelanggan" className="h-11" /></div>
             <div className="space-y-1.5"><Label>Catatan</Label><Textarea value={notes} onChange={e => setNotes(e.target.value)} placeholder="Catatan tambahan" rows={2} /></div>
-            <Button className="w-full h-11" onClick={handleSave} disabled={!name.trim()}>Simpan</Button>
+            <Button className="h-11 w-full rounded-full" onClick={handleSave} disabled={!name.trim()}>Simpan</Button>
           </div>
         </DialogContent>
       </Dialog>
 
       <AlertDialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
-        <AlertDialogContent className="max-w-[90vw] rounded-xl">
+        <AlertDialogContent className="max-w-sm rounded-2xl">
           <AlertDialogHeader>
             <AlertDialogTitle>Hapus Pelanggan?</AlertDialogTitle>
             <AlertDialogDescription>Data pelanggan yang dihapus tidak bisa dikembalikan. Transaksi lama tetap menyimpan nama pelanggan.</AlertDialogDescription>
@@ -192,10 +192,10 @@ export default function CustomersPage() {
 
       {/* View customer + transaction history */}
       <Dialog open={!!viewCustomer} onOpenChange={(open) => { if (!open) setViewCustomer(null); }}>
-        <DialogContent className="max-w-[95vw] sm:max-w-md rounded-xl max-h-[85vh] overflow-y-auto">
+        <DialogContent className="max-w-md rounded-2xl max-h-[85vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <UsersIcon className="w-4 h-4 text-primary" />
+              <UsersIcon className="h-4 w-4 text-primary" />
               {viewCustomer?.name}
             </DialogTitle>
           </DialogHeader>
@@ -205,13 +205,13 @@ export default function CustomersPage() {
               {/* Contact info */}
               <div className="space-y-1.5">
                 {viewCustomer.phone && (
-                  <p className="text-sm text-muted-foreground flex items-center gap-2"><Phone className="w-3.5 h-3.5" /> {viewCustomer.phone}</p>
+                  <p className="text-sm text-muted-foreground flex items-center gap-2"><Phone className="h-3.5 w-3.5" /> {viewCustomer.phone}</p>
                 )}
                 {viewCustomer.email && (
-                  <p className="text-sm text-muted-foreground flex items-center gap-2"><Mail className="w-3.5 h-3.5" /> {viewCustomer.email}</p>
+                  <p className="text-sm text-muted-foreground flex items-center gap-2"><Mail className="h-3.5 w-3.5" /> {viewCustomer.email}</p>
                 )}
                 {viewCustomer.address && (
-                  <p className="text-sm text-muted-foreground flex items-center gap-2"><MapPin className="w-3.5 h-3.5" /> {viewCustomer.address}</p>
+                  <p className="text-sm text-muted-foreground flex items-center gap-2"><MapPin className="h-3.5 w-3.5" /> {viewCustomer.address}</p>
                 )}
                 {viewCustomer.notes && (
                   <p className="text-sm text-muted-foreground italic">{viewCustomer.notes}</p>
@@ -225,11 +225,11 @@ export default function CustomersPage() {
                 const totalSpent = completed.reduce((s, t) => s + t.total, 0);
                 return (
                   <div className="grid grid-cols-2 gap-2">
-                    <div className="rounded-xl bg-muted/50 p-3">
+                    <div className="rounded-2xl bg-muted/50 p-3.5">
                       <p className="text-[10px] text-muted-foreground">Total Transaksi</p>
                       <p className="text-lg font-bold">{completed.length}</p>
                     </div>
-                    <div className="rounded-xl bg-primary/5 p-3">
+                    <div className="rounded-2xl bg-primary/5 p-3.5">
                       <p className="text-[10px] text-muted-foreground">Total Belanja</p>
                       <p className="text-lg font-bold text-primary">Rp {totalSpent.toLocaleString('id-ID')}</p>
                     </div>
@@ -240,7 +240,7 @@ export default function CustomersPage() {
               {/* History */}
               <div className="space-y-2">
                 <div className="flex items-center gap-1.5">
-                  <ReceiptIcon className="w-3.5 h-3.5 text-muted-foreground" />
+                  <ReceiptIcon className="h-3.5 w-3.5 text-muted-foreground" />
                   <p className="text-sm font-semibold">Riwayat Transaksi</p>
                 </div>
 
@@ -248,7 +248,7 @@ export default function CustomersPage() {
                   <p className="text-xs text-muted-foreground py-4 text-center">Memuat...</p>
                 ) : customerTx.length === 0 ? (
                   <div className="text-center py-8">
-                    <ShoppingBag className="w-10 h-10 mx-auto text-muted-foreground/30 mb-2" />
+                    <ShoppingBag className="h-10 w-10 mx-auto text-muted-foreground/30 mb-2" />
                     <p className="text-xs text-muted-foreground">Belum ada transaksi</p>
                   </div>
                 ) : (
@@ -258,7 +258,7 @@ export default function CustomersPage() {
                         key={tx.id}
                         type="button"
                         onClick={() => navigate(`/history?txId=${tx.id}`)}
-                        className="w-full text-left rounded-lg border border-border p-2.5 hover:bg-muted/50 transition-colors"
+                        className="w-full text-left rounded-2xl border border-border p-2.5 hover:bg-muted/50 transition-colors"
                       >
                         <div className="flex items-center justify-between gap-2">
                           <div className="flex items-center gap-2 min-w-0">

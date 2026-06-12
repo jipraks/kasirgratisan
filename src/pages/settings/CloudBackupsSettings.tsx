@@ -111,34 +111,34 @@ export default function CloudBackupsSettings() {
   const usage = profile?.storageUsage;
 
   return (
-    <div className="px-4 pt-6 pb-20 space-y-4">
+    <div className="space-y-4 px-4 pb-24 pt-6">
       <div className="flex items-center gap-2">
         <Link to="/settings/cloud-backup">
-          <Button variant="ghost" size="icon" className="h-8 w-8"><ChevronLeft className="w-4 h-4" /></Button>
+          <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full"><ChevronLeft className="h-4 w-4" /></Button>
         </Link>
-        <h1 className="text-xl font-bold flex items-center gap-2">
-          <HardDrive className="w-5 h-5 text-primary" />
+        <h1 className="flex items-center gap-2 text-2xl font-extrabold tracking-tight">
+          <HardDrive className="h-5 w-5 text-primary" />
           Backup Tersimpan
         </h1>
       </div>
 
       {!isLoggedIn || !isSubscribed ? (
-        <Card className="border-0 shadow-sm">
+        <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm">
           <CardContent className="p-4 text-center text-sm text-muted-foreground">
             Aktifkan langganan cloud dulu untuk menyimpan backup.
           </CardContent>
         </Card>
       ) : (
         <>
-          <Card className="border-0 shadow-sm">
+          <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm">
             <CardContent className="p-4 space-y-3">
               {usage && (
                 <p className="text-xs text-muted-foreground">
                   {fmtMb(usage.usedMb)} dari {fmtMb(usage.limitMb)} terpakai
                 </p>
               )}
-              <Button className="w-full h-11 gap-2 font-semibold" disabled={busy === 'upload'} onClick={handleBackupNow}>
-                {busy === 'upload' ? <Loader2 className="w-4 h-4 animate-spin" /> : <UploadCloud className="w-4 h-4" />}
+              <Button className="h-11 w-full rounded-full gap-2 font-semibold" disabled={busy === 'upload'} onClick={handleBackupNow}>
+                {busy === 'upload' ? <Loader2 className="h-4 w-4 animate-spin" /> : <UploadCloud className="h-4 w-4" />}
                 Backup ke Cloud Sekarang
               </Button>
               {storeSettings?.lastCloudBackupAt && (
@@ -149,7 +149,7 @@ export default function CloudBackupsSettings() {
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-sm">
+          <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm">
             <CardContent className="p-4 space-y-2">
               {loading && backups.length === 0 ? (
                 <div className="flex items-center justify-center py-4 text-muted-foreground"><Loader2 className="w-5 h-5 animate-spin" /></div>
@@ -158,24 +158,24 @@ export default function CloudBackupsSettings() {
               ) : (
                 <>
                   {backups.map((b) => (
-                    <div key={b.id} className="flex items-center gap-2 rounded-lg border p-2.5">
+                    <div key={b.id} className="flex items-center garounded-2xl p-2 border p-2.5">
                       <div className="flex-1 min-w-0">
                         <p className="text-xs font-medium truncate">{b.fileName}</p>
                         <p className="text-[10px] text-muted-foreground">
                           {fmtMb(b.fileSize / (1024 * 1024))} · {format(new Date(b.createdAt), 'dd MMM yyyy HH:mm')}
                         </p>
                       </div>
-                      <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0" title="Restore" disabled={!!busy} onClick={() => setRestoreTarget(b)}>
-                        {busy === `restore:${b.id}` ? <Loader2 className="w-4 h-4 animate-spin" /> : <DownloadCloud className="w-4 h-4" />}
+                      <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full shrink-0" title="Restore" disabled={!!busy} onClick={() => setRestoreTarget(b)}>
+                        {busy === `restore:${b.id}` ? <Loader2 className="h-4 w-4 animate-spin" /> : <DownloadCloud className="h-4 w-4" />}
                       </Button>
-                      <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0 text-destructive" title="Hapus" disabled={!!busy} onClick={() => setDeleteTarget(b)}>
-                        {busy === `delete:${b.id}` ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+                      <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full shrink-0 text-destructive" title="Hapus" disabled={!!busy} onClick={() => setDeleteTarget(b)}>
+                        {busy === `delete:${b.id}` ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
                       </Button>
                     </div>
                   ))}
                   {hasMore && (
                     <Button variant="ghost" size="sm" className="w-full h-8 text-xs" disabled={loading} onClick={() => load(page + 1, true)}>
-                      {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Muat lebih banyak'}
+                      {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Muat lebih banyak'}
                     </Button>
                   )}
                 </>
@@ -186,7 +186,7 @@ export default function CloudBackupsSettings() {
       )}
 
       <AlertDialog open={!!restoreTarget} onOpenChange={(o) => !o && setRestoreTarget(null)}>
-        <AlertDialogContent className="max-w-[90vw] rounded-xl">
+        <AlertDialogContent className="max-w-sm rounded-2xl">
           <AlertDialogHeader>
             <AlertDialogTitle>Restore dari cloud?</AlertDialogTitle>
             <AlertDialogDescription>
@@ -201,7 +201,7 @@ export default function CloudBackupsSettings() {
       </AlertDialog>
 
       <AlertDialog open={!!deleteTarget} onOpenChange={(o) => !o && setDeleteTarget(null)}>
-        <AlertDialogContent className="max-w-[90vw] rounded-xl">
+        <AlertDialogContent className="max-w-sm rounded-2xl">
           <AlertDialogHeader>
             <AlertDialogTitle>Hapus backup cloud?</AlertDialogTitle>
             <AlertDialogDescription>"{deleteTarget?.fileName}" akan dihapus permanen dari cloud.</AlertDialogDescription>

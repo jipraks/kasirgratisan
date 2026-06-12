@@ -216,22 +216,22 @@ export default function ExpensesPage() {
   const noPaymentMethods = !paymentMethods || paymentMethods.length === 0;
 
   return (
-    <div className="px-4 pt-6 pb-20 space-y-4">
+    <div className="space-y-4 px-4 pb-24 pt-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Link to="/settings">
-            <Button variant="ghost" size="icon" className="h-8 w-8">
-              <ChevronLeft className="w-4 h-4" />
+            <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full">
+              <ChevronLeft className="h-4 w-4" />
             </Button>
           </Link>
-          <h1 className="text-xl font-bold flex items-center gap-2">
-            <Wallet className="w-5 h-5 text-warning" />
+          <h1 className="flex items-center gap-2 text-2xl font-extrabold tracking-tight">
+            <Wallet className="h-5 w-5 text-warning" />
             Pengeluaran
           </h1>
         </div>
         {canManage && (
-          <Button size="sm" onClick={openAdd} className="h-9 gap-1.5">
-            <Plus className="w-4 h-4" /> Tambah
+          <Button size="sm" onClick={openAdd} className="h-10 gap-1.5 rounded-full px-4 shadow-soft">
+            <Plus className="h-4 w-4" /> Tambah
           </Button>
         )}
       </div>
@@ -242,7 +242,7 @@ export default function ExpensesPage() {
           <button
             key={r}
             onClick={() => setRange(r)}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
+            className={`rounded-full px-3 py-1.5 text-xs font-medium border transition-colors ${
               range === r
                 ? 'border-primary bg-primary/10 text-primary'
                 : 'border-muted bg-background text-muted-foreground'
@@ -254,12 +254,12 @@ export default function ExpensesPage() {
       </div>
 
       {/* Total summary */}
-      <Card className="border-0 shadow-sm bg-warning/5">
-        <CardContent className="p-4 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-warning/15 text-warning flex items-center justify-center shrink-0">
+      <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm bg-warning/5">
+        <CardContent className="p-4 flex items-center gap-3.5">
+          <div className="h-10 w-10 rounded-2xl bg-warning/15 text-warning flex items-center justify-center shrink-0">
             <Receipt className="w-5 h-5" />
           </div>
-          <div className="flex-1 min-w-0">
+          <div className="min-w-0 flex-1">
             <p className="text-[10px] text-muted-foreground uppercase tracking-wide">
               Total Pengeluaran ({RANGE_LABELS[range]})
             </p>
@@ -292,15 +292,15 @@ export default function ExpensesPage() {
             onClick={() => setFilterCategoryId('all')}
             title="Hapus filter"
           >
-            <FilterX className="w-4 h-4" />
+            <FilterX className="h-4 w-4" />
           </Button>
         )}
       </div>
 
       {/* List */}
       {filtered.length === 0 ? (
-        <div className="text-center py-12">
-          <Wallet className="w-12 h-12 mx-auto text-muted-foreground/30 mb-3" />
+        <div className="rounded-3xl border border-dashed border-border/70 bg-card/50 py-12 text-center">
+          <Wallet className="mx-auto mb-3 h-12 w-12 text-muted-foreground/30" />
           <p className="text-sm text-muted-foreground">
             {expenses && expenses.length === 0
               ? 'Belum ada pengeluaran tercatat'
@@ -312,16 +312,16 @@ export default function ExpensesPage() {
           {filtered.map((exp) => {
             const cat = getCategory(exp.categoryId);
             return (
-              <Card key={exp.id} className="border-0 shadow-sm">
-                <CardContent className="p-3">
-                  <div className="flex items-start gap-3">
+              <Card key={exp.id} className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm">
+                <CardContent className="p-3.5">
+                  <div className="flex items-start gap-3.5">
                     <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-base"
+                      className="h-10 w-10 rounded-2xl flex items-center justify-center shrink-0 text-base"
                       style={{ backgroundColor: (cat?.color ?? '#6B7280') + '20' }}
                     >
                       {cat?.icon ?? '📦'}
                     </div>
-                    <div className="flex-1 min-w-0">
+                    <div className="min-w-0 flex-1">
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0 flex-1">
                           <p className="text-sm font-semibold truncate">{exp.title}</p>
@@ -334,7 +334,7 @@ export default function ExpensesPage() {
                         </p>
                       </div>
                       <div className="mt-1 flex items-center gap-2 text-[10px] text-muted-foreground">
-                        <Calendar className="w-3 h-3" />
+                        <Calendar className="h-3 w-3" />
                         <span>{format(new Date(exp.date), 'dd MMM yyyy', { locale: idLocale })}</span>
                       </div>
                       {exp.notes && (
@@ -350,7 +350,7 @@ export default function ExpensesPage() {
                             className="h-7 px-2 text-xs gap-1"
                             onClick={() => openEdit(exp)}
                           >
-                            <Edit2 className="w-3 h-3" /> Edit
+                            <Edit2 className="h-3 w-3" /> Edit
                           </Button>
                           <Button
                             variant="ghost"
@@ -358,7 +358,7 @@ export default function ExpensesPage() {
                             className="h-7 px-2 text-xs text-destructive gap-1"
                             onClick={() => setDeleteTarget(exp)}
                           >
-                            <Trash2 className="w-3 h-3" /> Hapus
+                            <Trash2 className="h-3 w-3" /> Hapus
                           </Button>
                         </div>
                       )}
@@ -373,13 +373,13 @@ export default function ExpensesPage() {
 
       {/* Add/Edit Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-[95vw] rounded-xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-md rounded-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>{editing ? 'Edit Pengeluaran' : 'Tambah Pengeluaran'}</DialogTitle>
           </DialogHeader>
 
           {(noCategories || noPaymentMethods) && (
-            <div className="rounded-xl bg-warning/10 border border-warning/30 p-3 text-xs text-foreground">
+            <div className="rounded-2xl bg-warning/10 border border-warning/30 p-3.5 text-xs text-foreground">
               {noCategories && (
                 <p>
                   Belum ada kategori pengeluaran. Tambahkan dulu di Pengaturan.
@@ -419,7 +419,7 @@ export default function ExpensesPage() {
               </Select>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3.5">
               <div className="space-y-1.5">
                 <Label>Nominal *</Label>
                 <Input
@@ -483,7 +483,7 @@ export default function ExpensesPage() {
 
       {/* Delete confirmation */}
       <AlertDialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
-        <AlertDialogContent className="max-w-[90vw] rounded-xl">
+        <AlertDialogContent className="max-w-sm rounded-2xl">
           <AlertDialogHeader>
             <AlertDialogTitle>Hapus pengeluaran?</AlertDialogTitle>
             <AlertDialogDescription>

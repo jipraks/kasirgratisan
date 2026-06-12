@@ -67,23 +67,23 @@ export default function CloudHistorySettings() {
   };
 
   return (
-    <div className="px-4 pt-6 pb-20 space-y-4">
+    <div className="space-y-4 px-4 pb-24 pt-6">
       <div className="flex items-center gap-2">
         <Link to="/settings/cloud-backup">
-          <Button variant="ghost" size="icon" className="h-8 w-8"><ChevronLeft className="w-4 h-4" /></Button>
+          <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full"><ChevronLeft className="h-4 w-4" /></Button>
         </Link>
-        <h1 className="text-xl font-bold flex items-center gap-2">
-          <History className="w-5 h-5 text-primary" />
+        <h1 className="flex items-center gap-2 text-2xl font-extrabold tracking-tight">
+          <History className="h-5 w-5 text-primary" />
           Riwayat Transaksi
         </h1>
       </div>
 
       {!isLoggedIn ? (
-        <Card className="border-0 shadow-sm">
+        <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm">
           <CardContent className="p-4 text-center text-sm text-muted-foreground">Login dulu untuk melihat riwayat transaksi.</CardContent>
         </Card>
       ) : (
-        <Card className="border-0 shadow-sm">
+        <Card className="border-border/70 bg-card/80 shadow-soft backdrop-blur-sm">
           <CardContent className="p-4 space-y-2">
             {loading && history.length === 0 ? (
               <div className="flex items-center justify-center py-4 text-muted-foreground"><Loader2 className="w-5 h-5 animate-spin" /></div>
@@ -92,7 +92,7 @@ export default function CloudHistorySettings() {
             ) : (
               <>
                 {history.map((tx) => (
-                  <div key={tx.id} className="flex items-center justify-between gap-2 rounded-lg border p-2.5">
+                  <div key={tx.id} className="flex items-center justify-between garounded-2xl p-2 border p-2.5">
                     <div className="min-w-0">
                       <p className="text-xs font-medium truncate">{tx.plan?.name ?? tx.planId}</p>
                       <p className="text-[10px] text-muted-foreground">{format(new Date(tx.createdAt), 'dd MMM yyyy HH:mm')}</p>
@@ -106,7 +106,7 @@ export default function CloudHistorySettings() {
                       </div>
                       {tx.status === 'PENDING' && (
                         <Button variant="outline" size="sm" className="h-8 gap-1 text-xs" disabled={busy === `verify:${tx.id}`} onClick={() => handleCheckPayment(tx.id)}>
-                          {busy === `verify:${tx.id}` ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <CreditCard className="w-3.5 h-3.5" />}
+                          {busy === `verify:${tx.id}` ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <CreditCard className="h-3.5 w-3.5" />}
                           Cek
                         </Button>
                       )}
@@ -115,7 +115,7 @@ export default function CloudHistorySettings() {
                 ))}
                 {hasMore && (
                   <Button variant="ghost" size="sm" className="w-full h-8 text-xs" disabled={loading} onClick={() => load(page + 1, true)}>
-                    {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Muat lebih banyak'}
+                    {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Muat lebih banyak'}
                   </Button>
                 )}
               </>
