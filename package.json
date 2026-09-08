@@ -87,7 +87,7 @@
     "react-hook-form": "^7.61.1",
     "react-i18next": "^17.0.8",
     "react-resizable-panels": "^2.1.9",
-    "react-router-dom": "^6.30.1",
+    "react-router-dom": "^6.30.6",
     "recharts": "^2.15.4",
     "sonner": "^1.7.4",
     "tailwind-merge": "^2.6.0",
