@@ -1,7 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '@/lib/db';
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { Settings, Store, CreditCard, Tag, Download, Edit2, Info, Truck, ArrowDownToLine, ArrowUpFromLine, ChevronRight, Receipt, Palette, HardDrive, Package, Camera, X, Ruler, Users as UsersIcon, ShieldCheck, LogOut, Smartphone, CheckCircle2, Globe, Share2, Wallet, Sparkles, LineChart, Cloud, HandCoins, ClipboardCheck, LayoutGrid, Send, AlertTriangle } from 'lucide-react';
+import { Settings, Store, CreditCard, Tag, Download, Edit2, Info, Truck, ArrowDownToLine, ArrowUpFromLine, ChevronRight, Receipt, Palette, HardDrive, Package, Camera, X, Ruler, Users as UsersIcon, ShieldCheck, LogOut, Smartphone, CheckCircle2, Globe, Share2, Wallet, Sparkles, HandCoins, ClipboardCheck, LayoutGrid } from 'lucide-react';
 import WhatsNewModal from '@/components/WhatsNewModal';
 import { FEATURES, getUnseenFeatures } from '@/lib/whats-new';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,9 +16,7 @@ import { toast } from 'sonner';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { compressImage } from '@/lib/image-utils';
 import { useAuth } from '@/hooks/use-auth';
-import { useCloudAuth } from '@/hooks/use-cloud-auth';
 import { createUser, isValidPin, isValidUsername, saveSession } from '@/lib/auth';
-import { isAnalyticsEnabled, setAnalyticsEnabled } from '@/lib/analytics';
 import { usePWAInstall } from '@/hooks/use-pwa-install';
 import { isNativePlatform, getDefaultBluetoothPrinter, setDefaultBluetoothPrinter, listPairedBluetoothDevices, type BluetoothPrinter } from '@/lib/printer';
 import { Printer } from 'lucide-react';
@@ -40,7 +38,6 @@ export default function Pengaturan() {
   const activeDebts = useLiveQuery(() => db.debts.where('status').anyOf('unpaid', 'partial').toArray());
 
   const { multiUserEnabled, currentUser, isOwner, can, logout } = useAuth();
-  const { isLoggedIn: cloudLoggedIn, isSyncSubscribed: cloudSubscribed } = useCloudAuth();
 
   // PWA install
   const { canInstall, isInstalled, isIOS, install } = usePWAInstall();
@@ -59,9 +56,6 @@ export default function Pengaturan() {
 
   // Logout confirmation
   const [logoutOpen, setLogoutOpen] = useState(false);
-
-  // Analytics opt-out (default: tracking on)
-  const [analyticsOn, setAnalyticsOn] = useState(isAnalyticsEnabled());
 
   // Cashier layout mode settings (default: 'grid')
   const [cashierLayoutMode, setCashierLayoutModeState] = useState<'grid' | 'rows'>(() => {
@@ -112,12 +106,6 @@ export default function Pengaturan() {
     setDefaultBluetoothPrinter(null);
     setDefaultPrinter(null);
     toast.success(t('toast.printerDefaultCleared'));
-  };
-
-  const handleToggleAnalytics = (enabled: boolean) => {
-    setAnalyticsOn(enabled);
-    setAnalyticsEnabled(enabled);
-    toast.success(enabled ? t('privacyAnalytics.enabled') : t('privacyAnalytics.disabled'));
   };
 
   const handleToggleDebt = async (enabled: boolean) => {
@@ -270,41 +258,6 @@ export default function Pengaturan() {
     return `${(bytes / (1024 * 1024 * 1024)).toFixed(1)} GB`;
   };
 
-  // Status kartu Cloud Sync di Settings.
-  const cloudAutoOn = (storeSettings?.cloudAutoBackupInterval ?? 'off') !== 'off';
-  const cloudStoreLinked = !!storeSettings?.cloudStoreId;
-  const cloudStatus = !(cloudLoggedIn && cloudSubscribed)
-    ? {
-        theme: 'bg-destructive/10 ring-destructive/20',
-        iconWrap: 'bg-destructive/15 text-destructive',
-        badge: 'bg-destructive text-white',
-        badgeText: t('cloudSync.status.inactive'),
-        desc: t('cloudSync.desc.inactive'),
-      }
-    : !cloudStoreLinked
-    ? {
-        theme: 'bg-warning/10 ring-warning/20',
-        iconWrap: 'bg-warning/15 text-warning',
-        badge: 'bg-warning text-white',
-        badgeText: t('cloudSync.status.selectStore'),
-        desc: t('cloudSync.desc.selectStore'),
-      }
-    : !cloudAutoOn
-    ? {
-        theme: 'bg-warning/10 ring-warning/20',
-        iconWrap: 'bg-warning/15 text-warning',
-        badge: 'bg-warning text-white',
-        badgeText: t('cloudSync.status.needsSetup'),
-        desc: t('cloudSync.desc.needsSetup'),
-      }
-    : {
-        theme: 'bg-success/10 ring-success/20',
-        iconWrap: 'bg-success/15 text-success',
-        badge: 'bg-success text-white',
-        badgeText: t('cloudSync.status.active'),
-        desc: t('cloudSync.desc.active'),
-      };
-
   return (
     <div className="px-4 pt-6 pb-4 space-y-5">
       <h1 className="text-xl font-bold flex items-center gap-2">
@@ -332,77 +285,6 @@ export default function Pengaturan() {
           {can('manage_store_settings') && <Edit2 className="w-4 h-4 text-muted-foreground" />}
         </CardContent>
       </Card>
-
-      {/* Play Store Alert */}
-      {!isNative && (
-        <Card className="border-0 shadow-sm bg-gradient-to-br from-indigo-600 to-indigo-800 text-white relative overflow-hidden">
-          <CardContent className="p-4 flex flex-col gap-3">
-            <div className="flex items-start gap-3">
-              <div className="w-10 h-10 rounded-xl bg-white/10 text-white flex items-center justify-center shrink-0">
-                <Smartphone className="w-5 h-5" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-sm font-bold text-white">{t('playStoreAlert.title')}</h3>
-                <p className="text-[11px] text-white/90 leading-relaxed mt-0.5">{t('playStoreAlert.description')}</p>
-                <p className="text-[10px] text-white/70 leading-relaxed mt-1.5 bg-black/10 rounded p-2 border border-white/5">
-                  {t('playStoreAlert.migrationInstructions')}
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2 justify-end mt-1">
-              {can('manage_backup') && (
-                <Link to="/settings/backup">
-                  <Button variant="ghost" size="sm" className="h-8 text-xs text-white hover:bg-white/10 hover:text-white border border-white/20">
-                    <Download className="w-3.5 h-3.5 mr-1" />
-                    {t('playStoreAlert.backupButton')}
-                  </Button>
-                </Link>
-              )}
-              <a
-                href="https://play.google.com/store/apps/details?id=com.freekasir.app"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button size="sm" className="h-8 text-xs bg-white text-indigo-700 hover:bg-indigo-50 font-semibold shadow-sm">
-                  {t('playStoreAlert.downloadButton')}
-                </Button>
-              </a>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Cloud Sync — featured, status-aware */}
-      {can('manage_backup') && (
-        <Link to="/settings/cloud-backup" className="block mt-2">
-          <Card className={`border-0 shadow-sm cursor-pointer hover:shadow-md transition-shadow overflow-hidden ring-1 ${cloudStatus.theme}`}>
-            <CardContent className="p-4 flex items-center gap-3">
-              <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${cloudStatus.iconWrap}`}>
-                <Cloud className="w-5 h-5" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-1.5">
-                  <p className="text-sm font-bold">{t('cloudSync.title')}</p>
-                  <span className={`text-[9px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 ${cloudStatus.badge}`}>
-                    {cloudStatus.badgeText}
-                  </span>
-                </div>
-                <p className="text-[11px] text-muted-foreground leading-snug mt-0.5">
-                  {cloudStatus.desc}
-                </p>
-                {cloudLoggedIn && cloudSubscribed && (
-                  <p className="text-[10px] text-muted-foreground/80 mt-1">
-                    {storeSettings?.lastCloudBackupAt
-                      ? t('cloudSync.lastSync', { time: new Date(storeSettings.lastCloudBackupAt).toLocaleString('id-ID') })
-                      : t('cloudSync.neverSynced')}
-                  </p>
-                )}
-              </div>
-              <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
-            </CardContent>
-          </Card>
-        </Link>
-      )}
 
       {/* Install as App — hidden when already installed */}
       {!isNative && !isInstalled && (
@@ -742,35 +624,6 @@ export default function Pengaturan() {
           </Link>
         )}
 
-        <Link to="/settings/report-issue" className="block">
-          <Card className="border-0 shadow-sm cursor-pointer hover:shadow-md transition-shadow mb-2">
-            <CardContent className="p-3 flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-warning/10 text-warning flex items-center justify-center">
-                <Send className="w-4 h-4" />
-              </div>
-              <div className="flex-1">
-                <p className="text-sm font-semibold">{t('masterData.reportIssue.title')}</p>
-                <p className="text-[10px] text-muted-foreground">{t('masterData.reportIssue.description')}</p>
-              </div>
-              <ChevronRight className="w-4 h-4 text-muted-foreground" />
-            </CardContent>
-          </Card>
-        </Link>
-
-        <a href="https://t.me/freekasir" target="_blank" rel="noopener noreferrer" className="block">
-          <Card className="border-0 shadow-sm cursor-pointer hover:shadow-md transition-shadow">
-            <CardContent className="p-3 flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center">
-                <Send className="w-4 h-4" />
-              </div>
-              <div className="flex-1">
-                <p className="text-sm font-semibold">{t('masterData.telegramSupport.title')}</p>
-                <p className="text-[10px] text-muted-foreground">{t('masterData.telegramSupport.description')}</p>
-              </div>
-              <ChevronRight className="w-4 h-4 text-muted-foreground" />
-            </CardContent>
-          </Card>
-        </a>
       </div>
 
       {/* Bluetooth Printer (APK only) */}
@@ -830,24 +683,6 @@ export default function Pengaturan() {
       </Card>
       )}
 
-      {/* Privasi & Analitik */}
-      <Card className="border-0 shadow-sm">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm flex items-center gap-1.5"><LineChart className="w-4 h-4" /> {t('privacyAnalytics.title')}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-between gap-3">
-            <div className="space-y-0.5 pr-3">
-              <Label className="text-sm">{t('privacyAnalytics.label')}</Label>
-              <p className="text-[11px] text-muted-foreground leading-snug">
-                {t('privacyAnalytics.description')}
-              </p>
-            </div>
-            <Switch checked={analyticsOn} onCheckedChange={handleToggleAnalytics} />
-          </div>
-        </CardContent>
-      </Card>
-
       {/* Bahasa */}
       <Card className="border-0 shadow-sm">
         <CardHeader className="pb-2">
@@ -880,30 +715,6 @@ export default function Pengaturan() {
                  </span>
                )}
              </button>
-             <a
-               href="https://kasirgratisan.fider.io"
-               target="_blank"
-               rel="noopener noreferrer"
-               className="flex items-center justify-center gap-2 w-full h-9 rounded-lg border border-border bg-muted/50 text-xs font-semibold text-foreground hover:bg-primary/5 hover:border-primary/30 hover:text-primary transition-colors"
-             >
-               {t('about.requestFeature')}
-             </a>
-             <a
-               href="https://traktir.jipraks.com"
-               target="_blank"
-               rel="noopener noreferrer"
-               className="flex items-center justify-center gap-2 w-full h-9 rounded-lg border border-warning/30 bg-warning/5 text-xs font-semibold text-warning hover:bg-warning/10 transition-colors"
-             >
-               {t('about.donate')}
-             </a>
-             <a
-               href="https://t.me/kasirgratisan"
-               target="_blank"
-               rel="noopener noreferrer"
-               className="flex items-center justify-center gap-2 w-full h-9 rounded-lg border border-sky-500/30 bg-sky-500/5 text-xs font-semibold text-sky-600 dark:text-sky-400 hover:bg-sky-500/10 transition-colors"
-             >
-               {t('about.telegram')}
-             </a>
            </div>
            {storageUsage && (
              <div className="pt-2 border-t">

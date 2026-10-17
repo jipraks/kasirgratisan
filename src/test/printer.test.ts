@@ -115,7 +115,7 @@ describe('getESCPOSData formatting', () => {
     }
   ];
 
-  it('should print the watermark by default when cloudStoreId and hideWatermark are not active', () => {
+  it('should print the watermark by default when hideWatermark is not set', () => {
     const mockStoreSettings: StoreSettings = {
       storeName: 'Toko Test',
       address: 'Alamat',
@@ -137,7 +137,7 @@ describe('getESCPOSData formatting', () => {
     expect(output).toContain('FreeKasir.com');
   });
 
-  it('should hide the watermark when cloudStoreId is set and hideWatermark is true', () => {
+  it('should hide the watermark when hideWatermark is true', () => {
     const mockStoreSettings: StoreSettings = {
       storeName: 'Toko Test',
       address: 'Alamat',
@@ -146,7 +146,6 @@ describe('getESCPOSData formatting', () => {
       onboardingDone: true,
       lastBackupAt: null,
       deviceId: 'test-device',
-      cloudStoreId: 'active-cloud-store',
       hideWatermark: true,
     };
 
@@ -161,7 +160,7 @@ describe('getESCPOSData formatting', () => {
     expect(output).not.toContain('FreeKasir.com');
   });
 
-  it('should still print the watermark if hideWatermark is true but cloudStoreId is not set', () => {
+  it('should hide the watermark when hideWatermark is true without any cloud store', () => {
     const mockStoreSettings: StoreSettings = {
       storeName: 'Toko Test',
       address: 'Alamat',
@@ -181,7 +180,8 @@ describe('getESCPOSData formatting', () => {
       paymentMethodName: 'Tunai',
     });
 
-    expect(output).toContain('Dicetak Dari Aplikasi');
-    expect(output).toContain('FreeKasir.com');
+    expect(output).not.toContain('Dicetak Dari Aplikasi');
+    expect(output).not.toContain('FreeKasir.com');
   });
+
 });

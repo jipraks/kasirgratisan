@@ -801,7 +801,7 @@ class PosDatabase extends Dexie {
 }
 
 export const db = new PosDatabase();
-setupSyncHooks(db);
+setupTimestampHooks(db);
 
 // Apakah stok produk dikelola? `undefined`/`true` = dikelola (perilaku lama),
 // `false` = tidak dikelola (produk selalu tersedia, stok diabaikan).
@@ -849,8 +849,8 @@ export async function sanitizeDatabaseDates() {
   await sanitizeTableDates(db.storeSettings, ['lastBackupAt', 'lastCloudBackupAt']);
 }
 
-export function setupSyncHooks(db: PosDatabase) {
-  const syncTables = [
+export function setupTimestampHooks(db: PosDatabase) {
+  const timestampedTables = [
     'categories',
     'products',
     'suppliers',
@@ -869,59 +869,20 @@ export function setupSyncHooks(db: PosDatabase) {
     'stockOpnames'
   ];
 
-  syncTables.forEach((tableName) => {
+  timestampedTables.forEach((tableName) => {
     const table = db.table(tableName);
 
-    table.hook('creating', (primKey, obj) => {
+    table.hook('creating', (_primKey, obj) => {
       if (!obj.updatedAt) {
         obj.updatedAt = new Date();
       }
-      if (obj.syncedAt === undefined) {
-        obj.syncedAt = null;
-      }
-      import('./sync').then(({ triggerBackgroundSync }) => triggerBackgroundSync());
     });
 
-    table.hook('updating', (mods, primKey, obj) => {
-      // If the update explicitly specifies syncedAt or updatedAt, preserve them
-      if (mods.syncedAt !== undefined || mods.updatedAt !== undefined) {
+    table.hook('updating', (mods) => {
+      if ((mods as { updatedAt?: unknown }).updatedAt !== undefined) {
         return;
       }
-
-      import('./sync').then(({ triggerBackgroundSync }) => triggerBackgroundSync());
-
-      // Otherwise, it's a user modification: set updatedAt to now, and reset syncedAt to null
-      return {
-        ...mods,
-        updatedAt: new Date(),
-        syncedAt: null
-      };
-    });
-  });
-
-  // Track hard deletes in the deletedRecords tombstone table
-  const hardDeleteTables = [
-    'paymentMethods',
-    'users',
-    'transactions',
-    'debts',
-    'stockOpnames'
-  ];
-
-  hardDeleteTables.forEach((tableName) => {
-    const table = db.table(tableName);
-    table.hook('deleting', (primKey, obj) => {
-      setTimeout(() => {
-        db.deletedRecords.add({
-          tableName,
-          recordId: primKey,
-          deletedAt: new Date(),
-          syncedAt: null
-        }).catch((err) => {
-          console.error(`Failed to record deletedRecord tombstone for ${tableName} (ID: ${primKey}):`, err);
-        });
-        import('./sync').then(({ triggerBackgroundSync }) => triggerBackgroundSync());
-      }, 0);
+      return { ...mods, updatedAt: new Date() };
     });
   });
 }

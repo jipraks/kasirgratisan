@@ -27,7 +27,6 @@ interface PrintData {
   paymentMethodName: string;
   cashierName?: string;
   language?: string;
-  isCloudActive?: boolean;
 }
 
 const DEFAULT_PRINTER_KEY = 'kg_default_bluetooth_printer';
@@ -84,7 +83,6 @@ export const getESCPOSData = ({
   paymentMethodName,
   cashierName,
   language,
-  isCloudActive,
 }: PrintData): string => {
   const lines: string[] = [];
   
@@ -130,8 +128,7 @@ export const getESCPOSData = ({
   lines.push('\x1B\x61\x01'); // Center
   lines.push(`${storeSettings?.receiptFooter || 'Terima kasih!'}\n`);
   
-  const cloudActive = isCloudActive !== undefined ? isCloudActive : !!storeSettings?.cloudStoreId;
-  const hideWatermark = !!storeSettings?.hideWatermark && cloudActive;
+  const hideWatermark = !!storeSettings?.hideWatermark;
   if (!hideWatermark) {
     const lang = language || 'id';
     let line1 = 'Dicetak Dari Aplikasi';
@@ -166,7 +163,6 @@ export interface DailyReportPrintData {
   expensesAmount?: number;
   netProfit?: number;
   language?: string;
-  isCloudActive?: boolean;
 }
 
 export const getDailyReportESCPOSData = ({
@@ -185,7 +181,6 @@ export const getDailyReportESCPOSData = ({
   expensesAmount = 0,
   netProfit = 0,
   language,
-  isCloudActive,
 }: DailyReportPrintData): string => {
   const lines: string[] = [];
   const rp = (n: number) => `Rp ${n.toLocaleString('id-ID')}`;
@@ -265,8 +260,7 @@ export const getDailyReportESCPOSData = ({
   lines.push('         END OF REPORT          \n');
   if (cashierName) lines.push(`Dicetak oleh: ${cashierName}\n`);
   
-  const cloudActive = isCloudActive !== undefined ? isCloudActive : !!storeSettings?.cloudStoreId;
-  const hideWatermark = !!storeSettings?.hideWatermark && cloudActive;
+  const hideWatermark = !!storeSettings?.hideWatermark;
   if (!hideWatermark) {
     const lang = language || 'id';
     let line1 = 'Dicetak Dari Aplikasi';

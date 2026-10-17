@@ -1,10 +1,9 @@
-import { useState, useMemo, useEffect } from 'react';
-import { Store, MapPin, Phone, ChevronRight, ChevronLeft, ShoppingCart, Package, BarChart3, Shield, Database, Palette, Download, CheckCircle2, Globe, Upload, Cloud, Loader2, DownloadCloud, LogOut, X } from 'lucide-react';
+import { useState, useMemo } from 'react';
+import { Store, MapPin, Phone, ChevronRight, ChevronLeft, ShoppingCart, Package, BarChart3, Shield, Database, Palette, Download, CheckCircle2, Globe, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { Checkbox } from '@/components/ui/checkbox';
 import { db, type Product } from '@/lib/db';
 import { markAllFeaturesSeen } from '@/lib/whats-new';
 import { cn } from '@/lib/utils';
@@ -13,12 +12,7 @@ import ThemeColorPicker from '@/components/ThemeColorPicker';
 import { applyThemeColor } from '@/hooks/use-theme-color';
 import { usePWAInstall } from '@/hooks/use-pwa-install';
 import { isNativePlatform } from '@/lib/printer';
-import { useCloudAuth } from '@/hooks/use-cloud-auth';
-import { GoogleLogin } from '@react-oauth/google';
-import { listBackups, downloadBackup, type CloudBackup } from '@/lib/cloud-api';
-import { nativeGoogleSignIn } from '@/lib/google-auth';
 import { restoreFromBackupData } from '@/lib/backup';
-import { format } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/i18n';
 
@@ -66,7 +60,6 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
   // Web/PWA: tutorial slides (0-3), install (4), store setup (5)
   // APK/native: tutorial slides (0-3), store setup (4)
   const [step, setStep] = useState(0);
-  const [agreedTnc, setAgreedTnc] = useState(false);
   const [storeName, setStoreName] = useState('');
   const [address, setAddress] = useState('');
   const [phone, setPhone] = useState('');
@@ -74,24 +67,6 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
   const [saving, setSaving] = useState(false);
   const [restoring, setRestoring] = useState(false);
   const [themeColor, setThemeColorState] = useState('215');
-  const { isLoggedIn: cloudLoggedIn, login: cloudLogin, googleUser: cloudUser, logout: cloudLogout } = useCloudAuth();
-  const [showCloud, setShowCloud] = useState(false);
-  const [cloudBackups, setCloudBackups] = useState<CloudBackup[]>([]);
-  const [cloudLoading, setCloudLoading] = useState(false);
-  const [cloudRestoringId, setCloudRestoringId] = useState<string | null>(null);
-  const [cloudLoginBusy, setCloudLoginBusy] = useState(false);
-
-  const handleNativeCloudLogin = async () => {
-    setCloudLoginBusy(true);
-    try {
-      const idToken = await nativeGoogleSignIn();
-      await cloudLogin(idToken);
-    } catch {
-      toast.error(t('toast.googleLoginFailed'));
-    } finally {
-      setCloudLoginBusy(false);
-    }
-  };
   const [installDone, setInstallDone] = useState(false);
   const { canInstall, isInstalled, install } = usePWAInstall();
 
@@ -226,47 +201,6 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
     await markAllFeaturesSeen();
     toast.success(successMsg);
     onComplete();
-  };
-
-  const loadCloudBackups = async () => {
-    setCloudLoading(true);
-    try {
-      const { items } = await listBackups({ page: 1, limit: 50 });
-      setCloudBackups(items);
-    } catch {
-      toast.error(t('toast.cloudLoadError'));
-    } finally {
-      setCloudLoading(false);
-    }
-  };
-
-  // Saat login cloud berhasil & panel terbuka, ambil daftar backup.
-  useEffect(() => {
-    if (showCloud && cloudLoggedIn) loadCloudBackups();
-  }, [showCloud, cloudLoggedIn]);
-
-  const handleCloudRestore = async (backup: CloudBackup) => {
-    if (cloudRestoringId) return;
-    // Tutup modal LEBIH DULU. Restore akan menulis onboardingDone=true yang
-    // memicu AppLayout melepas Onboarding; jika modal masih terbuka saat itu,
-    // Radix meninggalkan `pointer-events:none` di body → layar freeze.
-    setShowCloud(false);
-    setCloudRestoringId(backup.id);
-    setRestoring(true);
-    const toastId = toast.loading(t('restore.restoring'));
-    try {
-      const data = await downloadBackup(backup.id);
-      await restoreFromBackupData(data);
-      toast.dismiss(toastId);
-      await finishAfterRestore(t('toast.cloudRestoreSuccess'));
-    } catch (err) {
-      toast.dismiss(toastId);
-      toast.error(err instanceof Error ? err.message : t('toast.cloudRestoreError'));
-      setShowCloud(true); // buka lagi agar user bisa coba lagi
-    } finally {
-      setCloudRestoringId(null);
-      setRestoring(false);
-    }
   };
 
   const handleFinish = async () => {
@@ -469,135 +403,7 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
                 {restoring ? t('restore.restoring') : t('restore.backupButton')}
               </Button>
 
-              <Button
-                variant="outline"
-                className="w-full h-10 text-sm gap-2"
-                onClick={() => setShowCloud(true)}
-                disabled={restoring}
-              >
-                <Cloud className="w-4 h-4" />
-                {t('restore.cloudTitle')}
-              </Button>
             </div>
-
-            {showCloud && (
-              <div
-                className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
-                onClick={() => !cloudRestoringId && setShowCloud(false)}
-              >
-              <div
-                className="w-full max-w-md rounded-xl bg-background p-4 shadow-lg max-h-[85vh] overflow-y-auto space-y-3"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <div className="flex items-start justify-between gap-2">
-                  <div>
-                    <h2 className="text-base font-bold flex items-center gap-2">
-                      <Cloud className="w-5 h-5 text-primary" />
-                      {t('restore.cloudTitle')}
-                    </h2>
-                    <p className="text-xs text-muted-foreground mt-0.5">
-                      {t('restore.cloudSubtitle')}
-                    </p>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 shrink-0 -mr-1 -mt-1"
-                    disabled={!!cloudRestoringId}
-                    onClick={() => setShowCloud(false)}
-                  >
-                    <X className="w-4 h-4" />
-                  </Button>
-                </div>
-
-                {!cloudLoggedIn ? (
-                  <div className="space-y-3 py-2 text-center">
-                    <p className="text-xs text-muted-foreground">{t('restore.cloudLogin')}</p>
-                    <div className="flex justify-center">
-                      {isNative ? (
-                        <Button className="h-11 gap-2" disabled={cloudLoginBusy} onClick={handleNativeCloudLogin}>
-                          {cloudLoginBusy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Cloud className="w-4 h-4" />}
-                          {t('restore.googleContinue')}
-                        </Button>
-                      ) : (
-                        <GoogleLogin
-                          onSuccess={(cr) => {
-                            if (cr.credential) cloudLogin(cr.credential).catch(() => toast.error(t('toast.googleLoginFailed')));
-                            else toast.error(t('toast.googleLoginFailed'));
-                          }}
-                          onError={() => toast.error(t('toast.googleLoginFailed'))}
-                        />
-                      )}
-                    </div>
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    {/* Account info + logout */}
-                    <div className="flex items-center gap-3 rounded-xl border p-3">
-                      {cloudUser?.picture ? (
-                        <img src={cloudUser.picture} alt="" className="w-9 h-9 rounded-full" referrerPolicy="no-referrer" />
-                      ) : (
-                        <div className="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold">
-                          {cloudUser?.name?.charAt(0) ?? '?'}
-                        </div>
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold truncate">{cloudUser?.name ?? t('restore.account')}</p>
-                        <p className="text-[11px] text-muted-foreground truncate">{cloudUser?.email}</p>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-8 gap-1 text-muted-foreground shrink-0"
-                        disabled={!!cloudRestoringId}
-                        onClick={() => { cloudLogout(); setCloudBackups([]); }}
-                      >
-                        <LogOut className="w-4 h-4" /> {t('restore.switchAccount')}
-                      </Button>
-                    </div>
-
-                    {/* Backup list */}
-                    <div className="space-y-2">
-                      {cloudLoading ? (
-                        <div className="flex items-center justify-center py-6 text-muted-foreground">
-                          <Loader2 className="w-5 h-5 animate-spin" />
-                        </div>
-                      ) : cloudBackups.length === 0 ? (
-                        <p className="text-xs text-muted-foreground text-center py-6">
-                          {t('restore.noBackups')}
-                        </p>
-                      ) : (
-                        cloudBackups.map((b) => (
-                          <button
-                            key={b.id}
-                            type="button"
-                            disabled={!!cloudRestoringId}
-                            onClick={() => handleCloudRestore(b)}
-                            className="flex w-full items-center gap-2 rounded-lg border p-2.5 text-left hover:bg-muted/60 disabled:opacity-60"
-                          >
-                            <div className="flex-1 min-w-0">
-                              <p className="text-xs font-medium truncate">{b.fileName}</p>
-                              <p className="text-[10px] text-muted-foreground">
-                                {(b.fileSize / (1024 * 1024)).toFixed(2)} MB · {format(new Date(b.createdAt), 'dd MMM yyyy HH:mm')}
-                              </p>
-                            </div>
-                            {cloudRestoringId === b.id ? (
-                              <Loader2 className="w-4 h-4 animate-spin shrink-0" />
-                            ) : (
-                              <DownloadCloud className="w-4 h-4 text-primary shrink-0" />
-                            )}
-                          </button>
-                        ))
-                      )}
-                    </div>
-                    {cloudRestoringId && (
-                      <p className="text-[10px] text-muted-foreground text-center">{t('restore.restoringInProgress')}</p>
-                    )}
-                  </div>
-                )}
-              </div>
-              </div>
-            )}
 
             <div className="space-y-4">
               <div className="space-y-2">
@@ -679,42 +485,6 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
         )}
       </div>
 
-      {/* TnC consent — slide pertama saja */}
-      {isTutorialStep && tutorialIndex === 0 && (
-        <div className="px-4 pt-2">
-          <label className="flex items-start gap-2.5 cursor-pointer">
-            <Checkbox
-              checked={agreedTnc}
-              onCheckedChange={(c) => setAgreedTnc(c === true)}
-              className="mt-0.5"
-            />
-            <span className="text-xs text-muted-foreground leading-relaxed">
-              {t('tnc.agree')}{' '}
-              <a
-                href="https://freekasir.com/terms"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="text-primary font-medium underline"
-              >
-                {t('tnc.terms')}
-              </a>{' '}
-              {t('tnc.and')}{' '}
-              <a
-                href="https://freekasir.com/privacy"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="text-primary font-medium underline"
-              >
-                {t('tnc.privacy')}
-              </a>
-              .
-            </span>
-          </label>
-        </div>
-      )}
-
       {/* Navigation */}
       <div className="px-4 pt-4 flex items-center gap-3" style={{ paddingBottom: 'max(2rem, env(safe-area-inset-bottom, 2rem))' }}>
         {step > 0 && !isInstallStep && (
@@ -764,7 +534,7 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
             size="lg"
             className="flex-1 h-12 text-base font-semibold"
             onClick={() => setStep(s => s + 1)}
-            disabled={tutorialIndex === 0 && !agreedTnc}
+           
           >
             {t('navigation.next')}
             <ChevronRight className="w-4 h-4 ml-1" />

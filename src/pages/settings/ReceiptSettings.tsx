@@ -10,7 +10,6 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/use-auth';
-import { useCloudAuth } from '@/hooks/use-cloud-auth';
 import LockedPage from '@/components/LockedPage';
 import { toast } from 'sonner';
 
@@ -18,12 +17,9 @@ export default function ReceiptSettings() {
   const { t } = useTranslation('settings');
   const { can } = useAuth();
   const storeSettings = useLiveQuery(() => db.storeSettings.toCollection().first());
-  const { isLoggedIn: cloudLoggedIn, isSyncSubscribed: cloudSubscribed } = useCloudAuth();
   const [footerText, setFooterText] = useState('');
   const [printLogo, setPrintLogo] = useState(false);
   const [hideWatermark, setHideWatermark] = useState(false);
-
-  const isCloudActive = cloudLoggedIn && cloudSubscribed && !!storeSettings?.cloudStoreId;
 
   // Sync state with db loaded value
   useEffect(() => {
@@ -44,7 +40,7 @@ export default function ReceiptSettings() {
       await db.storeSettings.update(storeSettings.id, {
         receiptFooter: footerText.trim(),
         printLogo,
-        hideWatermark: hideWatermark && isCloudActive,
+        hideWatermark,
       });
       toast.success(t('receiptSettings.saveSuccess'));
     } catch {
@@ -92,20 +88,17 @@ export default function ReceiptSettings() {
             <div className="space-y-0.5">
               <Label 
                 htmlFor="hide-watermark-switch" 
-                className={`text-sm font-semibold cursor-pointer ${!isCloudActive ? 'opacity-70' : ''}`}
+                className="text-sm font-semibold cursor-pointer"
               >
                 {t('receiptSettings.hideWatermarkLabel')}
               </Label>
               <p className="text-[10px] text-muted-foreground leading-normal">
-                {isCloudActive 
-                  ? t('receiptSettings.hideWatermarkDescActive') 
-                  : t('receiptSettings.hideWatermarkDescRequired')}
+                {t('receiptSettings.hideWatermarkDescActive')}
               </p>
             </div>
             <Switch
               id="hide-watermark-switch"
-              checked={hideWatermark && isCloudActive}
-              disabled={!isCloudActive}
+              checked={hideWatermark}
               onCheckedChange={setHideWatermark}
             />
           </div>
@@ -181,7 +174,7 @@ export default function ReceiptSettings() {
             </div>
 
             {/* Watermark preview */}
-            {!(hideWatermark && isCloudActive) && (
+            {!hideWatermark && (
               <div className="text-center text-[10px] text-zinc-500 pt-2 border-t border-dotted border-zinc-200 dark:border-zinc-800 space-y-0.5">
                 <p>Dicetak Dari Aplikasi</p>
                 <p className="font-semibold">FreeKasir.com</p>

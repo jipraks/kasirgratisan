@@ -15,7 +15,6 @@ import { id, enUS, ms } from 'date-fns/locale';
 import type { Locale } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { trackEvent } from '@/lib/analytics';
 import { useAuth } from '@/hooks/use-auth';
 import LockedPage from '@/components/LockedPage';
 import { useTranslation } from 'react-i18next';
@@ -96,7 +95,6 @@ export default function CustomersPage() {
       toast.success(t('customers.toast.updated'));
     } else {
       await db.customers.add({ ...data, createdAt: new Date(), isDeleted: 0, deletedAt: null });
-      trackEvent('create_customer');
       toast.success(t('customers.toast.added'));
     }
     setDialogOpen(false);

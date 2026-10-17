@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from 'react';
 import { User, Check, Plus } from 'lucide-react';
 import { db, type Customer } from '@/lib/db';
 import { Input } from '@/components/ui/input';
-import { trackEvent } from '@/lib/analytics';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
@@ -67,7 +66,6 @@ export default function CustomerPicker({ customers, value, customerId, onChange,
         isDeleted: 0,
         deletedAt: null,
       });
-      trackEvent('create_customer');
       onChange(name, id as number);
       toast.success(t('customerPicker.toastAdded', { name }));
       setOpen(false);

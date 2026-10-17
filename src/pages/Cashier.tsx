@@ -21,7 +21,6 @@ import { id, enUS, ms } from 'date-fns/locale';
 import type { Locale } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/use-auth';
-import { trackEvent } from '@/lib/analytics';
 import CustomerPicker from '@/components/CustomerPicker';
 import LockedPage from '@/components/LockedPage';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -542,7 +541,6 @@ export default function Kasir() {
 
       const updatedTx = await db.transactions.get(editingTxId);
       toast.success(t('cashier.toast.transactionSuccess', { receiptNumber: updatedTx?.receiptNumber }));
-      trackEvent('create_transaction');
       setLastTransaction(updatedTx || null);
       setLastTxItems(itemRecords);
       setReceiptOpen(true);
@@ -606,7 +604,6 @@ export default function Kasir() {
       }
 
       toast.success(t('cashier.toast.transactionSuccess', { receiptNumber }));
-      trackEvent('create_transaction');
       setLastTransaction({ ...txData, id: txId as number });
       setLastTxItems(itemRecords);
       setReceiptOpen(true);

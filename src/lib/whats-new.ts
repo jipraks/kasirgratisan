@@ -1,4 +1,4 @@
-import { Wallet, AlertTriangle, Infinity as InfinityIcon, Users as UsersIcon, FileSpreadsheet, PackageSearch, Sparkles, Cloud, Printer, HandCoins, Receipt, ClipboardCheck, LayoutGrid, Send, type LucideIcon } from 'lucide-react';
+import { Wallet, AlertTriangle, Infinity as InfinityIcon, Users as UsersIcon, FileSpreadsheet, PackageSearch, Sparkles, Printer, HandCoins, Receipt, ClipboardCheck, LayoutGrid, type LucideIcon } from 'lucide-react';
 import { db } from './db';
 
 /**
@@ -23,20 +23,6 @@ export interface WhatsNewFeature {
 }
 
 export const FEATURES: WhatsNewFeature[] = [
-  {
-    id: '2026-07-telegram-support',
-    icon: Send,
-    iconColor: 'text-sky-500 bg-sky-500/10',
-    publishedAt: '2026-07-06',
-    cta: { to: 'https://t.me/freekasir' },
-  },
-  {
-    id: '2026-06-join-whatsapp',
-    icon: UsersIcon,
-    iconColor: 'text-primary bg-primary/10',
-    publishedAt: '2026-06-30',
-    cta: { to: 'https://s.id/wafreekasir' },
-  },
   {
     id: '2026-06-kitchen-ticket',
     icon: Printer,
@@ -85,13 +71,6 @@ export const FEATURES: WhatsNewFeature[] = [
     iconColor: 'text-primary bg-primary/10',
     publishedAt: '2026-06-15',
     cta: { to: '/reports' },
-  },
-  {
-    id: '2026-06-cloud-backup',
-    icon: Cloud,
-    iconColor: 'text-primary bg-primary/10',
-    publishedAt: '2026-06-11',
-    cta: { to: '/settings/cloud-backup' },
   },
   {
     id: '2026-06-rebrand-freekasir',

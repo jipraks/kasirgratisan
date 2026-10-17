@@ -12,7 +12,6 @@ import type { Transaction, StoreSettings, TransactionItemRecord } from '@/lib/db
 import { isNativePlatform, printNativeBluetooth, getESCPOSData, printKitchenTicketBluetooth, getKitchenTicketESCPOSData } from '@/lib/printer';
 import { Capacitor } from '@capacitor/core';
 import { downloadOrShareFile } from '@/lib/file-utils';
-import { useCloudAuth } from '@/hooks/use-cloud-auth';
 
 const LOCALES: Record<string, Locale> = { id, en: enUS, ms };
 const NUMBER_LOCALES: Record<string, string> = { id: 'id-ID', en: 'en-US', ms: 'ms-MY' };
@@ -29,8 +28,6 @@ interface ReceiptProps {
 
 export default function Receipt({ open, onClose, transaction, items, storeSettings, paymentMethodName, cashierName }: ReceiptProps) {
   const { t, i18n } = useTranslation('settings');
-  const { isLoggedIn: cloudLoggedIn, isSyncSubscribed: cloudSubscribed } = useCloudAuth();
-  const isCloudActive = cloudLoggedIn && cloudSubscribed && !!storeSettings?.cloudStoreId;
   const receiptRef = useRef<HTMLDivElement>(null);
   const [generating, setGenerating] = useState(false);
 
@@ -135,7 +132,6 @@ export default function Receipt({ open, onClose, transaction, items, storeSettin
       paymentMethodName, 
       cashierName,
       language: i18n.language,
-      isCloudActive
     };
 
     if (isNativePlatform()) {
@@ -328,7 +324,7 @@ export default function Receipt({ open, onClose, transaction, items, storeSettin
           </p>
 
           {/* Watermark */}
-          {!(storeSettings?.hideWatermark && isCloudActive) && (
+          {!storeSettings?.hideWatermark && (
             <div className="text-center text-[9px] text-gray-400 mt-2 pt-1 border-t border-dotted border-gray-200 space-y-0.5">
               <p>{t('receipt.watermarkLine1')}</p>
               <p className="font-semibold">{t('receipt.watermarkLine2')}</p>

@@ -8,7 +8,6 @@ import { toast } from 'sonner';
 import { isNativePlatform, printRawNativeBluetooth, getDailyReportESCPOSData, type DailyReportPrintData } from '@/lib/printer';
 import { Capacitor } from '@capacitor/core';
 import { downloadOrShareFile } from '@/lib/file-utils';
-import { useCloudAuth } from '@/hooks/use-cloud-auth';
 
 interface DailyReportReceiptProps {
   open: boolean;
@@ -21,8 +20,6 @@ const NUMBER_LOCALES: Record<string, string> = { id: 'id-ID', en: 'en-US', ms: '
 
 export default function DailyReportReceipt({ open, onClose, data }: DailyReportReceiptProps) {
   const { t, i18n } = useTranslation(['reports', 'settings']);
-  const { isLoggedIn: cloudLoggedIn, isSyncSubscribed: cloudSubscribed } = useCloudAuth();
-  const isCloudActive = cloudLoggedIn && cloudSubscribed && !!data.storeSettings?.cloudStoreId;
   const numberLocale = NUMBER_LOCALES[i18n.language] ?? 'id-ID';
   const currencySymbol = CURRENCY_SYMBOL[i18n.language] ?? 'Rp';
   const receiptRef = useRef<HTMLDivElement>(null);
@@ -127,7 +124,6 @@ export default function DailyReportReceipt({ open, onClose, data }: DailyReportR
       const rawText = getDailyReportESCPOSData({
         ...data,
         language: i18n.language,
-        isCloudActive,
       });
 
       if (isNativePlatform()) {
@@ -298,7 +294,7 @@ export default function DailyReportReceipt({ open, onClose, data }: DailyReportR
           </div>
 
           {/* Watermark */}
-          {!(data.storeSettings?.hideWatermark && isCloudActive) && (
+          {!data.storeSettings?.hideWatermark && (
             <div className="text-center text-[9px] text-gray-400 mt-2 pt-1 border-t border-dotted border-gray-200 space-y-0.5">
               <p>{t('settings:receipt.watermarkLine1')}</p>
               <p className="font-semibold">{t('settings:receipt.watermarkLine2')}</p>

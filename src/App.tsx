@@ -4,16 +4,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
-import { checkVersion } from "@/lib/version-check";
-import { initAnalytics } from "@/lib/analytics";
 import { Capacitor } from "@capacitor/core";
 import { StatusBar } from "@capacitor/status-bar";
-import { useAppUpdate } from "@/hooks/use-app-update";
 import { AuthProvider } from "@/hooks/use-auth";
-import { GoogleOAuthProvider } from "@react-oauth/google";
-import { CloudAuthProvider } from "@/hooks/use-cloud-auth";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import AnalyticsTracker from "@/components/AnalyticsTracker";
 import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n";
 import AppLayout from "./components/layout/AppLayout";
@@ -37,50 +31,20 @@ import ExpenseCategoriesSettings from "./pages/settings/ExpenseCategoriesSetting
 import UnitsSettings from "./pages/settings/UnitsSettings";
 import ThemeSettings from "./pages/settings/ThemeSettings";
 import ReceiptSettings from "./pages/settings/ReceiptSettings";
-import IssueReport from "./pages/settings/IssueReport";
 import StockOpname from "./pages/settings/StockOpname";
 import BackupRestoreSettings from "./pages/settings/BackupRestoreSettings";
-import CloudBackupSettings from "./pages/settings/CloudBackupSettings";
-import CloudAutoBackupSettings from "./pages/settings/CloudAutoBackupSettings";
-import CloudHistorySettings from "./pages/settings/CloudHistorySettings";
-import CloudStoreSettings from "./pages/settings/CloudStoreSettings";
-import CloudOnlineStoreSettings from "./pages/settings/CloudOnlineStoreSettings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID ?? "";
 
 const App = () => {
-  // Aktifkan pengecekan & unduhan update otomatis untuk Android
-  useAppUpdate();
-
   useEffect(() => {
-    checkVersion();
-    initAnalytics();
-
     if (Capacitor.isNativePlatform()) {
       StatusBar.setOverlaysWebView({ overlay: false }).catch(err => {
         console.warn("Gagal mengatur StatusBar overlay:", err);
       });
       document.documentElement.classList.add('is-native');
     }
-
-    // Pemicu awal background sync saat startup
-    import('@/lib/sync').then(({ triggerBackgroundSync }) => {
-      triggerBackgroundSync();
-    });
-
-    const handleOnline = () => {
-      console.log('[Sync] Jaringan kembali online, memicu sync...');
-      import('@/lib/sync').then(({ triggerBackgroundSync }) => {
-        triggerBackgroundSync();
-      });
-    };
-
-    window.addEventListener('online', handleOnline);
-    return () => {
-      window.removeEventListener('online', handleOnline);
-    };
   }, []);
 
   return (
@@ -92,9 +56,6 @@ const App = () => {
             <Sonner />
             <BrowserRouter>
               <AuthProvider>
-               <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-                <CloudAuthProvider>
-                <AnalyticsTracker />
               <Routes>
                 <Route element={<AppLayout />}>
                   <Route
@@ -258,14 +219,6 @@ const App = () => {
                     }
                   />
                   <Route
-                    path="/settings/report-issue"
-                    element={
-                      <ErrorBoundary>
-                        <IssueReport />
-                      </ErrorBoundary>
-                    }
-                  />
-                  <Route
                     path="/settings/stock-opname"
                     element={
                       <ErrorBoundary>
@@ -281,51 +234,9 @@ const App = () => {
                       </ErrorBoundary>
                     }
                   />
-                  <Route
-                    path="/settings/cloud-backup"
-                    element={
-                      <ErrorBoundary>
-                        <CloudBackupSettings />
-                      </ErrorBoundary>
-                    }
-                  />
-                  <Route
-                    path="/settings/cloud-backup/auto"
-                    element={
-                      <ErrorBoundary>
-                        <CloudAutoBackupSettings />
-                      </ErrorBoundary>
-                    }
-                  />
-                  <Route
-                    path="/settings/cloud-backup/history"
-                    element={
-                      <ErrorBoundary>
-                        <CloudHistorySettings />
-                      </ErrorBoundary>
-                    }
-                  />
-                  <Route
-                    path="/settings/cloud-backup/stores"
-                    element={
-                      <ErrorBoundary>
-                        <CloudStoreSettings />
-                      </ErrorBoundary>
-                    }
-                  />
-                  <Route
-                    path="/settings/cloud-backup/online-store"
-                    element={
-                      <ErrorBoundary>
-                        <CloudOnlineStoreSettings />
-                      </ErrorBoundary>
-                    }
-                  />
                 </Route>
                 <Route path="*" element={<NotFound />} />
               </Routes>
-              </CloudAuthProvider>
-             </GoogleOAuthProvider>
             </AuthProvider>
           </BrowserRouter>
         </TooltipProvider>
