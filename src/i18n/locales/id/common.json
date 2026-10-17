@@ -70,16 +70,6 @@
     "skip": "Lewati"
   },
   "whatsNewFeatures": {
-    "2026-07-telegram-support": {
-      "title": "Support Telegram",
-      "description": "Kini Anda dapat menghubungi tim support FreeKasir langsung via Telegram untuk bantuan cepat, saran, atau laporan kendala.",
-      "ctaLabel": "Hubungi Sekarang"
-    },
-    "2026-06-join-whatsapp": {
-      "title": "Gabung WhatsApp Channel Resmi",
-      "description": "Bergabunglah dengan WhatsApp Channel resmi FreeKasir untuk mendapatkan informasi tips bisnis terbaru, panduan penggunaan, serta pengumuman update fitur langsung di WhatsApp-mu!",
-      "ctaLabel": "Gabung Sekarang"
-    },
     "2026-06-kitchen-ticket": {
       "title": "Cetak Kitchen Ticket",
       "description": "Kini kamu bisa mencetak Kitchen Ticket (pesanan tanpa nominal/harga) langsung saat menyimpan bill atau dari daftar Open Bill. Dilengkapi dengan kotak kosong di sebelah kanan setiap item untuk checklist manual oleh bagian dapur.",
@@ -114,11 +104,6 @@
       "title": "Cetak Laporan Closing Harian",
       "description": "Kini kamu bisa mempratinjau, mengunduh, membagikan, dan mencetak laporan closing penjualan harian langsung ke printer thermal Bluetooth. Halaman Laporan kini otomatis membuka tab Harian secara default, lengkap dengan indikator jika belum ada transaksi di hari tersebut.",
       "ctaLabel": "Buka Laporan"
-    },
-    "2026-06-cloud-backup": {
-      "title": "Backup Otomatis ke Cloud",
-      "description": "Data toko kini bisa dibackup otomatis ke cloud yang aman — tetap aman walau HP hilang, rusak, atau ganti perangkat. Login dengan akun Google, pilih paket langganan, lalu atur jadwal backup otomatis. Kamu juga bisa restore data langsung dari cloud kapan saja.",
-      "ctaLabel": "Aktifkan Cloud Backup"
     },
     "2026-06-rebrand-freekasir": {
       "title": "Wajah Baru: FreeKasir",
@@ -162,16 +147,7 @@
     "reload": "Muat ulang",
     "goHome": "Ke beranda",
     "copyDetails": "Salin detail",
-    "copyPrompt": "Salin detail error berikut:",
-    "reportIssue": "Laporkan Kendala",
-    "reportTitle": "Kirim Laporan Masalah?",
-    "reportDescription": "Untuk membantu perbaikan, kami akan mengirimkan log detail error beserta informasi perangkat Anda (seperti tipe browser, ukuran layar, dan versi OS).\n\nDengan melanjutkan, Anda setuju untuk mengirimkan informasi perangkat tersebut ke tim developer.",
-    "cancel": "Batal",
-    "agreeAndSend": "Setuju & Kirim",
-    "sending": "Mengirim...",
-    "sendSuccess": "Laporan berhasil dikirim. Terima kasih!",
-    "sendFailed": "Gagal mengirim laporan. Silakan coba lagi.",
-    "networkError": "Terjadi kesalahan jaringan saat mengirim laporan."
+    "copyPrompt": "Salin detail error berikut:"
   },
   "notFound": {
     "title": "404",

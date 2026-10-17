@@ -9,7 +9,6 @@ android {
 
 apply from: "../capacitor-cordova-android-plugins/cordova.variables.gradle"
 dependencies {
-    implementation project(':capacitor-community-in-app-review')
     implementation project(':capacitor-app')
     implementation project(':capacitor-filesystem')
     implementation project(':capacitor-haptics')
@@ -18,10 +17,6 @@ dependencies {
     implementation project(':capacitor-share')
     implementation project(':capacitor-splash-screen')
     implementation project(':capacitor-status-bar')
-    implementation project(':capawesome-capacitor-app-update')
-    implementation project(':capgo-capacitor-social-login')
-    implementation project(':onesignal-capacitor-plugin')
-    implementation "com.android.billingclient:billing:8.3.0"
 }
 
 

@@ -70,16 +70,6 @@
     "skip": "Skip"
   },
   "whatsNewFeatures": {
-    "2026-07-telegram-support": {
-      "title": "Telegram Support",
-      "description": "You can now contact the FreeKasir support team directly via Telegram for quick assistance, feedback, or reporting issues.",
-      "ctaLabel": "Contact Now"
-    },
-    "2026-06-join-whatsapp": {
-      "title": "Join Official WhatsApp Channel",
-      "description": "Join the official FreeKasir WhatsApp Channel to get the latest business tips, user guides, and new feature announcements directly in your WhatsApp!",
-      "ctaLabel": "Join Now"
-    },
     "2026-06-kitchen-ticket": {
       "title": "Print Kitchen Ticket",
       "description": "You can now print Kitchen Tickets (orders without prices/totals) directly when saving a bill or from the Open Bill list. Features empty check boxes on the right side of each item for manual checking by the kitchen staff.",
@@ -114,11 +104,6 @@
       "title": "Print Daily Closing Report",
       "description": "Now you can preview, download, share, and print daily sales closing reports directly to a Bluetooth thermal printer. The Reports page now defaults to the Daily tab, complete with an indicator if there are no transactions for the day.",
       "ctaLabel": "Open Reports"
-    },
-    "2026-06-cloud-backup": {
-      "title": "Auto Backup to Cloud",
-      "description": "Your store data can now be automatically backed up to a secure cloud — keeping it safe even if your phone is lost, broken, or upgraded. Sign in with Google, choose a subscription, and set an auto-backup schedule. You can also restore data directly from the cloud anytime.",
-      "ctaLabel": "Enable Cloud Backup"
     },
     "2026-06-rebrand-freekasir": {
       "title": "New Look: FreeKasir",
@@ -162,16 +147,7 @@
     "reload": "Reload",
     "goHome": "Go to Home",
     "copyDetails": "Copy details",
-    "copyPrompt": "Copy the following error details:",
-    "reportIssue": "Report Issue",
-    "reportTitle": "Submit Issue Report?",
-    "reportDescription": "To help with improvements, we will send detailed error logs along with your device information (such as browser type, screen size, and OS version).\n\nBy proceeding, you agree to send this device information to the developer team.",
-    "cancel": "Cancel",
-    "agreeAndSend": "Agree & Send",
-    "sending": "Sending...",
-    "sendSuccess": "Report submitted successfully. Thank you!",
-    "sendFailed": "Failed to submit report. Please try again.",
-    "networkError": "A network error occurred while submitting the report."
+    "copyPrompt": "Copy the following error details:"
   },
   "notFound": {
     "title": "404",

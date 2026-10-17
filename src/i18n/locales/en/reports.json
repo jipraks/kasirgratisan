@@ -113,30 +113,6 @@
     "bluetoothUnavailable": "Bluetooth is not available in this browser. Use Chrome on Android.",
     "searchingPrinter": "Searching for Bluetooth printer...",
     "printSuccess": "Report printed successfully!",
-    "printFailed": "Failed to print. Make sure the Bluetooth printer is on.",
-    "reviewPromptWeb": "Please rate our app on Play Store!"
-  },
-  "survey": {
-    "title": "What type of business do you run with FreeKasir?",
-    "description": "Help us understand your needs by choosing one.",
-    "otherPlaceholder": "Write your business type…",
-    "submit": "Send",
-    "skip": "Skip",
-    "dontShowAgain": "Don't show again",
-    "thankYou": "Thank you for your feedback! 🙏",
-    "types": {
-      "groceryStore": "Grocery Store",
-      "coffeeShop": "Coffee Shop",
-      "cafeResto": "Cafe / Restaurant",
-      "clothingStore": "Clothing Store",
-      "grocery": "Grocery Store",
-      "pharmacy": "Pharmacy / Drugstore",
-      "hardwareStore": "Hardware Store",
-      "electronics": "Electronics Store",
-      "salonBarbershop": "Salon / Barbershop",
-      "laundry": "Laundry",
-      "onlineSeller": "Online Seller",
-      "other": "Other"
-    }
+    "printFailed": "Failed to print. Make sure the Bluetooth printer is on."
   }
 }

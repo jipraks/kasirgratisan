@@ -2,28 +2,6 @@
   "title": "Tetapan",
   "storeFallback": "Kedai Saya",
   "notSet": "Belum ditetapkan",
-  "playStoreAlert": {
-    "title": "Gunakan Aplikasi Android Rasmi!",
-    "description": "Untuk prestasi terbaik, sokongan pencetak Bluetooth, dan ciri luar talian yang lebih stabil, sila muat turun aplikasi FreeKasir di Google Play Store.",
-    "migrationInstructions": "Pindahkan data anda dengan mudah: 1. Eksport fail sandaran anda melalui menu Sandaran & Pulihkan di bawah. 2. Muat turun dan pasang aplikasi dari Play Store. 3. Import fail sandaran tersebut dalam aplikasi baru anda.",
-    "downloadButton": "Muat Turun di Play Store",
-    "backupButton": "Eksport Sandaran Sekarang"
-  },
-  "cloudSync": {
-    "title": "FreeKasir Cloud",
-    "status": {
-      "inactive": "BELUM AKTIF",
-      "selectStore": "PILIH KEDAI",
-      "needsSetup": "PERLU DIATUR",
-      "active": "AKTIF"
-    },
-    "desc": {
-      "inactive": "Data selamat di cloud, akses dashboard.freekasir.com, dan hubungkan kedai ke market.freekasir.com!",
-      "selectStore": "Langganan aktif, tetapi peranti belum disambungkan ke kedai. Pilih kedai untuk menyelaraskan data.",
-      "needsSetup": "Kedai telah disambungkan, tetapi penyelarasan automatik belum diaktifkan. Tetapkan jadual untuk menyelaraskan data secara berkala.",
-      "active": "Penyelarasan aktif. Pantau laporan kedai secara real-time di dashboard.freekasir.com dari mana-mana peranti."
-    }
-  },
   "installApp": {
     "title": "Pasang sebagai Aplikasi",
     "hint": "Buka terus dari skrin utama, tanpa pelayar",
@@ -143,14 +121,6 @@
       "description": "Pilih tata letak grid (kad) atau baris (senarai) untuk senarai produk",
       "grid": "Grid (Kad Besar)",
       "rows": "Baris (Senarai Ringkas)"
-    },
-    "reportIssue": {
-      "title": "Laporkan Kendala",
-      "description": "Laporkan ralat atau kendala teknikal aplikasi kepada pembangun"
-    },
-    "telegramSupport": {
-      "title": "Sokongan Telegram",
-      "description": "Hubungi pasukan sokongan FreeKasir melalui Telegram"
     }
   },
   "bluetoothPrinter": {
@@ -163,13 +133,6 @@
     "unnamed": "Tanpa Nama",
     "hint": "Pastikan pencetak telah dipasangkan melalui Tetapan Bluetooth Android terlebih dahulu."
   },
-  "privacyAnalytics": {
-    "title": "Privasi & Analitik",
-    "label": "Bantu Kami dengan Data Tanpa Nama",
-    "description": "Menghantar statistik penggunaan tanpa nama (halaman dilawati & aksi seperti buat produk/transaksi) untuk membantu pembangunan. Data perniagaan seperti nama produk, harga, dan jumlah transaksi tidak pernah dihantar.",
-    "enabled": "Analitik diaktifkan",
-    "disabled": "Analitik dinyahaktifkan"
-  },
   "language": {
     "title": "Bahasa / Language"
   },
@@ -178,9 +141,6 @@
     "tagline": "POS Percuma untuk UMK Indonesia 🇮🇩",
     "version": "v{{version}} • Data tersimpan dalam peranti",
     "whatsNew": "Apa Yang Baru di FreeKasir",
-    "requestFeature": "💡 Minta Fitur",
-    "donate": "☕ Belanja Kopi untuk Pembangun",
-    "telegram": "💬 Sertai Grup Telegram",
     "storageUsed": "Storan Digunakan"
   },
   "storeDialog": {
@@ -213,227 +173,6 @@
     "createOwnerFailed": "Gagal membuat akaun pemilik",
     "multiUserEnabled": "Multi-user aktif. Anda log masuk sebagai pemilik.",
     "multiUserDisabled": "Multi-user dinyahaktifkan"
-  },
-  "cloudBackup": {
-    "locked": {
-      "title": "FreeKasir Cloud",
-      "permissionLabel": "Urus Backup"
-    },
-    "promo": {
-      "title": "Jangkau Lebih Ramai Pelanggan!",
-      "description": "Aktifkan Kedai Online supaya kedai anda boleh diakses secara terbuka dengan pelbagai kelebihan:",
-      "benefit1": "Tampil di market.freekasir.com untuk menjangkau pembeli baru",
-      "benefit2": "Pelanggan boleh melihat menu dalam talian secara real-time dari telefon",
-      "benefit3": "Pautan kedai dalam talian yang unik untuk anda sendiri",
-      "button": "Lengkapkan Butiran Kedai"
-    },
-    "hero": {
-      "title": "Naik Taraf ke FreeKasir Cloud",
-      "description": "Pantau laporan secara real-time lewat {{dashboard}} dan promosikan kedai anda secara online di {{market}}!",
-      "startFrom": "Mulai",
-      "perMonth": "/bulan"
-    },
-    "benefits": {
-      "safe": {
-        "title": "Data Selamat di Cloud",
-        "desc": "Data disimpan secara automatik & kekal utuh walaupun telefon hilang, rosak, atau ganti peranti."
-      },
-      "dashboard": {
-        "title": "Akses Dashboard Web",
-        "desc": "Pantau laporan kedai secara real-time dari mana-mana telefon atau laptop menerusi {{dashboard}}."
-      },
-      "market": {
-        "title": "Menu Online & Market",
-        "desc": "Bina katalog menu dalam talian dengan mudah supaya pelanggan boleh semak produk anda di {{market}}."
-      },
-      "growth": {
-        "title": "Kembangkan Perniagaan",
-        "desc": "Tarik lebih ramai pembeli, tingkatkan jualan, dan urus banyak kedai/cawangan sekaligus dengan mudah!"
-      }
-    },
-    "loginPrompt": "Mulai sekarang, login dulu yuk 👇",
-    "continueWithGoogle": "Terus dengan Google",
-    "loginHint": "Selamat & pantas — tanpa kata laluan baru.",
-    "previewDashboard": "Intip {{dashboard}} →",
-    "account": {
-      "fallbackName": "Akaun Google",
-      "logout": "Log Keluar"
-    },
-    "syncNow": "Sync Sekarang",
-    "lastSync": "Selaras terakhir: {{time}}",
-    "neverSynced": "Belum pernah diselaraskan",
-    "manageFromAnywhere": "Urus kedai dari mana saja",
-    "subscription": {
-      "description": "Pantau laporan jualan, stok, & kewangan kedai dari mana saja — cukup buka di HP atau laptop lain. Semua data tersimpan selamat di cloud, kekal utuh walau peranti hilang, rosak, atau ganti HP.",
-      "loadingPlans": "Memuat pakej…",
-      "activePlan": "(pakej aktif)",
-      "unlimitedStores": "Unlimited",
-      "store_one": "{{count}} kedai",
-      "store_other": "{{count}} kedai",
-      "estimatedBackups": "≈ {{count}} fail backup",
-      "estimateNote": "*Anggaran berdasarkan saiz data semasa ({{size}}).",
-      "subscribe": "Langganan",
-      "renew": "Perpanjang",
-      "choose": "Pilih",
-      "extendOrChange": "Pilih pakej sama untuk memperpanjang, atau pakej lain untuk tukar.",
-      "close": "Tutup",
-      "changePlan": "Tukar Pakej",
-      "used": "terpakai",
-      "from": "dari",
-      "until": "s/d {{date}}"
-    },
-    "noStore": {
-      "title": "Belum ada kedai di cloud",
-      "description": "Langganan aktif, tapi data <0>belum diselaraskan</0> kerana belum ada kedai. Buat kedai dulu agar laporan muncul di dashboard.",
-      "createStore": "Buat Kedai Sekarang"
-    },
-    "deviceNotLinked": {
-      "title": "Peranti belum terhubung ke kedai",
-      "description": "Pilih kedai agar data boleh diselaraskan ke cloud.",
-      "select": "Pilih"
-    },
-    "menu": {
-      "dashboard": {
-        "title": "Buka Dashboard Web",
-        "subtitle": "Lihat laporan di {{dashboard}}"
-      },
-      "manageStore": {
-        "title": "Urus Kedai",
-        "subtitle": "Pilih atau buat kedai untuk sync"
-      },
-      "autoSync": {
-        "title": "Penyelarasan Otomatis"
-      },
-      "history": {
-        "title": "Sejarah Transaksi",
-        "subtitle": "Lihat pembelian & cek status pembayaran"
-      }
-    },
-    "interval": {
-      "off": "Nonaktif",
-      "hourly": "Setiap beberapa jam",
-      "daily": "Harian",
-      "weekly": "Mingguan",
-      "everyNHours": "Setiap {{hours}} jam"
-    },
-    "toast": {
-      "loginFailed": "Login Google gagal",
-      "checkoutFailed": "Gagal memulakan pembayaran",
-      "paymentSuccess": "Pembayaran berjaya! Langganan aktif. 🎉",
-      "paymentNotDetected": "Pembayaran belum dikesan. Selesaikan dulu pembayarannya, ya.",
-      "verifyFailed": "Gagal verifikasi pembayaran",
-      "selectStoreFirst": "Pilih kedai terlebih dahulu di menu Urus Kedai.",
-      "syncSuccess": "Penyelarasan ke cloud berjaya",
-      "syncFailed": "Gagal menyelaraskan ke cloud"
-    },
-    "paymentDialog": {
-      "title": "Menunggu Pembayaran",
-      "description": "Selesaikan pembayaran di halaman yang terbuka. Status langganan akan aktif otomatis selepas pembayaran kami terima.",
-      "checking": "Memeriksa status pembayaran otomatis setiap beberapa saat…",
-      "iHavePaid": "Saya sudah bayar — Cek sekarang",
-      "openPaymentPage": "Buka halaman pembayaran",
-      "close": "Tutup"
-    }
-  },
-  "cloudAutoBackup": {
-    "locked": {
-      "title": "Penyelarasan Otomatis",
-      "permissionLabel": "Urus Backup"
-    },
-    "title": "Penyelarasan Otomatis",
-    "requiresSubscription": "Aktifkan langganan FreeKasir Cloud dulu untuk mengatur penyelarasan automatik.",
-    "scheduleLabel": "Jadual Penyelarasan Automatik",
-    "interval": {
-      "off": "Nonaktif",
-      "hourly": "Setiap beberapa jam",
-      "daily": "Harian",
-      "weekly": "Mingguan"
-    },
-    "everyHours": {
-      "prefix": "Setiap",
-      "suffix": "jam"
-    },
-    "scheduleNote": "Penyelarasan berjalan automatik apabila aplikasi dibuka jika sudah melepasi interval. (PWA tidak menjalankan penyelarasan di latar belakang apabila aplikasi ditutup.)",
-    "toast": {
-      "off": "Penyelarasan automatik dimatikan",
-      "hourly": "Penyelarasan automatik setiap {{hours}} jam",
-      "daily": "Penyelarasan automatik harian",
-      "weekly": "Penyelarasan automatik mingguan"
-    },
-    "hourMinError": "Minimum 1 jam"
-  },
-  "cloudHistory": {
-    "locked": {
-      "title": "Sejarah Transaksi",
-      "permissionLabel": "Urus Backup"
-    },
-    "title": "Sejarah Transaksi",
-    "loginPrompt": "Log masuk dulu untuk melihat sejarah transaksi.",
-    "noTransactions": "Belum ada transaksi",
-    "loadMore": "Muat lebih banyak",
-    "checkButton": "Semak",
-    "status": {
-      "completed": "Berjaya",
-      "pending": "Menunggu",
-      "failed": "Gagal"
-    },
-    "toast": {
-      "paymentSuccess": "Pembayaran berjaya! Langganan aktif. 🎉",
-      "pending": "Pembayaran belum dikesan. Cuba lagi sebentar.",
-      "verifyFailed": "Gagal semak pembayaran"
-    }
-  },
-  "cloudStore": {
-    "locked": {
-      "title": "Urus Kedai",
-      "permissionLabel": "Urus Backup"
-    },
-    "title": "Urus Kedai",
-    "loading": "Memuat…",
-    "requiresSubscription": "Langganan FreeKasir Cloud diperlukan untuk mengurus kedai.",
-    "activeDevice": "Peranti ini disambungkan ke:",
-    "disconnect": "Putuskan",
-    "storeList": "Senarai Kedai",
-    "used": "{{used}} dari {{max}} terpakai",
-    "unlimited": "tidak terhad",
-    "addButton": "Tambah",
-    "atLimit": {
-      "title": "Had kedai pakej anda sudah penuh",
-      "description": "Pakej semasa hanya membenarkan {{max}} kedai. Naik taraf pakej FreeKasir Cloud untuk menambah kedai.",
-      "upgrade": "Naik Taraf Pakej"
-    },
-    "noStore": "Belum ada kedai. Buat kedai pertama anda.",
-    "createFirst": "Buat kedai pertama anda",
-    "addNew": "Tambah kedai baharu",
-    "storeNamePlaceholder": "Nama kedai, cth: Kedai Cawangan Kuala Lumpur",
-    "create": "Buat",
-    "rename": "Ubah nama",
-    "save": "Simpan",
-    "cancel": "Batal",
-    "delete": "Padam",
-    "connect": "Sambung",
-    "deleteConfirm": "Padam \"{{name}}\"? Semua data sync (produk, transaksi, dll.) akan dipadam kekal dari cloud.",
-    "yesDelete": "Ya, padam",
-    "stats": {
-      "stores": "kedai",
-      "products": "produk",
-      "transactions": "transaksi",
-      "backups": "backup"
-    },
-    "created": "Dibuat {{date}}",
-    "upgrade": "Naik Taraf Pakej",
-    "toast": {
-      "bind": "Peranti ini disambungkan ke kedai.",
-      "unbind": "Peranti diputuskan dari kedai.",
-      "create": "Kedai berjaya dibuat.",
-      "createFailed": "Gagal membuat kedai",
-      "rename": "Nama kedai dikemas kini.",
-      "renameFailed": "Gagal mengubah nama kedai",
-      "delete": "Kedai dan semua data sync-nya dipadam.",
-      "deleteFailed": "Gagal memadam kedai",
-      "createBound": "Kedai dibuat dan peranti automatik disambungkan.",
-      "atLimit": "Had kedai pakej anda sudah penuh. Naik taraf pakej untuk menambah kedai."
-    }
   },
   "backupRestore": {
     "locked": {
@@ -829,18 +568,6 @@
     "successDownloaded": "Backup berjaya dimuat turun",
     "errorCreateShare": "Gagal membuat / berkongsi fail backup"
   },
-  "pushPermission": {
-    "title": "Aktifkan Notifikasi?",
-    "description": "Supaya anda tidak terlepas maklumat penting terus di telefon — tanpa perlu buka aplikasi.",
-    "benefits": {
-      "cloudBackup": "Status backup cloud: berjaya, gagal, atau kuota hampir penuh.",
-      "payment": "Pengesahan pembayaran & peringatan sebelum langganan tamat.",
-      "announcement": "Info penyelenggaraan & pengumuman penting daripada FreeKasir."
-    },
-    "enable": "Aktifkan Notifikasi",
-    "later": "Nanti",
-    "hint": "Anda boleh mematikannya bila-bila masa dari tetapan pelayar."
-  },
   "customerPicker": {
     "placeholder": "Nama pelanggan",
     "addLabel": "Tambah pelanggan \"{{name}}\"",
@@ -898,107 +625,11 @@
     "footerLabel": "Teks Footer Resit",
     "hideWatermarkLabel": "Sembunyikan Watermark Aplikasi",
     "hideWatermarkDescActive": "Sembunyikan tulisan \"Dicetak Daripada Aplikasi FreeKasir.com\" di bahagian bawah resit.",
-    "hideWatermarkDescRequired": "Watermark hanya boleh dinyahaktifkan jika FreeKasir Cloud aktif.",
     "saveSuccess": "Tetapan resit berjaya disimpan",
     "saveFailed": "Gagal menyimpan tetapan resit"
-  },
-  "cloudOnlineStore": {
-    "title": "Kedai Online & Market",
-    "linkedStoreRequired": "Peranti ini belum disambungkan ke kedai cloud. Sila sambungkannya terlebih dahulu di halaman tetapan FreeKasir Cloud.",
-    "identifier": {
-      "label": "URL Kedai (Identifier)",
-      "placeholder": "nama-kedai-anda",
-      "checkButton": "Semak Ketersediaan",
-      "available": "Tahniah! URL kedai tersedia.",
-      "notAvailable": "Maaf, URL kedai ini telah digunakan.",
-      "invalid": "Format URL tidak sah (gunakan huruf, nombor, dan sempang sahaja).",
-      "saveButton": "Simpan URL Kedai",
-      "saved": "URL Kedai berjaya disimpan.",
-      "slugInfo": "Kedai anda boleh diakses di: "
-    },
-    "visibility": {
-      "title": "Pamerkan Kedai di Market",
-      "description": "Aktifkan untuk membolehkan katalog produk kedai anda dilihat secara umum di market.freekasir.com.",
-      "requiresIdentifier": "URL Kedai mesti disimpan terlebih dahulu sebelum membolehkan kedai diakses secara umum.",
-      "unsavedIdentifier": "Terdapat perubahan URL Kedai yang belum disimpan. Sila simpan URL Kedai terlebih dahulu.",
-      "unsavedDetails": "Terdapat perubahan maklumat kedai yang belum disimpan. Sila simpan maklumat kedai terlebih dahulu.",
-      "incompleteDetails": "Semua maklumat kedai mesti diisi sebelum membolehkan kedai diakses secara umum. Maklumat berikut masih kosong: {{fields}}",
-      "fields": {
-        "name": "Nama Kedai",
-        "phone": "Nombor Telefon Kedai",
-        "address": "Alamat Lengkap",
-        "province": "Negeri (Province)",
-        "city": "Daerah / Bandar (City)",
-        "district": "Kawasan / Mukim (District)",
-        "coordinates": "Koordinat Lokasi (Peta)"
-      }
-    },
-    "details": {
-      "title": "Maklumat Kedai Terperinci",
-      "phone": "Nombor Telefon Kedai",
-      "address1": "Alamat Lengkap",
-      "address2": "Unit Kedai / Tingkat / No. Rumah (Pilihan)",
-      "province": "Negeri (Province)",
-      "city": "Daerah / Bandar (City)",
-      "district": "Kawasan / Mukim (District)",
-      "timezone": "Zon Waktu",
-      "saveButton": "Simpan Maklumat Kedai",
-      "saved": "Maklumat kedai berjaya disimpan."
-    },
-    "location": {
-      "title": "Koordinat Peta (Map Picker)",
-      "gpsButton": "Gunakan GPS Semasa",
-      "gpsLocating": "Mencari lokasi...",
-      "dragPin": "Seret pin pada peta untuk melaras lokasi kedai anda yang tepat."
-    },
-    "operationalHours": {
-      "title": "Waktu Operasi",
-      "closed": "Tutup",
-      "open": "Buka",
-      "addTimeSlot": "Tambah Slot Waktu",
-      "days": {
-        "monday": "Isnin",
-        "tuesday": "Selasa",
-        "wednesday": "Rabu",
-        "thursday": "Khamis",
-        "friday": "Jumaat",
-        "saturday": "Sabtu",
-        "sunday": "Ahad"
-      }
-    },
-    "logo": {
-      "title": "Logo Kedai",
-      "upload": "Muat Naik Logo",
-      "change": "Tukar Logo",
-      "delete": "Padam Logo",
-      "deleteConfirm": "Adakah anda pasti mahu memadam logo kedai ini?",
-      "requirements": "Maks 2 MB. Format: JPG, PNG, WebP",
-      "uploadSuccess": "Logo kedai berjaya dikemas kini.",
-      "uploadFailed": "Gagal memuat naik logo kedai.",
-      "deleteSuccess": "Logo kedai berjaya dipadam.",
-      "deleteFailed": "Gagal memadam logo kedai.",
-      "tooLarge": "Saiz fail melebihi had 2 MB.",
-      "invalidType": "Jenis fail tidak sah. Sila gunakan imej JPG, PNG, atau WebP."
-    }
   },
   "kitchenTicket": {
     "title": "Tiket Dapur",
     "done": "Selesai"
-  },
-  "issueReport": {
-    "title": "Laporkan Kendala",
-    "descriptionLabel": "Keterangan Ralat / Masalah",
-    "placeholder": "Tuliskan seterperinci mungkin tentang ralat atau kendala yang anda alami...",
-    "disclaimer": "Dengan menghantar laporan, maklumat teknikal peranti anda (seperti versi pelayar, resolusi skrin, dan OS) akan turut dihantar untuk memudahkan pembetulan.",
-    "submit": "Hantar Laporan",
-    "confirmTitle": "Hantar Laporan Masalah?",
-    "confirmDescription": "Kami akan menghantar butiran masalah berserta maklumat teknikal peranti anda kepada pasukan pembangun.\n\nAdakah anda bersetuju dan ingin meneruskan?",
-    "cancel": "Batal",
-    "agreeAndSend": "Setuju & Hantar",
-    "sending": "Menghantar...",
-    "success": "Laporan ralat berjaya dihantar. Terima kasih!",
-    "failed": "Gagal menghantar laporan. Sila cuba lagi.",
-    "networkError": "Ralat rangkaian berlaku semasa menghantar laporan.",
-    "emptyError": "Sila isi keterangan kendala terlebih dahulu."
   }
 }

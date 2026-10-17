@@ -230,42 +230,6 @@ New COGS = ((Old Stock × Old COGS) + (New Qty × Buy Price)) / (Old Stock + New
 
 ---
 
-## 💬 Feedback & Feature Requests
-
-Got suggestions, feature ideas, or found a bug? Submit and vote on our board:
-
-👉 **[kasirgratisan.fider.io](https://kasirgratisan.fider.io/)**
-
----
-
-## 👥 Community
-
-Join the Telegram group to discuss the app, ask questions, and share tips with other users:
-
-👉 **[t.me/kasirgratisan](https://t.me/kasirgratisan)**
-
----
-
-## 💎 Sponsors
-
-FreeKasir is proudly supported by:
-
-<a href="https://sumopod.com/" target="_blank">
-  <img src="public/sponsors/sumopod.png" alt="Sumopod" height="60">
-</a>
-
-Want to sponsor FreeKasir and have your logo featured here? Reach out at **[sponsorship@freekasir.com](mailto:sponsorship@freekasir.com)**.
-
----
-
-## ☕ Support the Developer
-
-FreeKasir is built and maintained for free. If you find it useful, you can buy the developer a coffee to support continued development:
-
-👉 **[traktir.jipraks.com](https://traktir.jipraks.com/)**
-
----
-
 ## 🤝 Contributing
 
 Contributions are welcome! Here's how:

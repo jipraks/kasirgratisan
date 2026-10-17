@@ -51,21 +51,7 @@
     "title": "Sudah punya backup?",
     "desc": "Restore file JSON dari device lama tanpa perlu setup toko ulang.",
     "backupButton": "Restore Toko dari Backup",
-    "restoring": "Restore data...",
-    "cloudTitle": "Restore dari Cloud",
-    "cloudSubtitle": "Login dengan akun Google, lalu pilih backup untuk dipulihkan.",
-    "cloudLogin": "Login Google untuk melihat backup di cloud.",
-    "googleContinue": "Lanjut dengan Google",
-    "account": "Akun Google",
-    "switchAccount": "Ganti",
-    "noBackups": "Tidak ada backup di cloud untuk akun ini.",
-    "restoringInProgress": "Memulihkan data… jangan tutup aplikasi."
-  },
-  "tnc": {
-    "agree": "Dengan melanjutkan, saya menyetujui",
-    "terms": "Syarat & Ketentuan",
-    "and": "dan",
-    "privacy": "Kebijakan Privasi"
+    "restoring": "Restore data..."
   },
   "navigation": {
     "next": "Lanjut",
@@ -73,14 +59,10 @@
     "saving": "Menyimpan..."
   },
   "toast": {
-    "googleLoginFailed": "Login Google gagal",
     "restoreInvalidFile": "File backup tidak valid",
     "restoreNoData": "File backup tidak berisi data",
     "restoreSuccess": "Data berhasil di-restore!",
-    "restoreError": "Gagal membaca / restore file backup",
-    "cloudRestoreSuccess": "Data berhasil di-restore dari cloud!",
-    "cloudRestoreError": "Gagal restore dari cloud",
-    "cloudLoadError": "Gagal memuat daftar backup cloud"
+    "restoreError": "Gagal membaca / restore file backup"
   },
   "language": {
     "title": "Pilih Bahasa",

@@ -70,16 +70,6 @@
     "skip": "Langkau"
   },
   "whatsNewFeatures": {
-    "2026-07-telegram-support": {
-      "title": "Sokongan Telegram",
-      "description": "Kini anda boleh menghubungi pasukan sokongan FreeKasir secara langsung melalui Telegram untuk bantuan cepat, maklum balas, atau melaporkan kendala.",
-      "ctaLabel": "Hubungi Sekarang"
-    },
-    "2026-06-join-whatsapp": {
-      "title": "Sertai Saluran WhatsApp Rasmi",
-      "description": "Sertai Saluran WhatsApp rasmi FreeKasir untuk mendapatkan maklumat tips perniagaan terkini, panduan penggunaan, serta pengumuman kemas kini ciri secara langsung di WhatsApp anda!",
-      "ctaLabel": "Sertai Sekarang"
-    },
     "2026-06-kitchen-ticket": {
       "title": "Cetak Tiket Dapur",
       "description": "Kini anda boleh mencetak Tiket Dapur (pesanan tanpa harga/jumlah) secara langsung apabila menyimpan bil atau dari senarai Bil Terbuka. Lengkap dengan kotak checklist kosong di sebelah kanan setiap item untuk ditanda secara manual oleh pihak dapur.",
@@ -114,11 +104,6 @@
       "title": "Cetak Laporan Closing Harian",
       "description": "Kini anda boleh melihat pratonton, memuat turun, berkongsi, dan mencetak laporan closing jualan harian terus ke pencetak terma Bluetooth. Halaman Laporan kini dibuka secara automatik ke tab Harian secara lalai, lengkap dengan penunjuk jika tiada transaksi pada hari tersebut.",
       "ctaLabel": "Buka Laporan"
-    },
-    "2026-06-cloud-backup": {
-      "title": "Sandaran Automatik ke Awan",
-      "description": "Data kedai kini boleh disandarkan secara automatik ke awan yang selamat — kekal selamat walaupun telefon hilang, rosak, atau bertukar peranti. Log masuk dengan akaun Google, pilih pakej langganan, dan tetapkan jadual sandaran automatik. Anda juga boleh memulihkan data terus dari awan pada bila-bila masa.",
-      "ctaLabel": "Aktifkan Cloud Backup"
     },
     "2026-06-rebrand-freekasir": {
       "title": "Wajah Baru: FreeKasir",
@@ -162,16 +147,7 @@
     "reload": "Muat semula",
     "goHome": "Ke beranda",
     "copyDetails": "Salin butiran",
-    "copyPrompt": "Salin butiran ralat berikut:",
-    "reportIssue": "Laporkan Ralat",
-    "reportTitle": "Hantar Laporan Masalah?",
-    "reportDescription": "Untuk membantu pembetulan, kami akan menghantar log perincian ralat berserta maklumat peranti anda (seperti jenis pelayar, saiz skrin, dan versi OS).\n\nDengan meneruskan, anda bersetuju untuk menghantar maklumat peranti tersebut kepada pasukan pembangun.",
-    "cancel": "Batal",
-    "agreeAndSend": "Setuju & Hantar",
-    "sending": "Menghantar...",
-    "sendSuccess": "Laporan ralat berjaya dihantar. Terima kasih!",
-    "sendFailed": "Gagal menghantar laporan. Sila cuba lagi.",
-    "networkError": "Ralat rangkaian berlaku semasa menghantar laporan."
+    "copyPrompt": "Salin butiran ralat berikut:"
   },
   "notFound": {
     "title": "404",

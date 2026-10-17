@@ -51,21 +51,7 @@
     "title": "Sudah ada backup?",
     "desc": "Pulihkan fail JSON dari peranti lama — tak perlu sediakan kedai semula.",
     "backupButton": "Pulihkan Kedai dari Backup",
-    "restoring": "Memulihkan data...",
-    "cloudTitle": "Pulihkan dari Cloud",
-    "cloudSubtitle": "Log masuk dengan akaun Google, kemudian pilih backup untuk dipulihkan.",
-    "cloudLogin": "Log masuk Google untuk melihat backup di cloud.",
-    "googleContinue": "Teruskan dengan Google",
-    "account": "Akaun Google",
-    "switchAccount": "Tukar",
-    "noBackups": "Tiada backup di cloud untuk akaun ini.",
-    "restoringInProgress": "Memulihkan data… jangan tutup aplikasi."
-  },
-  "tnc": {
-    "agree": "Dengan meneruskan, saya bersetuju dengan",
-    "terms": "Syarat & Ketentuan",
-    "and": "dan",
-    "privacy": "Dasar Privasi"
+    "restoring": "Memulihkan data..."
   },
   "navigation": {
     "next": "Seterusnya",
@@ -73,14 +59,10 @@
     "saving": "Menyimpan..."
   },
   "toast": {
-    "googleLoginFailed": "Log masuk Google gagal",
     "restoreInvalidFile": "Fail backup tidak sah",
     "restoreNoData": "Fail backup tidak mengandungi data",
     "restoreSuccess": "Data berjaya dipulihkan!",
-    "restoreError": "Gagal membaca / pulihkan fail backup",
-    "cloudRestoreSuccess": "Data berjaya dipulihkan dari cloud!",
-    "cloudRestoreError": "Gagal memulihkan dari cloud",
-    "cloudLoadError": "Gagal memuat senarai backup cloud"
+    "restoreError": "Gagal membaca / pulihkan fail backup"
   },
   "language": {
     "title": "Pilih Bahasa",

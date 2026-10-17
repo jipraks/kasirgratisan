@@ -113,30 +113,6 @@
     "bluetoothUnavailable": "Bluetooth tidak tersedia di browser ini. Gunakan Chrome di Android.",
     "searchingPrinter": "Mencari printer Bluetooth...",
     "printSuccess": "Laporan berhasil dicetak!",
-    "printFailed": "Gagal mencetak. Pastikan printer Bluetooth menyala.",
-    "reviewPromptWeb": "Beri rating aplikasi kami di Play Store!"
-  },
-  "survey": {
-    "title": "Jenis usaha yang Anda jalankan menggunakan aplikasi FreeKasir ini",
-    "description": "Bantu kami memahami kebutuhanmu dengan memilih salah satu.",
-    "otherPlaceholder": "Tulis jenis usaha Anda…",
-    "submit": "Kirim",
-    "skip": "Lewati",
-    "dontShowAgain": "Jangan tampilkan lagi",
-    "thankYou": "Terima kasih atas masukannya! 🙏",
-    "types": {
-      "groceryStore": "Warung Kelontong",
-      "coffeeShop": "Coffee Shop",
-      "cafeResto": "Kafe / Resto",
-      "clothingStore": "Toko Pakaian",
-      "grocery": "Toko Sembako",
-      "pharmacy": "Apotek / Toko Obat",
-      "hardwareStore": "Toko Bangunan",
-      "electronics": "Toko Elektronik",
-      "salonBarbershop": "Salon / Barbershop",
-      "laundry": "Laundry",
-      "onlineSeller": "Pedagang Online",
-      "other": "Lainnya"
-    }
+    "printFailed": "Gagal mencetak. Pastikan printer Bluetooth menyala."
   }
 }

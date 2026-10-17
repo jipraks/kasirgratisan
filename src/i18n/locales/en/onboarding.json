@@ -51,21 +51,7 @@
     "title": "Already have a backup?",
     "desc": "Restore a JSON file from your old device — no need to set up the store again.",
     "backupButton": "Restore Store from Backup",
-    "restoring": "Restoring data...",
-    "cloudTitle": "Restore from Cloud",
-    "cloudSubtitle": "Sign in with Google, then choose a backup to restore.",
-    "cloudLogin": "Sign in with Google to view cloud backups.",
-    "googleContinue": "Continue with Google",
-    "account": "Google Account",
-    "switchAccount": "Switch",
-    "noBackups": "No cloud backups for this account.",
-    "restoringInProgress": "Restoring data… do not close the app."
-  },
-  "tnc": {
-    "agree": "By continuing, I agree to the",
-    "terms": "Terms & Conditions",
-    "and": "and",
-    "privacy": "Privacy Policy"
+    "restoring": "Restoring data..."
   },
   "navigation": {
     "next": "Next",
@@ -73,14 +59,10 @@
     "saving": "Saving..."
   },
   "toast": {
-    "googleLoginFailed": "Google login failed",
     "restoreInvalidFile": "Invalid backup file",
     "restoreNoData": "Backup file contains no data",
     "restoreSuccess": "Data restored successfully!",
-    "restoreError": "Failed to read/restore backup file",
-    "cloudRestoreSuccess": "Data restored from cloud!",
-    "cloudRestoreError": "Failed to restore from cloud",
-    "cloudLoadError": "Failed to load cloud backups"
+    "restoreError": "Failed to read/restore backup file"
   },
   "language": {
     "title": "Choose Language",

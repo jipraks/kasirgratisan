@@ -2,30 +2,6 @@
   "title": "Settings",
   "storeFallback": "My Store",
   "notSet": "Not set",
-  "playStoreAlert": {
-    "title": "Use the Official Android App!",
-    "description": "For the best performance, Bluetooth printer support, and more stable offline features, please download the FreeKasir app on the Google Play Store.",
-    "migrationInstructions": "Easily migrate your data: 1. Export your backup file via the Backup & Restore menu below. 2. Download and install the app from Google Play Store. 3. Import the backup file in your new app.",
-    "downloadButton": "Download on Play Store",
-    "backupButton": "Export Backup Now"
-  },
-  "cloudSync": {
-    "title": "FreeKasir Cloud",
-    "status": {
-      "inactive": "INACTIVE",
-      "selectStore": "SELECT STORE",
-      "needsSetup": "NEEDS SETUP",
-      "active": "ACTIVE"
-    },
-    "desc": {
-      "inactive": "Secure cloud data, access dashboard.freekasir.com, and list your store on market.freekasir.com!",
-      "selectStore": "Subscription is active, but the device hasn't been linked to a store. Select a store to sync data.",
-      "needsSetup": "Store is linked, but automatic sync isn't enabled yet. Set up a schedule so data syncs regularly.",
-      "active": "Sync is active. Monitor store reports in real-time on dashboard.freekasir.com from any device."
-    },
-    "lastSync": "Last sync: {{time}}",
-    "neverSynced": "Never synced"
-  },
   "installApp": {
     "title": "Install as App",
     "hint": "Open directly from home screen, no browser needed",
@@ -172,14 +148,6 @@
       "description": "Choose grid (cards) or rows (list) layout for product list",
       "grid": "Grid (Large Cards)",
       "rows": "Rows (Simple List)"
-    },
-    "reportIssue": {
-      "title": "Report Issue",
-      "description": "Report application errors or technical issues to the developer"
-    },
-    "telegramSupport": {
-      "title": "Telegram Support",
-      "description": "Contact FreeKasir support team via Telegram"
     }
   },
   "bluetoothPrinter": {
@@ -192,13 +160,6 @@
     "unnamed": "Unnamed",
     "hint": "Make sure the printer is paired via Android Bluetooth Settings first."
   },
-  "privacyAnalytics": {
-    "title": "Privacy & Analytics",
-    "label": "Help Us with Anonymous Data",
-    "description": "Send anonymous usage statistics (pages visited & actions like creating products/transactions) to help development. Business data such as product names, prices, and transaction amounts are never sent.",
-    "enabled": "Analytics enabled",
-    "disabled": "Analytics disabled"
-  },
   "language": {
     "title": "Language / Bahasa"
   },
@@ -207,9 +168,6 @@
     "tagline": "Free POS for Indonesian MSMEs 🇮🇩",
     "version": "v{{version}} • Data stored on device",
     "whatsNew": "What's New in FreeKasir",
-    "requestFeature": "💡 Request Feature",
-    "donate": "☕ Buy Developer a Coffee",
-    "telegram": "💬 Join Telegram Group",
     "storageUsed": "Storage Used"
   },
   "storeDialog": {
@@ -242,228 +200,6 @@
     "createOwnerFailed": "Failed to create owner account",
     "multiUserEnabled": "Multi-user enabled. You are logged in as owner.",
     "multiUserDisabled": "Multi-user disabled"
-  },
-  "cloudBackup": {
-    "locked": {
-      "title": "FreeKasir Cloud",
-      "permissionLabel": "Manage Backup"
-    },
-    "promo": {
-      "title": "Reach More Customers!",
-      "description": "Activate your Online Store to make your store publicly accessible with various benefits:",
-      "benefit1": "Showcase on market.freekasir.com to reach new buyers",
-      "benefit2": "Customers can view your online menu in real-time from mobile",
-      "benefit3": "Your own unique online store link/identifier",
-      "button": "Fill Store Details"
-    },
-    "hero": {
-      "title": "Upgrade to FreeKasir Cloud",
-      "description": "Monitor reports in real-time at {{dashboard}} and promote your store online at {{market}}!",
-      "startFrom": "From",
-      "perMonth": "/month"
-    },
-    "benefits": {
-      "safe": {
-        "title": "Data Safe in Cloud",
-        "desc": "Data is automatically stored & remains intact even if your phone is lost, damaged, or replaced."
-      },
-      "dashboard": {
-        "title": "Access Web Dashboard",
-        "desc": "Monitor detailed store reports in real-time from any phone or laptop at {{dashboard}}."
-      },
-      "market": {
-        "title": "Online Menu & Market",
-        "desc": "Create an online menu catalog easily so customers can view your products at {{market}}."
-      },
-      "growth": {
-        "title": "Grow Your Business",
-        "desc": "Attract more buyers, increase sales, and easily manage multiple stores/branches!"
-      }
-    },
-    "loginPrompt": "Get started, login first 👇",
-    "continueWithGoogle": "Continue with Google",
-    "loginHint": "Safe & fast — no new password needed.",
-    "previewDashboard": "Preview {{dashboard}} →",
-    "account": {
-      "fallbackName": "Google Account",
-      "logout": "Logout"
-    },
-    "syncNow": "Sync Now",
-    "lastSync": "Last sync: {{time}}",
-    "neverSynced": "Never synced",
-    "manageFromAnywhere": "Manage store from anywhere",
-    "subscription": {
-      "description": "Monitor sales, stock, & store finances from anywhere — just open on another phone or laptop. All data is safely stored in the cloud and remains intact even if the device is lost, damaged, or replaced.",
-      "loadingPlans": "Loading plans…",
-      "activePlan": "(active plan)",
-      "unlimitedStores": "Unlimited",
-      "store_one": "{{count}} store",
-      "store_other": "{{count}} stores",
-      "estimatedBackups": "≈ {{count}} backup files",
-      "estimateNote": "*Estimate based on current data size ({{size}}).",
-      "subscribe": "Subscribe",
-      "renew": "Renew",
-      "choose": "Choose",
-      "extendOrChange": "Choose the same plan to renew, or another plan to switch.",
-      "close": "Close",
-      "changePlan": "Change Plan",
-      "used": "used",
-      "from": "of",
-      "until": "until {{date}}"
-    },
-    "noStore": {
-      "title": "No store in the cloud yet",
-      "description": "Subscription is active, but data is <0>not yet synced</0> because there is no store. Create a store first so reports appear on the dashboard.",
-      "createStore": "Create Store Now"
-    },
-    "deviceNotLinked": {
-      "title": "Device not linked to a store",
-      "description": "Select a store so data can be synced to the cloud.",
-      "select": "Select"
-    },
-    "menu": {
-      "dashboard": {
-        "title": "Open Web Dashboard",
-        "subtitle": "View reports at {{dashboard}}"
-      },
-      "manageStore": {
-        "title": "Manage Stores",
-        "subtitle": "Select or create a store to sync"
-      },
-      "autoSync": {
-        "title": "Automatic Sync"
-      },
-      "history": {
-        "title": "Transaction History",
-        "subtitle": "View purchases & check payment status"
-      }
-    },
-    "interval": {
-      "off": "Off",
-      "hourly": "Every few hours",
-      "daily": "Daily",
-      "weekly": "Weekly",
-      "everyNHours": "Every {{hours}} hours"
-    },
-    "toast": {
-      "loginFailed": "Google login failed",
-      "checkoutFailed": "Failed to start payment",
-      "paymentSuccess": "Payment successful! Subscription active. 🎉",
-      "paymentNotDetected": "Payment not yet detected. Please complete the payment first.",
-      "verifyFailed": "Failed to verify payment",
-      "selectStoreFirst": "Select a store first in the Manage Store menu.",
-      "syncSuccess": "Cloud sync successful",
-      "syncFailed": "Failed to sync to cloud"
-    },
-    "paymentDialog": {
-      "title": "Waiting for Payment",
-      "description": "Complete the payment on the opened page. Subscription status will activate automatically once we receive the payment.",
-      "checking": "Automatically checking payment status every few seconds…",
-      "iHavePaid": "I have paid — Check now",
-      "openPaymentPage": "Open payment page",
-      "close": "Close"
-    }
-  },
-  "cloudAutoBackup": {
-    "locked": {
-      "title": "Automatic Sync",
-      "permissionLabel": "Manage Backup"
-    },
-    "title": "Automatic Sync",
-    "requiresSubscription": "Enable FreeKasir Cloud subscription first to set up automatic sync.",
-    "scheduleLabel": "Automatic Sync Schedule",
-    "interval": {
-      "off": "Off",
-      "hourly": "Every few hours",
-      "daily": "Daily",
-      "weekly": "Weekly"
-    },
-    "everyHours": {
-      "prefix": "Every",
-      "suffix": "hours"
-    },
-    "scheduleNote": "Sync runs automatically when the app opens if the interval has passed. (PWA does not run sync in the background when the app is closed.)",
-    "toast": {
-      "off": "Automatic sync turned off",
-      "hourly": "Automatic sync every {{hours}} hours",
-      "daily": "Automatic sync daily",
-      "weekly": "Automatic sync weekly"
-    },
-    "hourMinError": "Minimum 1 hour"
-  },
-  "cloudHistory": {
-    "locked": {
-      "title": "Transaction History",
-      "permissionLabel": "Manage Backup"
-    },
-    "title": "Transaction History",
-    "loginPrompt": "Login first to view transaction history.",
-    "noTransactions": "No transactions yet",
-    "loadMore": "Load more",
-    "checkButton": "Check",
-    "status": {
-      "completed": "Completed",
-      "pending": "Pending",
-      "failed": "Failed"
-    },
-    "toast": {
-      "paymentSuccess": "Payment successful! Subscription active. 🎉",
-      "pending": "Payment not detected yet. Please try again in a moment.",
-      "verifyFailed": "Failed to check payment"
-    }
-  },
-  "cloudStore": {
-    "locked": {
-      "title": "Manage Stores",
-      "permissionLabel": "Manage Backup"
-    },
-    "title": "Manage Stores",
-    "loading": "Loading…",
-    "requiresSubscription": "FreeKasir Cloud subscription is required to manage stores.",
-    "activeDevice": "This device is connected to:",
-    "syncActive": "Automatic background sync active",
-    "disconnect": "Disconnect",
-    "storeList": "Store List",
-    "used": "{{used}} of {{max}} used",
-    "unlimited": "unlimited",
-    "addButton": "Add",
-    "atLimit": {
-      "title": "Your plan's store limit is full",
-      "description": "Current plan only allows {{max}} stores. Upgrade FreeKasir Cloud plan to add more.",
-      "upgrade": "Upgrade Plan"
-    },
-    "noStore": "No stores yet. Create your first store.",
-    "createFirst": "Create your first store",
-    "addNew": "Add new store",
-    "storeNamePlaceholder": "Store name, e.g. Jakarta Branch Store",
-    "create": "Create",
-    "rename": "Rename",
-    "save": "Save",
-    "cancel": "Cancel",
-    "delete": "Delete",
-    "connect": "Connect",
-    "deleteConfirm": "Delete \"{{name}}\"? All sync data (products, transactions, etc.) will be permanently deleted from the cloud.",
-    "yesDelete": "Yes, delete",
-    "stats": {
-      "stores": "stores",
-      "products": "products",
-      "transactions": "transactions",
-      "backups": "backups"
-    },
-    "created": "Created {{date}}",
-    "upgrade": "Upgrade Plan",
-    "toast": {
-      "bind": "This device is connected to the store.",
-      "unbind": "Device disconnected from the store.",
-      "create": "Store created successfully.",
-      "createFailed": "Failed to create store",
-      "rename": "Store name updated.",
-      "renameFailed": "Failed to rename store",
-      "delete": "Store and all its sync data deleted.",
-      "deleteFailed": "Failed to delete store",
-      "createBound": "Store created and device automatically connected.",
-      "atLimit": "Your plan's store limit is full. Upgrade plan to add more stores."
-    }
   },
   "transactionHistory": {
     "title": "Transaction History",
@@ -1277,18 +1013,6 @@
     "successDownloaded": "Backup downloaded successfully",
     "errorCreateShare": "Failed to create / share backup file"
   },
-  "pushPermission": {
-    "title": "Enable Notifications?",
-    "description": "So you do not miss important updates directly on your phone — without opening the app.",
-    "benefits": {
-      "cloudBackup": "Cloud backup status: success, failure, or quota almost full.",
-      "payment": "Payment confirmation & reminders before subscription ends.",
-      "announcement": "Maintenance info & important announcements from FreeKasir."
-    },
-    "enable": "Enable Notifications",
-    "later": "Maybe Later",
-    "hint": "You can turn it off anytime from browser settings."
-  },
   "customerPicker": {
     "placeholder": "Customer name",
     "addLabel": "Add customer \"{{name}}\"",
@@ -1346,107 +1070,11 @@
     "footerLabel": "Receipt Footer Text",
     "hideWatermarkLabel": "Hide Application Watermark",
     "hideWatermarkDescActive": "Hide the \"Printed From FreeKasir.com App\" watermark at the bottom of the receipt.",
-    "hideWatermarkDescRequired": "Watermark can only be disabled if FreeKasir Cloud is active.",
     "saveSuccess": "Receipt settings saved successfully",
     "saveFailed": "Failed to save receipt settings"
-  },
-  "cloudOnlineStore": {
-    "title": "Online Store & Market",
-    "linkedStoreRequired": "This device is not linked to a cloud store. Please link it first on the FreeKasir Cloud settings page.",
-    "identifier": {
-      "label": "Store URL (Identifier)",
-      "placeholder": "your-store-name",
-      "checkButton": "Check Availability",
-      "available": "Congratulations! The store URL is available.",
-      "notAvailable": "Sorry, this store URL is already taken.",
-      "invalid": "Invalid URL format (use only letters, numbers, and hyphens).",
-      "saveButton": "Save Store URL",
-      "saved": "Store URL saved successfully.",
-      "slugInfo": "Your store will be accessible at: "
-    },
-    "visibility": {
-      "title": "Show Store in Market",
-      "description": "Enable to make your store product catalog publicly viewable at market.freekasir.com.",
-      "requiresIdentifier": "Store URL must be saved before making the store public.",
-      "unsavedIdentifier": "There are unsaved Store URL changes. Please save the Store URL first.",
-      "unsavedDetails": "There are unsaved store detail changes. Please save the store details first.",
-      "incompleteDetails": "All store data must be filled before making the store public. The following details are missing: {{fields}}",
-      "fields": {
-        "name": "Store Name",
-        "phone": "Store Phone Number",
-        "address": "Street Address",
-        "province": "Province",
-        "city": "City / Regency",
-        "district": "District",
-        "coordinates": "Location Coordinates (Map)"
-      }
-    },
-    "details": {
-      "title": "Store Detailed Info",
-      "phone": "Store Phone Number",
-      "address1": "Street Address",
-      "address2": "Shop Unit / Floor / House No. (Optional)",
-      "province": "Province",
-      "city": "City / Regency",
-      "district": "District",
-      "timezone": "Time Zone",
-      "saveButton": "Save Store Details",
-      "saved": "Store details saved successfully."
-    },
-    "location": {
-      "title": "Map Coordinates (Map Picker)",
-      "gpsButton": "Use Current GPS",
-      "gpsLocating": "Locating...",
-      "dragPin": "Drag the pin on the map to adjust your store's precise location."
-    },
-    "operationalHours": {
-      "title": "Operational Hours",
-      "closed": "Closed",
-      "open": "Open",
-      "addTimeSlot": "Add Time Slot",
-      "days": {
-        "monday": "Monday",
-        "tuesday": "Tuesday",
-        "wednesday": "Wednesday",
-        "thursday": "Thursday",
-        "friday": "Friday",
-        "saturday": "Saturday",
-        "sunday": "Sunday"
-      }
-    },
-    "logo": {
-      "title": "Store Logo",
-      "upload": "Upload Logo",
-      "change": "Change Logo",
-      "delete": "Remove Logo",
-      "deleteConfirm": "Are you sure you want to delete this store logo?",
-      "requirements": "Max 2 MB. Format: JPG, PNG, WebP",
-      "uploadSuccess": "Store logo updated successfully.",
-      "uploadFailed": "Failed to upload store logo.",
-      "deleteSuccess": "Store logo deleted successfully.",
-      "deleteFailed": "Failed to delete store logo.",
-      "tooLarge": "File size exceeds the 2 MB limit.",
-      "invalidType": "Invalid file type. Please use JPG, PNG, or WebP images."
-    }
   },
   "kitchenTicket": {
     "title": "Kitchen Ticket",
     "done": "Done"
-  },
-  "issueReport": {
-    "title": "Report Issue",
-    "descriptionLabel": "Issue / Error Description",
-    "placeholder": "Describe the error or issue you are experiencing in as much detail as possible...",
-    "disclaimer": "By submitting a report, your device's technical information (such as browser version, screen resolution, and OS) will also be sent to make it easier to fix.",
-    "submit": "Submit Report",
-    "confirmTitle": "Submit Issue Report?",
-    "confirmDescription": "We will send the issue details along with your device's technical information to the developer team.\n\nDo you agree and wish to proceed?",
-    "cancel": "Cancel",
-    "agreeAndSend": "Agree & Send",
-    "sending": "Sending...",
-    "success": "Issue report submitted successfully. Thank you!",
-    "failed": "Failed to submit report. Please try again.",
-    "networkError": "A network error occurred while submitting the report.",
-    "emptyError": "Please fill in the issue description first."
   }
 }
