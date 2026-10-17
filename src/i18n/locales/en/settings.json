@@ -135,9 +135,14 @@
       "description": "Adjust physical product stocks and record differences"
     },
     "theme": {
-      "title": "Theme Color",
-      "description": "Customize the app accent color",
-      "permissionLabel": "Manage Store Settings"
+      "title": "Theme",
+      "description": "Dark or light mode and accent color",
+      "permissionLabel": "Manage Store Settings",
+      "modeTitle": "Appearance mode",
+      "modeDescription": "Choose dark or light mode on this device",
+      "dark": "Dark",
+      "light": "Light",
+      "colorTitle": "Accent color"
     },
     "backup": {
       "title": "Backup & Restore",

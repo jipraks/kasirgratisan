@@ -1,8 +1,17 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" class="dark">
 
 <head>
   <meta charset="UTF-8" />
+  <script>
+    // Apply the saved light/dark mode before first paint (dark is the default).
+    // Keep in sync with src/lib/theme.ts.
+    try {
+      if (localStorage.getItem('theme') === 'light') {
+        document.documentElement.classList.replace('dark', 'light');
+      }
+    } catch (e) {}
+  </script>
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   

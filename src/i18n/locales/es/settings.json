@@ -135,9 +135,14 @@
       "description": "Ajusta el inventario físico de productos y registre las diferencias"
     },
     "theme": {
-      "title": "Color del tema",
-      "description": "Personaliza el color de acento de la aplicación",
-      "permissionLabel": "Gestionar ajustes de la tienda"
+      "title": "Tema",
+      "description": "Modo oscuro o claro y color de acento",
+      "permissionLabel": "Gestionar ajustes de la tienda",
+      "modeTitle": "Modo de apariencia",
+      "modeDescription": "Elige entre modo oscuro y claro en este dispositivo",
+      "dark": "Oscuro",
+      "light": "Claro",
+      "colorTitle": "Color de acento"
     },
     "backup": {
       "title": "Copia de seguridad y restauración",
