@@ -10,8 +10,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
-import { id as idLocale, enUS, ms } from 'date-fns/locale';
-import type { Locale } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/use-auth';
 import LockedPage from '@/components/LockedPage';
@@ -19,8 +17,7 @@ import ProductPicker from '@/components/ProductPicker';
 import NumberInput from '@/components/NumberInput';
 import { useTranslation } from 'react-i18next';
 import { NUMBER_LOCALE } from '@/lib/currency';
-
-const LOCALES: Record<string, Locale> = { id: idLocale, en: enUS, ms };
+import { getDateLocale } from '@/i18n';
 
 const REASON_VALUES = ['Rusak', 'Hilang', 'Kadaluarsa', 'Retur ke Supplier', 'Pemakaian Sendiri', 'Lainnya'];
 const REASON_KEYS = ['damaged', 'lost', 'expired', 'returnSupplier', 'ownUse', 'other'];
@@ -28,7 +25,7 @@ const REASON_KEYS = ['damaged', 'lost', 'expired', 'returnSupplier', 'ownUse', '
 export default function StockOutPage() {
   const { currentUser, can } = useAuth();
   const { t, i18n } = useTranslation('settings');
-  const dateLocale = LOCALES[i18n.language] ?? idLocale;
+  const dateLocale = getDateLocale(i18n.language);
   const numberLocale = NUMBER_LOCALE;
 
   const [dialogOpen, setDialogOpen] = useState(false);

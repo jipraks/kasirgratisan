@@ -17,14 +17,13 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
-import { id, enUS, ms } from 'date-fns/locale';
-import type { Locale } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/use-auth';
 import CustomerPicker from '@/components/CustomerPicker';
 import LockedPage from '@/components/LockedPage';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CURRENCY_SYMBOL, NUMBER_LOCALE } from '@/lib/currency';
+import { getDateLocale } from '@/i18n';
 
 interface CartItem {
   product: Product;
@@ -36,20 +35,12 @@ interface CartItem {
 
 
 
-const LOCALES: Record<string, Locale> = {
-  id,
-  en: enUS,
-  ms,
-};
-
 export default function Kasir() {
   const { currentUser, can } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation('settings');
-
-  const lang = i18n.language?.split('-')[0] || 'id';
-  const dateLocale = LOCALES[lang] || id;
+  const dateLocale = getDateLocale(i18n.language);
   const numberLocale = NUMBER_LOCALE;
   const currencySymbol = CURRENCY_SYMBOL;
   const rp = (n: number) => `${currencySymbol} ${n.toLocaleString(numberLocale)}`;

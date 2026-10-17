@@ -1,4 +1,7 @@
 import { db, type Product, sanitizeDatabaseDates } from '@/lib/db';
+import i18n from '@/i18n';
+
+const backupText = (key: string) => i18n.t(`backupFile.${key}`, { ns: 'common' }) as string;
 
 /**
  * Shared backup/restore core, dipakai oleh:
@@ -56,13 +59,13 @@ export async function buildBackupJsonString(): Promise<string> {
  * Validasi isi file backup. Lempar Error dengan pesan siap-tampil bila tidak valid.
  */
 export function validateBackupData(data: unknown): asserts data is BackupData {
-  if (!data || typeof data !== 'object') throw new Error('File tidak valid');
+  if (!data || typeof data !== 'object') throw new Error(backupText('invalidFile'));
   const d = data as BackupData;
-  if (!d.version) throw new Error('File tidak valid');
+  if (!d.version) throw new Error(backupText('invalidFile'));
   const hasSomeData = ['categories', 'products', 'suppliers', 'transactions', 'paymentMethods'].some(
     (key) => Array.isArray(d[key]) && d[key].length > 0,
   );
-  if (!hasSomeData) throw new Error('File backup tidak berisi data');
+  if (!hasSomeData) throw new Error(backupText('noData'));
 }
 
 async function clearAllTables(includeConditional: BackupData) {
@@ -156,7 +159,7 @@ export async function restoreFromBackupData(data: unknown): Promise<void> {
       await db.units.bulkAdd(data.units);
     } else {
       const now = new Date();
-      const defaults = ['pcs', 'kg', 'gram', 'liter', 'ml', 'porsi', 'cup', 'botol', 'bungkus'];
+      const defaults = ['pcs', 'kg', 'gram', 'liter', 'ml', 'porción', 'vaso', 'botella', 'paquete'];
       const seen = new Set<string>();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const toAdd: any[] = [];
@@ -240,8 +243,8 @@ export async function restoreFromBackupData(data: unknown): Promise<void> {
       if (snapshot.stockOpnameItems.length) await db.stockOpnameItems.bulkAdd(snapshot.stockOpnameItems);
       if (snapshot.deletedRecords.length) await db.deletedRecords.bulkAdd(snapshot.deletedRecords);
     } catch {
-      throw new Error('Import gagal dan rollback gagal. Coba restore dari file backup.');
+      throw new Error(backupText('rollbackFailed'));
     }
-    throw new Error('Import gagal, data dikembalikan');
+    throw new Error(backupText('importFailed'));
   }
 }

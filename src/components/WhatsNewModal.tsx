@@ -10,10 +10,7 @@ import {
   markFeaturesSeen,
 } from '@/lib/whats-new';
 import { format } from 'date-fns';
-import { id as idLocale, enUS, ms } from 'date-fns/locale';
-import type { Locale } from 'date-fns';
-
-const LOCALES: Record<string, Locale> = { id: idLocale, en: enUS, ms };
+import { getDateLocale } from '@/i18n';
 
 interface WhatsNewModalProps {
   open: boolean;
@@ -34,7 +31,7 @@ export default function WhatsNewModal({
 }: WhatsNewModalProps) {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation('common');
-  const dateLocale = LOCALES[i18n.language] ?? idLocale;
+  const dateLocale = getDateLocale(i18n.language);
   const [index, setIndex] = useState(0);
 
   // Reset to first slide whenever the modal is reopened or the list changes.

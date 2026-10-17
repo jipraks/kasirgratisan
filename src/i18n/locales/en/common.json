@@ -1,7 +1,7 @@
 {
   "app": {
     "name": "FreeKasir",
-    "tagline": "Free POS — Manage Your Sales with Ease 🇮🇩"
+    "tagline": "Free POS — Manage Your Sales with Ease 🇨🇴"
   },
   "nav": {
     "home": "Home",
@@ -167,5 +167,140 @@
     "pink": "Pink",
     "teal": "Teal",
     "yellow": "Yellow"
+  },
+  "printer": {
+    "store": "Store",
+    "receiptNo": "No",
+    "time": "Time",
+    "cashier": "Cashier",
+    "customer": "Customer",
+    "table": "Table",
+    "notes": "Notes",
+    "itemNote": "Note",
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "total": "TOTAL",
+    "paid": "Paid",
+    "debt": "Debt",
+    "change": "Change",
+    "thanks": "Thank you!",
+    "watermarkLine1": "Printed From",
+    "watermarkLine2": "FreeKasir.com App",
+    "kitchenTicket": "KITCHEN TICKET",
+    "dailyTitle": "DAILY SALES REPORT",
+    "period": "Period",
+    "txCount": "Transactions",
+    "itemCount": "Items sold",
+    "sales": "SALES",
+    "grossSales": "Gross Sales",
+    "netSales": "Net Sales",
+    "expensesSection": "EXPENSES & NET PROFIT",
+    "expenses": "Expenses",
+    "netProfit": "Net Profit",
+    "payment": "PAYMENT",
+    "noPayment": "No payments yet",
+    "topProducts": "TOP PRODUCTS",
+    "noSales": "No product sales yet",
+    "endOfReport": "END OF REPORT",
+    "printedBy": "Printed by",
+    "toast": {
+      "pluginUnavailable": "Bluetooth plugin is not available.",
+      "noDefaultPrinter": "No default printer selected. Set up a printer in Settings first.",
+      "searching": "Searching for paired Bluetooth printers...",
+      "noPaired": "No paired Bluetooth printers. Pair one in Android settings first.",
+      "printerNotFound": "Printer \"{{name}}\" was not detected. Make sure it is on and connected.",
+      "connecting": "Connecting to {{name}}...",
+      "printing": "Printing...",
+      "success": "Printed successfully!",
+      "printFailed": "Failed to print: {{error}}",
+      "connectFailed": "Connection failed: {{error}}",
+      "listFailed": "Failed to get the printer list: {{error}}",
+      "bluetoothOff": "Bluetooth is off",
+      "bluetoothOffHint": "Bluetooth is off. Turn it on and try again."
+    }
+  },
+  "permissions": {
+    "create_transaction": {
+      "title": "Create Transactions",
+      "desc": "Access the cashier, save open bills, and check out payments"
+    },
+    "delete_transaction": {
+      "title": "Delete / Void Transactions",
+      "desc": "Delete transactions in History and void open bills"
+    },
+    "manage_products": {
+      "title": "Manage Products",
+      "desc": "Add, edit, and delete products"
+    },
+    "manage_categories_payments": {
+      "title": "Manage Categories & Payment Methods",
+      "desc": "Create, edit, and delete product categories and payment methods"
+    },
+    "manage_stock_inout": {
+      "title": "Stock In / Stock Out",
+      "desc": "Record incoming goods from suppliers and non-sale stock outs"
+    },
+    "manage_supplier": {
+      "title": "Manage Suppliers",
+      "desc": "Add, edit, and delete suppliers"
+    },
+    "manage_customers": {
+      "title": "Manage Customers",
+      "desc": "Add, edit, and delete customers"
+    },
+    "view_reports": {
+      "title": "View Reports & Profit",
+      "desc": "Access sales, profit, COGS, and stock reports"
+    },
+    "manage_backup": {
+      "title": "Backup & Restore",
+      "desc": "Export and import store data (restore can overwrite all data)"
+    },
+    "manage_store_settings": {
+      "title": "Edit Store Info & Theme",
+      "desc": "Change store name, address, phone, logo, and theme color"
+    },
+    "manage_expenses": {
+      "title": "Record Expenses",
+      "desc": "Add, edit, and delete expenses (electricity, salaries, rent, etc.)"
+    },
+    "view_expenses": {
+      "title": "View Expenses",
+      "desc": "View the store's expense list and totals"
+    }
+  },
+  "authErrors": {
+    "credentialsRequired": "Username and PIN are required",
+    "storeNotReady": "Store settings are not ready yet",
+    "invalidCredentials": "Wrong username or PIN",
+    "accountDisabled": "This account is disabled",
+    "usernameInvalid": "Username must be 3-20 characters: letters, numbers, underscore or dot only",
+    "pinInvalid": "PIN must be 4-6 digits",
+    "nameRequired": "Name cannot be empty",
+    "usernameTaken": "Username \"{{username}}\" is already taken"
+  },
+  "files": {
+    "saveShareTitle": "Save / Share File",
+    "shareTitle": "Share File",
+    "downloadFailed": "Failed to download the file"
+  },
+  "backupFile": {
+    "invalidFile": "Invalid file",
+    "noData": "Backup file contains no data",
+    "rollbackFailed": "Import failed and rollback failed. Try restoring from a backup file.",
+    "importFailed": "Import failed; data was restored",
+    "shareTitle": "FreeKasir Backup",
+    "shareText": "FreeKasir data backup file (JSON)",
+    "dialogTitle": "Save / Share Backup",
+    "success": "Backup created!",
+    "failed": "Failed to create / share the backup file",
+    "downloaded": "Backup downloaded successfully"
+  },
+  "receiptPreview": {
+    "title": "Receipt Preview",
+    "storeName": "MY STORE",
+    "address": "Bogotá",
+    "phone": "3001234567",
+    "item": "Chicken and Rice"
   }
 }

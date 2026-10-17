@@ -80,27 +80,27 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
   const seedDummyData = async () => {
     const now = new Date();
     const dummyProducts = [
-      { name: 'Nasi Goreng Spesial', sku: 'NG001', categoryId: 1, price: 15000, hpp: 8000, stock: 50, unit: 'porsi', description: 'Nasi goreng dengan telur mata sapi, ayam suwir, dan kerupuk', createdAt: now, updatedAt: now, isDeleted: 0, deletedAt: null },
-      { name: 'Mie Goreng', sku: 'MG001', categoryId: 1, price: 12000, hpp: 6000, stock: 40, unit: 'porsi', description: 'Mie goreng dengan sayur dan telur', createdAt: now, updatedAt: now, isDeleted: 0, deletedAt: null },
-      { name: 'Ayam Bakar', sku: 'AB001', categoryId: 1, price: 20000, hpp: 12000, stock: 30, unit: 'porsi', description: 'Ayam bakar bumbu kecap, sambal, dan lalapan', createdAt: now, updatedAt: now, isDeleted: 0, deletedAt: null },
-      { name: 'Sate Ayam (10 tusuk)', sku: 'SA001', categoryId: 1, price: 18000, hpp: 10000, stock: 25, unit: 'porsi', description: 'Isi 10 tusuk + bumbu kacang + lontong', createdAt: now, updatedAt: now, isDeleted: 0, deletedAt: null },
-      { name: 'Bakso Urat', sku: 'BU001', categoryId: 1, price: 15000, hpp: 7000, stock: 35, unit: 'mangkok', createdAt: now, updatedAt: now, isDeleted: 0, deletedAt: null },
-      { name: 'Es Teh Manis', sku: 'ET001', categoryId: 2, price: 5000, hpp: 1500, stock: 100, unit: 'gelas', createdAt: now, updatedAt: now, isDeleted: 0, deletedAt: null },
-      { name: 'Es Jeruk', sku: 'EJ001', categoryId: 2, price: 7000, hpp: 2500, stock: 80, unit: 'gelas', createdAt: now, updatedAt: now, isDeleted: 0, deletedAt: null },
-      { name: 'Kopi Susu', sku: 'KS001', categoryId: 2, price: 10000, hpp: 4000, stock: 60, unit: 'gelas', description: 'Kopi susu gula aren', createdAt: now, updatedAt: now, isDeleted: 0, deletedAt: null },
-      { name: 'Air Mineral', sku: 'AM001', categoryId: 2, price: 4000, hpp: 2000, stock: 120, unit: 'botol', description: '600ml', createdAt: now, updatedAt: now, isDeleted: 0, deletedAt: null },
-      { name: 'Tisu', sku: 'TS001', categoryId: 3, price: 2000, hpp: 1000, stock: 200, unit: 'pcs', createdAt: now, updatedAt: now, isDeleted: 0, deletedAt: null },
-      { name: 'Kerupuk', sku: 'KR001', categoryId: 3, price: 3000, hpp: 1500, stock: 150, unit: 'bungkus', createdAt: now, updatedAt: now, isDeleted: 0, deletedAt: null },
+      { name: 'Arroz con pollo', sku: 'NG001', categoryId: 1, price: 15000, hpp: 8000, stock: 50, unit: 'porción', description: 'Arroz con pollo desmechado, maduro y ensalada', createdAt: now, updatedAt: now, isDeleted: 0, deletedAt: null },
+      { name: 'Bandeja paisa', sku: 'MG001', categoryId: 1, price: 12000, hpp: 6000, stock: 40, unit: 'porción', description: 'Frijoles, arroz, carne molida, chicharrón, huevo y arepa', createdAt: now, updatedAt: now, isDeleted: 0, deletedAt: null },
+      { name: 'Pollo asado', sku: 'AB001', categoryId: 1, price: 20000, hpp: 12000, stock: 30, unit: 'porción', description: 'Cuarto de pollo asado con papa y ensalada', createdAt: now, updatedAt: now, isDeleted: 0, deletedAt: null },
+      { name: 'Empanadas (x5)', sku: 'SA001', categoryId: 1, price: 18000, hpp: 10000, stock: 25, unit: 'porción', description: '5 empanadas de carne con ají', createdAt: now, updatedAt: now, isDeleted: 0, deletedAt: null },
+      { name: 'Sancocho', sku: 'BU001', categoryId: 1, price: 15000, hpp: 7000, stock: 35, unit: 'plato', createdAt: now, updatedAt: now, isDeleted: 0, deletedAt: null },
+      { name: 'Limonada', sku: 'ET001', categoryId: 2, price: 5000, hpp: 1500, stock: 100, unit: 'vaso', createdAt: now, updatedAt: now, isDeleted: 0, deletedAt: null },
+      { name: 'Jugo de naranja', sku: 'EJ001', categoryId: 2, price: 7000, hpp: 2500, stock: 80, unit: 'vaso', createdAt: now, updatedAt: now, isDeleted: 0, deletedAt: null },
+      { name: 'Café con leche', sku: 'KS001', categoryId: 2, price: 10000, hpp: 4000, stock: 60, unit: 'vaso', description: 'Café con leche y panela', createdAt: now, updatedAt: now, isDeleted: 0, deletedAt: null },
+      { name: 'Agua', sku: 'AM001', categoryId: 2, price: 4000, hpp: 2000, stock: 120, unit: 'botella', description: '600ml', createdAt: now, updatedAt: now, isDeleted: 0, deletedAt: null },
+      { name: 'Servilletas', sku: 'TS001', categoryId: 3, price: 2000, hpp: 1000, stock: 200, unit: 'pcs', createdAt: now, updatedAt: now, isDeleted: 0, deletedAt: null },
+      { name: 'Papas de paquete', sku: 'KR001', categoryId: 3, price: 3000, hpp: 1500, stock: 150, unit: 'paquete', createdAt: now, updatedAt: now, isDeleted: 0, deletedAt: null },
     ];
 
     const dummySuppliers = [
-      { name: 'PT Bahan Segar', phone: '08111222333', address: 'Jl. Pasar Baru No. 15', notes: 'Supplier sayur & daging', createdAt: now, isDeleted: 0, deletedAt: null },
-      { name: 'UD Minuman Jaya', phone: '08222333444', address: 'Jl. Raya Industri No. 8', notes: 'Supplier minuman', createdAt: now, isDeleted: 0, deletedAt: null },
+      { name: 'Distribuidora Fresca S.A.S.', phone: '3011112233', address: 'Calle 15 # 8-20', notes: 'Proveedor de verduras y carnes', createdAt: now, isDeleted: 0, deletedAt: null },
+      { name: 'Bebidas del Valle', phone: '3022223344', address: 'Carrera 8 # 12-40', notes: 'Proveedor de bebidas', createdAt: now, isDeleted: 0, deletedAt: null },
     ];
 
     // Ensure all units used by sample products exist in master units table.
     // seedDefaultData() already adds the 9 default units; here we only add
-    // the extras that the sample data uses (e.g. 'mangkok', 'gelas').
+    // the extras that the sample data uses (e.g. 'plato').
     const sampleUnits = Array.from(new Set(dummyProducts.map(p => p.unit).filter(Boolean)));
     const existingUnits = await db.units.toArray();
     const existingNames = new Set(existingUnits.map(u => u.name));
@@ -132,8 +132,8 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
       date: new Date(now.getTime() - 3600000), receiptNumber: 'TX-DEMO-001',
     });
     await db.transactionItems.bulkAdd([
-      { transactionId: tx1Id as number, productId: 1, productName: 'Nasi Goreng Spesial', quantity: 2, price: 15000, hpp: 8000, discountType: discNull, discountValue: 0, discountAmount: 0, subtotal: 30000 },
-      { transactionId: tx1Id as number, productId: 6, productName: 'Es Teh Manis', quantity: 2, price: 5000, hpp: 1500, discountType: discNull, discountValue: 0, discountAmount: 0, subtotal: 10000 },
+      { transactionId: tx1Id as number, productId: 1, productName: 'Arroz con pollo', quantity: 2, price: 15000, hpp: 8000, discountType: discNull, discountValue: 0, discountAmount: 0, subtotal: 30000 },
+      { transactionId: tx1Id as number, productId: 6, productName: 'Limonada', quantity: 2, price: 5000, hpp: 1500, discountType: discNull, discountValue: 0, discountAmount: 0, subtotal: 10000 },
     ]);
 
     const tx2Id = await db.transactions.add({
@@ -142,8 +142,8 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
       date: new Date(now.getTime() - 1800000), receiptNumber: 'TX-DEMO-002',
     });
     await db.transactionItems.bulkAdd([
-      { transactionId: tx2Id as number, productId: 3, productName: 'Ayam Bakar', quantity: 1, price: 20000, hpp: 12000, discountType: discNull, discountValue: 0, discountAmount: 0, subtotal: 20000 },
-      { transactionId: tx2Id as number, productId: 8, productName: 'Kopi Susu', quantity: 1, price: 10000, hpp: 4000, discountType: discNull, discountValue: 0, discountAmount: 0, subtotal: 10000 },
+      { transactionId: tx2Id as number, productId: 3, productName: 'Pollo asado', quantity: 1, price: 20000, hpp: 12000, discountType: discNull, discountValue: 0, discountAmount: 0, subtotal: 20000 },
+      { transactionId: tx2Id as number, productId: 8, productName: 'Café con leche', quantity: 1, price: 10000, hpp: 4000, discountType: discNull, discountValue: 0, discountAmount: 0, subtotal: 10000 },
     ]);
 
     const tx3Id = await db.transactions.add({
@@ -152,9 +152,9 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
       date: new Date(now.getTime() - 900000), receiptNumber: 'TX-DEMO-003',
     });
     await db.transactionItems.bulkAdd([
-      { transactionId: tx3Id as number, productId: 1, productName: 'Nasi Goreng Spesial', quantity: 1, price: 15000, hpp: 8000, discountType: discNull, discountValue: 0, discountAmount: 0, subtotal: 15000 },
-      { transactionId: tx3Id as number, productId: 4, productName: 'Sate Ayam (10 tusuk)', quantity: 1, price: 18000, hpp: 10000, discountType: discNull, discountValue: 0, discountAmount: 0, subtotal: 18000 },
-      { transactionId: tx3Id as number, productId: 7, productName: 'Es Jeruk', quantity: 1, price: 7000, hpp: 2500, discountType: discNull, discountValue: 0, discountAmount: 0, subtotal: 7000 },
+      { transactionId: tx3Id as number, productId: 1, productName: 'Arroz con pollo', quantity: 1, price: 15000, hpp: 8000, discountType: discNull, discountValue: 0, discountAmount: 0, subtotal: 15000 },
+      { transactionId: tx3Id as number, productId: 4, productName: 'Empanadas (x5)', quantity: 1, price: 18000, hpp: 10000, discountType: discNull, discountValue: 0, discountAmount: 0, subtotal: 18000 },
+      { transactionId: tx3Id as number, productId: 7, productName: 'Jugo de naranja', quantity: 1, price: 7000, hpp: 2500, discountType: discNull, discountValue: 0, discountAmount: 0, subtotal: 7000 },
     ]);
   };
 
@@ -188,10 +188,10 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
       await db.storeSettings.update(s.id, { onboardingDone: true });
     } else {
       await db.storeSettings.add({
-        storeName: 'Toko Saya',
+        storeName: 'Mi tienda',
         address: '',
         phone: '',
-        receiptFooter: 'Terima kasih atas kunjungan Anda!',
+        receiptFooter: '¡Gracias por su visita!',
         printLogo: false,
         onboardingDone: true,
         lastBackupAt: null,
@@ -221,7 +221,7 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
           storeName: storeName.trim(),
           address: address.trim(),
           phone: phone.trim(),
-          receiptFooter: 'Terima kasih atas kunjungan Anda!',
+          receiptFooter: '¡Gracias por su visita!',
           printLogo: false,
           onboardingDone: true,
           lastBackupAt: null,
@@ -282,7 +282,7 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
                       {/* Language picker */}
                       <div className="w-full max-w-xs space-y-2">
                         <p className="text-xs text-muted-foreground font-medium">{t('language.title')}</p>
-                        <div className="grid grid-cols-3 gap-2">
+                        <div className="grid grid-cols-2 gap-2">
                           {SUPPORTED_LANGUAGES.map(({ code, label, flag }) => (
                             <button
                               key={code}
@@ -350,7 +350,7 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
                       const ok = await install();
                       if (ok) {
                         setInstallDone(true);
-                        toast.success('Berhasil install FreeKasir!');
+                        toast.success(t('install.success'));
                       }
                     }}
                   >

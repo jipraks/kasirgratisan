@@ -68,7 +68,7 @@ export default function ExportReportDialog({
       }
       onOpenChange(false);
     } catch (err) {
-      console.error('Export laporan gagal:', err);
+      console.error('Report export failed:', err);
       toast.error(t('exportDialog.errorToast'));
     } finally {
       setExporting(false);

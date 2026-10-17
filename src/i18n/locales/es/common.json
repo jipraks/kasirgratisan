@@ -1,0 +1,306 @@
+{
+  "app": {
+    "name": "FreeKasir",
+    "tagline": "POS gratis — Gestiona tus ventas con facilidad 🇨🇴"
+  },
+  "nav": {
+    "home": "Inicio",
+    "products": "Productos",
+    "cashier": "Caja",
+    "reports": "Reportes",
+    "more": "Más"
+  },
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "close": "Cerrar",
+    "back": "Atrás",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "all": "Todos",
+    "add": "Agregar",
+    "yes": "Sí",
+    "no": "No",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "required": "*",
+    "optional": "Opcional",
+    "loading": "Cargando...",
+    "noData": "Aún no hay datos",
+    "confirm": "Confirmar",
+    "success": "Éxito",
+    "error": "Error",
+    "name": "Nombre",
+    "address": "Dirección",
+    "phone": "Teléfono",
+    "notes": "Notas",
+    "date": "Fecha",
+    "total": "Total",
+    "price": "Precio",
+    "quantity": "Cantidad",
+    "unit": "Unidad",
+    "customer": "Cliente",
+    "supplier": "Proveedor",
+    "product": "Producto",
+    "stock": "Stock",
+    "payment": "Pago",
+    "category": "Categoría",
+    "setting": "Ajustes",
+    "locked": {
+      "accessDenied": "Acceso denegado",
+      "ownerMessage": "Tu cuenta debería tener acceso completo. Intenta recargar la app o revisa la configuración de tu cuenta.",
+      "staffNoPermission": "No tienes permiso para abrir",
+      "contactOwner": "Contacta al dueño de la tienda si crees que esto es un error.",
+      "backToHome": "Volver al inicio"
+    },
+    "notFound": "No encontrado",
+    "selectPlaceholder": "Seleccionar...",
+    "searchPlaceholder": "Buscar...",
+    "installApp": "Instalar como app",
+    "installHint": "Ábrela directamente desde la pantalla de inicio, sin navegador",
+    "howToInstall": "Cómo instalar",
+    "storageUsed": "Almacenamiento usado"
+  },
+  "whatsNew": {
+    "title": "Novedades de FreeKasir",
+    "slide": "Diapositiva {{number}}",
+    "finish": "Listo",
+    "skip": "Omitir"
+  },
+  "whatsNewFeatures": {
+    "2026-06-kitchen-ticket": {
+      "title": "Imprimir comanda de cocina",
+      "description": "Ahora puedes imprimir comandas de cocina (pedidos sin precios ni totales) al guardar una cuenta o desde la lista de cuentas abiertas. Incluyen casillas vacías a la derecha de cada ítem para que el personal de cocina las marque a mano.",
+      "ctaLabel": "Abrir caja"
+    },
+    "2026-06-cashier-layout": {
+      "title": "Vista de caja en cuadrícula / filas",
+      "description": "Ahora puedes elegir la vista de productos en la caja entre Cuadrícula (tarjetas grandes) o Filas (lista compacta). Ideal si tienes muchos productos y prefieres una vista más simple. Ajústalo en Ajustes → Vista de caja.",
+      "ctaLabel": "Abrir ajustes"
+    },
+    "2026-06-import-excel": {
+      "title": "Importar productos desde Excel",
+      "description": "Ahora puedes agregar productos nuevos en lote con un archivo de Excel (.xlsx) y un flujo de validación. Descarga la plantilla estándar con referencias de categorías y unidades, sube el archivo, revisa el estado de los datos (válido o con error) en la vista previa y guarda todos los productos válidos de una vez.",
+      "ctaLabel": "Gestionar productos"
+    },
+    "2026-06-stock-opname": {
+      "title": "Conteo de inventario (ajuste de stock)",
+      "description": "Ahora puedes hacer conteos físicos periódicos del inventario. El sistema permite cuadrar el stock físico manualmente o en lote descargando y subiendo hojas de Excel. Las diferencias se ajustan automáticamente y quedan registradas en los movimientos del reporte de stock.",
+      "ctaLabel": "Iniciar conteo"
+    },
+    "2026-06-receipt-footer": {
+      "title": "Pie de recibo personalizado",
+      "description": "Ahora puedes cambiar el texto al final de los recibos para adaptarlo a tu tienda. Accede a esta opción desde el nuevo menú \"Pie de recibo\" en Ajustes. Los cambios se ven en tiempo real en la vista previa del recibo.",
+      "ctaLabel": "Configurar pie de recibo"
+    },
+    "2026-06-customer-debts": {
+      "title": "Pagos de deudas de clientes",
+      "description": "Ahora la caja puede aceptar pagos parciales o totales como deuda para clientes seleccionados. Registra abonos poco a poco, controla los saldos pendientes y consulta el historial completo de pagos desde el nuevo menú Lista de deudas.",
+      "ctaLabel": "Abrir lista de deudas"
+    },
+    "2026-06-print-daily-closing": {
+      "title": "Imprimir cierre diario",
+      "description": "Ahora puedes ver, descargar, compartir e imprimir el reporte de cierre diario de ventas directamente en una impresora térmica Bluetooth. La página de Reportes ahora abre por defecto en la pestaña Diario, con un aviso si no hay transacciones en el día.",
+      "ctaLabel": "Abrir reportes"
+    },
+    "2026-06-rebrand-freekasir": {
+      "title": "Nueva imagen: FreeKasir",
+      "description": "Esta aplicación ahora se llama FreeKasir y tiene una imagen y colores nuevos. Tus funciones y datos siguen igual. ¿Prefieres otros colores? Puedes elegir tu tema favorito en Ajustes → Color del tema.",
+      "ctaLabel": "Cambiar color del tema"
+    },
+    "2026-06-stock-search-scan": {
+      "title": "Buscar y escanear en entradas/salidas de stock",
+      "description": "Registrar stock ahora es más rápido. En las páginas de Entrada y Salida de stock, busca productos por nombre, SKU o código de barras, con opción de escanear con la cámara. Los campos de cantidad y precio de compra ahora usan separador de miles (p. ej., 10.000) para leerlos mejor.",
+      "ctaLabel": "Abrir entrada de stock"
+    },
+    "2026-06-export-excel": {
+      "title": "Exportar reportes a Excel",
+      "description": "Ahora puedes exportar reportes a archivos de Excel (.xlsx) desde la página de Reportes. Haz clic en Exportar, elige un rango de fechas y descarga un archivo con el resumen de pérdidas y ganancias, la lista de transacciones, el detalle de ítems y los gastos.",
+      "ctaLabel": "Abrir reportes"
+    },
+    "2026-05-customers": {
+      "title": "Datos de clientes",
+      "description": "Gestiona los datos de tus clientes y vincúlalos a las transacciones. Busca, selecciona o crea clientes nuevos directamente al cobrar (opcional). Consulta el detalle de cada cliente para ver su historial completo de transacciones.",
+      "ctaLabel": "Gestionar clientes"
+    },
+    "2026-05-unmanaged-stock": {
+      "title": "Productos sin control de stock",
+      "description": "Ahora puedes vender productos sin controlar el stock, ideal para servicios o comida preparada al momento. Actívalo con el interruptor \"Controlar stock\" al agregar o editar productos. Estos productos siempre estarán disponibles al cobrar.",
+      "ctaLabel": "Gestionar productos"
+    },
+    "2026-05-expense-tracking": {
+      "title": "Control de gastos",
+      "description": "Registra gastos operativos (luz, salarios, arriendo, etc.) y ve la utilidad neta real en tus reportes. El flujo de caja de tu tienda ahora está completo en una sola app.",
+      "ctaLabel": "Probar ahora"
+    },
+    "2026-05-error-boundary": {
+      "title": "Mensajes de error más claros",
+      "description": "Si la app tiene un error inesperado, ahora aparecerá un mensaje detallado que puedes copiar y reportar al desarrollador. Se acabaron las pantallas en blanco sin información."
+    }
+  },
+  "error": {
+    "title": "Ocurrió un error",
+    "description": "La aplicación encontró un error inesperado. Intenta recargar la página. Si continúa, copia los detalles del error a continuación y repórtalo al desarrollador.",
+    "details": "Detalles del error",
+    "reload": "Recargar",
+    "goHome": "Ir al inicio",
+    "copyDetails": "Copiar detalles",
+    "copyPrompt": "Copia los siguientes detalles del error:"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "¡Uy! Página no encontrada",
+    "returnHome": "Volver al inicio"
+  },
+  "index": {
+    "title": "Bienvenido a tu app en blanco",
+    "description": "¡Empieza a construir tu increíble proyecto aquí!"
+  },
+  "themeColors": {
+    "blue": "Azul",
+    "orange": "Naranja",
+    "green": "Verde",
+    "purple": "Morado",
+    "red": "Rojo",
+    "pink": "Rosado",
+    "teal": "Verde azulado",
+    "yellow": "Amarillo"
+  },
+  "printer": {
+    "store": "Tienda",
+    "receiptNo": "No",
+    "time": "Hora",
+    "cashier": "Cajero",
+    "customer": "Cliente",
+    "table": "Mesa",
+    "notes": "Notas",
+    "itemNote": "Nota",
+    "subtotal": "Subtotal",
+    "discount": "Descuento",
+    "total": "TOTAL",
+    "paid": "Pagado",
+    "debt": "Deuda",
+    "change": "Cambio",
+    "thanks": "¡Gracias!",
+    "watermarkLine1": "Impreso desde la app",
+    "watermarkLine2": "FreeKasir.com",
+    "kitchenTicket": "COMANDA",
+    "dailyTitle": "REPORTE DIARIO DE VENTAS",
+    "period": "Periodo",
+    "txCount": "Transacciones",
+    "itemCount": "Ítems vendidos",
+    "sales": "VENTAS",
+    "grossSales": "Ventas brutas",
+    "netSales": "Ventas netas",
+    "expensesSection": "GASTOS Y UTILIDAD NETA",
+    "expenses": "Gastos",
+    "netProfit": "Utilidad neta",
+    "payment": "PAGOS",
+    "noPayment": "Aún no hay pagos",
+    "topProducts": "MÁS VENDIDOS",
+    "noSales": "Aún no hay ventas",
+    "endOfReport": "FIN DEL REPORTE",
+    "printedBy": "Impreso por",
+    "toast": {
+      "pluginUnavailable": "El plugin de Bluetooth no está disponible.",
+      "noDefaultPrinter": "No has elegido una impresora predeterminada. Configúrala primero en Ajustes.",
+      "searching": "Buscando impresoras Bluetooth vinculadas...",
+      "noPaired": "No hay impresoras Bluetooth vinculadas. Vincúlala primero en los ajustes de Android.",
+      "printerNotFound": "No se detectó la impresora \"{{name}}\". Asegúrate de que esté encendida y conectada.",
+      "connecting": "Conectando a {{name}}...",
+      "printing": "Imprimiendo...",
+      "success": "¡Impreso correctamente!",
+      "printFailed": "No se pudo imprimir: {{error}}",
+      "connectFailed": "Falló la conexión: {{error}}",
+      "listFailed": "No se pudo obtener la lista de impresoras: {{error}}",
+      "bluetoothOff": "Bluetooth no está activado",
+      "bluetoothOffHint": "Bluetooth no está activado. Actívalo e inténtalo de nuevo."
+    }
+  },
+  "permissions": {
+    "create_transaction": {
+      "title": "Crear transacciones",
+      "desc": "Acceso a la caja, guardar cuentas abiertas y cobrar"
+    },
+    "delete_transaction": {
+      "title": "Eliminar / anular transacciones",
+      "desc": "Eliminar transacciones del historial y anular cuentas abiertas"
+    },
+    "manage_products": {
+      "title": "Gestionar productos",
+      "desc": "Agregar, editar y eliminar productos"
+    },
+    "manage_categories_payments": {
+      "title": "Gestionar categorías y métodos de pago",
+      "desc": "Crear, editar y eliminar categorías de productos y métodos de pago"
+    },
+    "manage_stock_inout": {
+      "title": "Entrada / salida de inventario",
+      "desc": "Registrar mercancía que llega de proveedores y salidas que no son ventas"
+    },
+    "manage_supplier": {
+      "title": "Gestionar proveedores",
+      "desc": "Agregar, editar y eliminar proveedores"
+    },
+    "manage_customers": {
+      "title": "Gestionar clientes",
+      "desc": "Agregar, editar y eliminar clientes"
+    },
+    "view_reports": {
+      "title": "Ver reportes y utilidades",
+      "desc": "Acceso a reportes de ventas, utilidades, costos y reporte de inventario"
+    },
+    "manage_backup": {
+      "title": "Copia de seguridad y restauración",
+      "desc": "Exportar e importar los datos de la tienda (restaurar puede reemplazar todos los datos)"
+    },
+    "manage_store_settings": {
+      "title": "Editar datos de la tienda y tema",
+      "desc": "Cambiar nombre, dirección, teléfono, logo y color del tema"
+    },
+    "manage_expenses": {
+      "title": "Registrar gastos",
+      "desc": "Agregar, editar y eliminar gastos (luz, salarios, arriendo, etc.)"
+    },
+    "view_expenses": {
+      "title": "Ver gastos",
+      "desc": "Ver la lista y el total de gastos de la tienda"
+    }
+  },
+  "authErrors": {
+    "credentialsRequired": "El usuario y el PIN son obligatorios",
+    "storeNotReady": "La configuración de la tienda aún no está lista",
+    "invalidCredentials": "Usuario o PIN incorrecto",
+    "accountDisabled": "Esta cuenta está desactivada",
+    "usernameInvalid": "El usuario debe tener 3-20 caracteres: solo letras, números, guion bajo o punto",
+    "pinInvalid": "El PIN debe tener de 4 a 6 dígitos",
+    "nameRequired": "El nombre no puede estar vacío",
+    "usernameTaken": "El usuario \"{{username}}\" ya está en uso"
+  },
+  "files": {
+    "saveShareTitle": "Guardar / compartir archivo",
+    "shareTitle": "Compartir archivo",
+    "downloadFailed": "No se pudo descargar el archivo"
+  },
+  "backupFile": {
+    "invalidFile": "Archivo no válido",
+    "noData": "La copia de seguridad no contiene datos",
+    "rollbackFailed": "La importación falló y no se pudieron restaurar los datos anteriores. Intenta restaurar desde una copia de seguridad.",
+    "importFailed": "La importación falló; se restauraron los datos anteriores",
+    "shareTitle": "Copia de seguridad FreeKasir",
+    "shareText": "Copia de seguridad de los datos de FreeKasir (JSON)",
+    "dialogTitle": "Guardar / compartir copia de seguridad",
+    "success": "¡Copia de seguridad creada!",
+    "failed": "No se pudo crear o compartir la copia de seguridad",
+    "downloaded": "Copia de seguridad descargada"
+  },
+  "receiptPreview": {
+    "title": "Vista previa del recibo",
+    "storeName": "TIENDA LA ESPERANZA",
+    "address": "Bogotá",
+    "phone": "3001234567",
+    "item": "Arroz con pollo"
+  }
+}

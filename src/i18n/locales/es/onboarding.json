@@ -1,0 +1,72 @@
+{
+  "slides": {
+    "welcome": {
+      "title": "Bienvenido a FreeKasir",
+      "description": "Una app de punto de venta gratis. Gestiona ventas, stock y reportes financieros, todo en una sola app y desde tu celular, sin complicaciones."
+    },
+    "cashier": {
+      "title": "Caja rápida y fácil",
+      "description": "Procesa transacciones rápidamente. Selecciona productos, aplica descuentos y elige el método de pago, todo en segundos."
+    },
+    "stock": {
+      "title": "Gestión automática de stock",
+      "description": "Registra el stock que llega de tus proveedores; el stock baja automáticamente con cada venta y el costo de ventas se calcula solo."
+    },
+    "reports": {
+      "title": "Reportes completos",
+      "description": "Controla las ventas diarias, la utilidad y los productos más vendidos. Todos los datos en gráficos fáciles de entender."
+    },
+    "data": {
+      "title": "Tus datos se quedan en tu celular",
+      "description": "Todos los datos se guardan en tu dispositivo. Sin internet, sin servidor. ¡Gratis para siempre!"
+    }
+  },
+  "install": {
+    "installed": "¡Instalada!",
+    "title": "Instalar como app",
+    "installedDesc": "FreeKasir está instalada. ¡Puedes abrirla directamente desde tu pantalla de inicio!",
+    "desc": "Instala FreeKasir en tu celular para abrirla directamente desde la pantalla de inicio, sin abrir el navegador.",
+    "button": "Instalar como app",
+    "continueBrowser": "Continuar en el navegador",
+    "chromeHint": "Para instalar, ábrela en Chrome y toca el menú (⋮) → \"Agregar a la pantalla principal\" o \"Instalar app\".",
+    "safariHint": "En Safari iOS: toca el botón Compartir (↑) → \"Agregar a inicio\"",
+    "success": "¡FreeKasir se instaló correctamente!"
+  },
+  "store": {
+    "title": "Configura tu tienda",
+    "subtitle": "Esta información aparecerá en los recibos",
+    "storeName": "Nombre de la tienda",
+    "storeNamePlaceholder": "p. ej. Tienda La Esperanza",
+    "address": "Dirección",
+    "addressPlaceholder": "p. ej. Calle 10 # 5-20, Bogotá",
+    "phone": "Número de teléfono",
+    "phonePlaceholder": "p. ej. 3001234567",
+    "loadDummy": "Cargar datos de ejemplo",
+    "loadDummyDesc": "11 productos, 2 proveedores, 3 transacciones de demostración",
+    "theme": "Color del tema",
+    "themeDesc": "Elige el color principal de la app",
+    "start": "¡A vender! 🚀",
+    "saving": "Guardando..."
+  },
+  "restore": {
+    "title": "¿Ya tienes una copia de seguridad?",
+    "desc": "Restaura un archivo JSON de tu dispositivo anterior, sin necesidad de configurar la tienda de nuevo.",
+    "backupButton": "Restaurar tienda desde copia de seguridad",
+    "restoring": "Restaurando datos..."
+  },
+  "navigation": {
+    "next": "Siguiente",
+    "finish": "¡A vender! 🚀",
+    "saving": "Guardando..."
+  },
+  "toast": {
+    "restoreInvalidFile": "Archivo de copia de seguridad no válido",
+    "restoreNoData": "La copia de seguridad no contiene datos",
+    "restoreSuccess": "¡Datos restaurados correctamente!",
+    "restoreError": "No se pudo leer o restaurar la copia de seguridad"
+  },
+  "language": {
+    "title": "Elige el idioma",
+    "subtitle": "Selecciona tu idioma preferido"
+  }
+}

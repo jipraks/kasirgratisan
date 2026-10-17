@@ -72,14 +72,14 @@ describe('getESCPOSData formatting', () => {
     expect(totalLine?.length).toBe(32);
     expect(totalLine?.endsWith('$ 65.000')).toBe(true);
 
-    // Find the Bayar line: "Bayar:                 $ 65.000"
-    const bayarLine = lines.find(line => line.startsWith('Bayar:'));
+    // Find the paid line: "Pagado:                $ 65.000"
+    const bayarLine = lines.find(line => line.startsWith('Pagado:'));
     expect(bayarLine).toBeDefined();
     expect(bayarLine?.length).toBe(32);
     expect(bayarLine?.endsWith('$ 65.000')).toBe(true);
 
-    // Find the Kembali line: "Kembali:                    $ 0"
-    const kembaliLine = lines.find(line => line.startsWith('Kembali:'));
+    // Find the change line: "Cambio:                     $ 0"
+    const kembaliLine = lines.find(line => line.startsWith('Cambio:'));
     expect(kembaliLine).toBeDefined();
     expect(kembaliLine?.length).toBe(32);
     expect(kembaliLine?.endsWith('$ 0')).toBe(true);
@@ -133,7 +133,7 @@ describe('getESCPOSData formatting', () => {
       paymentMethodName: 'Tunai',
     });
 
-    expect(output).toContain('Dicetak Dari Aplikasi');
+    expect(output).toContain('Impreso desde la app');
     expect(output).toContain('FreeKasir.com');
   });
 
@@ -156,7 +156,7 @@ describe('getESCPOSData formatting', () => {
       paymentMethodName: 'Tunai',
     });
 
-    expect(output).not.toContain('Dicetak Dari Aplikasi');
+    expect(output).not.toContain('Impreso desde la app');
     expect(output).not.toContain('FreeKasir.com');
   });
 
@@ -180,8 +180,43 @@ describe('getESCPOSData formatting', () => {
       paymentMethodName: 'Tunai',
     });
 
-    expect(output).not.toContain('Dicetak Dari Aplikasi');
+    expect(output).not.toContain('Impreso desde la app');
     expect(output).not.toContain('FreeKasir.com');
+  });
+
+  it('should print labels in English when language is en', () => {
+    const output = getESCPOSData({
+      transaction: baseTransaction,
+      items: baseItems,
+      storeSettings: undefined,
+      paymentMethodName: 'Cash',
+      cashierName: 'Ana',
+      language: 'en',
+    });
+
+    expect(output).toContain('Cashier: Ana');
+    expect(output).toContain('Paid:');
+    expect(output).toContain('Change:');
+    expect(output).toContain('Thank you!');
+    expect(output).toContain('Printed From');
+  });
+
+  it('should default to Spanish labels without accents for unsupported or missing languages', () => {
+    for (const language of [undefined, 'id']) {
+      const output = getESCPOSData({
+        transaction: baseTransaction,
+        items: baseItems,
+        storeSettings: undefined,
+        paymentMethodName: 'Efectivo',
+        cashierName: 'Ana',
+        language,
+      });
+
+      expect(output).toContain('Cajero: Ana');
+      expect(output).toContain('Tienda');
+      expect(output).toContain('Gracias!');
+      expect(output).not.toContain('¡');
+    }
   });
 
 });

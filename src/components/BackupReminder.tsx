@@ -4,19 +4,14 @@ import { Button } from '@/components/ui/button';
 import { db } from '@/lib/db';
 import { buildBackupJsonString, backupFileName } from '@/lib/backup';
 import { formatDistanceToNow } from 'date-fns';
-import { id, enUS, ms } from 'date-fns/locale';
-import type { Locale } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import { Capacitor } from '@capacitor/core';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
 import { toast } from 'sonner';
+import i18n, { getDateLocale } from '@/i18n';
 
-const LOCALES: Record<string, Locale> = {
-  id,
-  en: enUS,
-  ms,
-};
+const backupText = (key: string) => i18n.t(`backupFile.${key}`, { ns: 'common' }) as string;
 
 interface BackupReminderProps {
   lastBackupAt: Date | string | null;
@@ -26,7 +21,7 @@ interface BackupReminderProps {
 
 export default function BackupReminder({ lastBackupAt, onDismiss, onBackup }: BackupReminderProps) {
   const { t, i18n } = useTranslation('settings');
-  const dateLocale = LOCALES[i18n.language] ?? id;
+  const dateLocale = getDateLocale(i18n.language);
 
   const timeAgo = lastBackupAt
     ? formatDistanceToNow(lastBackupAt instanceof Date ? lastBackupAt : new Date(lastBackupAt), { addSuffix: true, locale: dateLocale })
@@ -92,15 +87,15 @@ export async function exportBackupData() {
 
       // Share the written file using Android system share dialog
       await Share.share({
-        title: 'Backup FreeKasir',
-        text: 'File backup data FreeKasir (JSON)',
+        title: backupText('shareTitle'),
+        text: backupText('shareText'),
         url: result.uri,
-        dialogTitle: 'Simpan / Bagikan Backup',
+        dialogTitle: backupText('dialogTitle'),
       });
 
-      toast.success('Backup berhasil dibuat!');
+      toast.success(backupText('success'));
     } catch {
-      toast.error('Gagal membuat / membagikan file backup');
+      toast.error(backupText('failed'));
     }
   } else {
     const blob = new Blob([jsonString], { type: 'application/json' });
@@ -110,7 +105,7 @@ export async function exportBackupData() {
     a.download = fileName;
     a.click();
     URL.revokeObjectURL(url);
-    toast.success('Backup berhasil diunduh');
+    toast.success(backupText('downloaded'));
   }
 
   // Update last backup time

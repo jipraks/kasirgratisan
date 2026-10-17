@@ -9,8 +9,6 @@ import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
-import { id as idLocale, enUS, ms } from 'date-fns/locale';
-import type { Locale } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/use-auth';
 import LockedPage from '@/components/LockedPage';
@@ -19,13 +17,12 @@ import SearchableSelect from '@/components/SearchableSelect';
 import NumberInput from '@/components/NumberInput';
 import { useTranslation } from 'react-i18next';
 import { CURRENCY_SYMBOL, NUMBER_LOCALE } from '@/lib/currency';
-
-const LOCALES: Record<string, Locale> = { id: idLocale, en: enUS, ms };
+import { getDateLocale } from '@/i18n';
 
 export default function StockInPage() {
   const { currentUser, can } = useAuth();
   const { t, i18n } = useTranslation('settings');
-  const dateLocale = LOCALES[i18n.language] ?? idLocale;
+  const dateLocale = getDateLocale(i18n.language);
   const numberLocale = NUMBER_LOCALE;
   const currencySymbol = CURRENCY_SYMBOL;
 

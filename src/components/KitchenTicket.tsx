@@ -1,7 +1,5 @@
 import { useRef, useState } from 'react';
 import { format } from 'date-fns';
-import { id, enUS, ms } from 'date-fns/locale';
-import type { Locale } from 'date-fns';
 import html2canvas from 'html2canvas';
 import { Download, Share2, Printer } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -12,8 +10,7 @@ import type { Transaction, StoreSettings, TransactionItemRecord } from '@/lib/db
 import { isNativePlatform, printRawNativeBluetooth, getKitchenTicketESCPOSData } from '@/lib/printer';
 import { Capacitor } from '@capacitor/core';
 import { downloadOrShareFile } from '@/lib/file-utils';
-
-const LOCALES: Record<string, Locale> = { id, en: enUS, ms };
+import { getDateLocale } from '@/i18n';
 
 interface KitchenTicketProps {
   open: boolean;
@@ -29,7 +26,7 @@ export default function KitchenTicket({ open, onClose, transaction, items, store
   const ticketRef = useRef<HTMLDivElement>(null);
   const [generating, setGenerating] = useState(false);
 
-  const dateLocale = LOCALES[i18n.language] || id;
+  const dateLocale = getDateLocale(i18n.language);
 
   const storeName = storeSettings?.storeName || t('receipt.storeFallback');
 
@@ -62,13 +59,13 @@ export default function KitchenTicket({ open, onClose, transaction, items, store
         fileName,
         mimeType: 'image/png',
         dialogTitle: t('receipt.toast.downloadSuccess'),
-        shareTitle: t('kitchenTicket.title', 'Kitchen Ticket'),
+        shareTitle: t('kitchenTicket.title'),
         shareText: t('receipt.shareText', { storeName }),
       });
       toast.success(t('receipt.toast.downloadSuccess'));
     } catch (err) {
       console.error(err);
-      toast.error('Gagal mengunduh tiket dapur');
+      toast.error(t('common:files.downloadFailed'));
     }
   };
 
@@ -84,8 +81,8 @@ export default function KitchenTicket({ open, onClose, transaction, items, store
         await downloadOrShareFile(dataUrl, {
           fileName,
           mimeType: 'image/png',
-          dialogTitle: t('kitchenTicket.title', 'Kitchen Ticket'),
-          shareTitle: t('kitchenTicket.title', 'Kitchen Ticket'),
+          dialogTitle: t('kitchenTicket.title'),
+          shareTitle: t('kitchenTicket.title'),
           shareText: t('receipt.shareText', { storeName }),
         });
         return;
@@ -97,7 +94,7 @@ export default function KitchenTicket({ open, onClose, transaction, items, store
       if (navigator.share) {
         const file = new File([blob], fileName, { type: 'image/png' });
         await navigator.share({
-          title: t('kitchenTicket.title', 'Kitchen Ticket'),
+          title: t('kitchenTicket.title'),
           text: t('receipt.shareText', { storeName }),
           files: [file],
         });
@@ -160,7 +157,7 @@ export default function KitchenTicket({ open, onClose, transaction, items, store
     <Dialog open={open} onOpenChange={v => !v && onClose()}>
       <DialogContent className="max-w-[95vw] max-h-[90vh] overflow-y-auto rounded-xl p-4">
         <DialogHeader>
-          <DialogTitle className="text-center">{t('kitchenTicket.title', 'Kitchen Ticket')}</DialogTitle>
+          <DialogTitle className="text-center">{t('kitchenTicket.title')}</DialogTitle>
         </DialogHeader>
 
         {/* Ticket preview - this gets captured as image */}
@@ -207,7 +204,7 @@ export default function KitchenTicket({ open, onClose, transaction, items, store
             <div key={i} className="mb-2 flex justify-between items-start">
               <div className="flex-1 min-w-0 pr-2">
                 <p className="text-[11px] font-bold leading-tight">{item.quantity} x {item.productName}</p>
-                {item.notes && <p className="text-[10px] text-gray-700 italic font-semibold mt-0.5">  * Catatan: {item.notes}</p>}
+                {item.notes && <p className="text-[10px] text-gray-700 italic font-semibold mt-0.5">  * {t('common:printer.itemNote')}: {item.notes}</p>}
               </div>
               <div className="w-4 h-4 border border-black rounded-sm shrink-0 mt-0.5" />
             </div>

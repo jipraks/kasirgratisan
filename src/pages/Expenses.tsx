@@ -21,23 +21,16 @@ import {
 } from '@/components/ui/alert-dialog';
 import { toast } from 'sonner';
 import { format, startOfDay, startOfMonth, subDays } from 'date-fns';
-import { id, enUS, ms } from 'date-fns/locale';
-import type { Locale } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/use-auth';
 import LockedPage from '@/components/LockedPage';
 import { useTranslation } from 'react-i18next';
 import { CURRENCY_SYMBOL, NUMBER_LOCALE } from '@/lib/currency';
+import { getDateLocale } from '@/i18n';
 
 type RangePreset = 'today' | '7' | '30' | 'month' | 'all';
 
 
-
-const LOCALES: Record<string, Locale> = {
-  id,
-  en: enUS,
-  ms,
-};
 
 function rangeStart(range: RangePreset): Date | null {
   const now = new Date();
@@ -58,9 +51,7 @@ function rangeStart(range: RangePreset): Date | null {
 export default function ExpensesPage() {
   const { currentUser, can } = useAuth();
   const { t, i18n } = useTranslation('settings');
-
-  const lang = i18n.language?.split('-')[0] || 'id';
-  const dateLocale = LOCALES[lang] || id;
+  const dateLocale = getDateLocale(i18n.language);
   const numberLocale = NUMBER_LOCALE;
   const currencySymbol = CURRENCY_SYMBOL;
 

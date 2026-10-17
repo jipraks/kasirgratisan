@@ -5,20 +5,25 @@ import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
 import { db } from '@/lib/db';
 import type { Transaction, TransactionItemRecord, Expense } from '@/lib/db';
+import i18n, { resolveLanguage } from '@/i18n';
 
 /**
- * Client-side Excel export untuk halaman Laporan.
+ * Client-side Excel export for the Reports page.
  *
- * Semua data dibaca langsung dari IndexedDB (Dexie) dan workbook dibangun di
- * browser — tidak ada backend. ExcelJS di-import dinamis agar bundle-nya
- * ter-code-split dan tidak membebani load awal aplikasi.
+ * All data is read directly from IndexedDB (Dexie) and the workbook is built in
+ * the browser — there is no backend. ExcelJS is imported dynamically so its
+ * bundle is code-split and does not weigh on the app's initial load.
  *
- * Aturan yang dijaga konsisten dengan tampilan Laporan:
- *  - hanya transaksi `status === 'completed'` (open bill dikecualikan),
- *  - hanya pengeluaran `isDeleted === 0`.
+ * Rules kept consistent with the Reports view:
+ *  - only transactions with `status === 'completed'` (open bills are excluded),
+ *  - only expenses with `isDeleted === 0`.
  */
 
 const CURRENCY_FMT = '#,##0';
+
+/** Translator for export labels (reports:excelExport.*), using the current UI language. */
+const exportLabels = () => i18n.getFixedT(resolveLanguage(i18n.language), 'reports', 'excelExport');
+type ExportT = ReturnType<typeof exportLabels>;
 
 export interface ExportResult {
   fileName: string;
@@ -33,7 +38,7 @@ const XLSX_MIME =
 function arrayBufferToBase64(buffer: ArrayBuffer): string {
   const bytes = new Uint8Array(buffer);
   let binary = '';
-  const chunk = 0x8000; // hindari "Maximum call stack" pada file besar
+  const chunk = 0x8000; // avoid "Maximum call stack" on large files
   for (let i = 0; i < bytes.length; i += chunk) {
     binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
   }
@@ -41,10 +46,10 @@ function arrayBufferToBase64(buffer: ArrayBuffer): string {
 }
 
 /**
- * Simpan / bagikan file. Di web: unduh lewat anchor. Di native (Capacitor):
- * tulis ke cache lalu buka dialog Share Android — mengikuti pola backup.
+ * Save / share the file. On web: download via an anchor. On native (Capacitor):
+ * write to the cache, then open the Android Share dialog — following the backup pattern.
  */
-async function saveFile(buffer: ArrayBuffer, fileName: string): Promise<void> {
+async function saveFile(buffer: ArrayBuffer, fileName: string, t: ExportT): Promise<void> {
   if (Capacitor.isNativePlatform()) {
     const result = await Filesystem.writeFile({
       path: fileName,
@@ -52,10 +57,10 @@ async function saveFile(buffer: ArrayBuffer, fileName: string): Promise<void> {
       directory: Directory.Cache,
     });
     await Share.share({
-      title: 'Laporan Excel',
+      title: t('shareTitle'),
       text: fileName,
       url: result.uri,
-      dialogTitle: 'Simpan / Bagikan Laporan',
+      dialogTitle: t('shareDialogTitle'),
     });
     return;
   }
@@ -71,16 +76,18 @@ async function saveFile(buffer: ArrayBuffer, fileName: string): Promise<void> {
   URL.revokeObjectURL(url);
 }
 
-function sanitizeForFileName(name: string): string {
-  return name.trim().replace(/[\\/:*?"<>|]/g, '').replace(/\s+/g, '_') || 'Toko';
+function sanitizeForFileName(name: string, fallback: string): string {
+  return name.trim().replace(/[\\/:*?"<>|]/g, '').replace(/\s+/g, '_') || fallback;
 }
 
 export async function exportReportToExcel(rangeStart: Date, rangeEnd: Date): Promise<ExportResult> {
-  // Normalisasi batas hari supaya inklusif (00:00:00 s/d 23:59:59.999).
+  const t = exportLabels();
+
+  // Normalize day boundaries so the range is inclusive (00:00:00 to 23:59:59.999).
   const start = startOfDay(rangeStart);
   const end = endOfDay(rangeEnd);
 
-  // --- Ambil data ---
+  // --- Load data ---
   const [allTx, expensesRaw, debtPayments, paymentMethods, expenseCategories, users, storeSettings] =
     await Promise.all([
       db.transactions.where('date').between(start, end, true, true).toArray(),
@@ -107,16 +114,16 @@ export async function exportReportToExcel(rangeStart: Date, rangeEnd: Date): Pro
 
   // --- Lookup helpers ---
   const paymentName = (id?: number) =>
-    paymentMethods.find((p) => p.id === id)?.name ?? 'Tanpa metode';
+    paymentMethods.find((p) => p.id === id)?.name ?? t('noPaymentMethod');
   const categoryName = (id: number) =>
-    expenseCategories.find((c) => c.id === id)?.name ?? 'Tanpa kategori';
+    expenseCategories.find((c) => c.id === id)?.name ?? t('noCategory');
   const cashierName = (id?: number) =>
     id != null ? users.find((u) => u.id === id)?.name ?? '-' : '-';
   const txById = new Map(transactions.map((t) => [t.id, t] as const));
 
-  const storeName = storeSettings?.storeName?.trim() || 'Kasir';
+  const storeName = storeSettings?.storeName?.trim() || t('defaultStoreName');
 
-  // --- Agregasi untuk sheet Ringkasan ---
+  // --- Aggregates for the Summary sheet ---
   const totalSales = transactions.reduce((s, t) => s + t.total, 0);
   const totalProfit = transactions.reduce((s, t) => s + t.profit, 0);
   const totalRevenue = transactions.reduce((s, t) => s + t.subtotal, 0);
@@ -132,7 +139,7 @@ export async function exportReportToExcel(rangeStart: Date, rangeEnd: Date): Pro
   const netProfit = grossProfit - totalExpenses;
   const netMargin = netSales > 0 ? (netProfit / netSales) * 100 : 0;
 
-  // Breakdown metode bayar (penjualan).
+  // Payment method breakdown (sales).
   const paymentSummary = new Map<string, { amount: number; count: number }>();
   for (const t of transactions) {
     if (t.paymentAmount <= 0) continue;
@@ -150,14 +157,14 @@ export async function exportReportToExcel(rangeStart: Date, rangeEnd: Date): Pro
     paymentSummary.set(key, cur);
   }
 
-  // Pengeluaran per kategori.
+  // Expenses per category.
   const expenseSummary = new Map<string, number>();
   for (const e of expenses) {
     const key = categoryName(e.categoryId);
     expenseSummary.set(key, (expenseSummary.get(key) ?? 0) + e.amount);
   }
 
-  // --- Bangun workbook ---
+  // --- Build workbook ---
   const ExcelJSModule = await import('exceljs');
   const ExcelJS = (ExcelJSModule as unknown as { default?: typeof ExcelJSModule }).default ?? ExcelJSModule;
 
@@ -165,7 +172,7 @@ export async function exportReportToExcel(rangeStart: Date, rangeEnd: Date): Pro
   wb.creator = storeName;
   wb.created = end;
 
-  buildSummarySheet(wb, {
+  buildSummarySheet(wb, t, {
     storeName,
     start,
     end,
@@ -185,16 +192,16 @@ export async function exportReportToExcel(rangeStart: Date, rangeEnd: Date): Pro
     paymentSummary,
     expenseSummary,
   });
-  buildTransactionsSheet(wb, transactions, { paymentName, cashierName });
-  buildItemsSheet(wb, items, txById);
-  buildExpensesSheet(wb, expenses, { paymentName, categoryName });
+  buildTransactionsSheet(wb, t, transactions, { paymentName, cashierName });
+  buildItemsSheet(wb, t, items, txById);
+  buildExpensesSheet(wb, t, expenses, { paymentName, categoryName });
 
   const buffer = await wb.xlsx.writeBuffer();
-  const fileName = `Laporan_${sanitizeForFileName(storeName)}_${format(start, 'yyyy-MM-dd')}_${format(
+  const fileName = `${t('fileNamePrefix')}${sanitizeForFileName(storeName, t('fileNameFallback'))}_${format(start, 'yyyy-MM-dd')}_${format(
     end,
     'yyyy-MM-dd',
   )}.xlsx`;
-  await saveFile(buffer as ArrayBuffer, fileName);
+  await saveFile(buffer as ArrayBuffer, fileName, t);
 
   return {
     fileName,
@@ -236,17 +243,17 @@ function styleHeaderRow(row: ExcelJSTypes.Row) {
   });
 }
 
-function buildSummarySheet(wb: Workbook, d: SummaryData) {
-  const ws = wb.addWorksheet('Ringkasan');
+function buildSummarySheet(wb: Workbook, t: ExportT, d: SummaryData) {
+  const ws = wb.addWorksheet(t('sheets.summary'));
   ws.columns = [{ width: 30 }, { width: 22 }];
 
-  const titleRow = ws.addRow([`Laporan ${d.storeName}`]);
+  const titleRow = ws.addRow([t('summary.title', { store: d.storeName })]);
   titleRow.font = { bold: true, size: 14 };
   ws.addRow([
-    'Periode',
+    t('summary.period'),
     `${format(d.start, 'dd/MM/yyyy')} – ${format(d.end, 'dd/MM/yyyy')}`,
   ]);
-  ws.addRow(['Dibuat', format(d.end, 'dd/MM/yyyy HH:mm')]);
+  ws.addRow([t('summary.generated'), format(d.end, 'dd/MM/yyyy HH:mm')]);
   ws.addRow([]);
 
   const moneyRow = (label: string, value: number, bold = false) => {
@@ -260,23 +267,23 @@ function buildSummarySheet(wb: Workbook, d: SummaryData) {
     row.getCell(2).numFmt = '0.0%';
   };
 
-  ws.addRow(['Jumlah Transaksi', d.txCount]);
-  moneyRow('Total Omzet', d.totalSales);
-  moneyRow('Kas Masuk', d.totalCashIn);
+  ws.addRow([t('summary.txCount'), d.txCount]);
+  moneyRow(t('summary.totalSales'), d.totalSales);
+  moneyRow(t('summary.cashIn'), d.totalCashIn);
   ws.addRow([]);
-  moneyRow('Pendapatan Kotor', d.totalRevenue);
-  moneyRow('Diskon', -d.totalDiscount);
-  moneyRow('Penjualan Bersih', d.netSales, true);
-  moneyRow('HPP (Modal)', -d.totalHpp);
-  moneyRow('Laba Kotor', d.grossProfit, true);
-  pctRow('Margin Kotor', d.grossMargin);
-  moneyRow('Total Pengeluaran', -d.totalExpenses);
-  moneyRow('Laba Bersih', d.netProfit, true);
-  pctRow('Margin Bersih', d.netMargin);
+  moneyRow(t('summary.grossRevenue'), d.totalRevenue);
+  moneyRow(t('summary.discount'), -d.totalDiscount);
+  moneyRow(t('summary.netSales'), d.netSales, true);
+  moneyRow(t('summary.cogs'), -d.totalHpp);
+  moneyRow(t('summary.grossProfit'), d.grossProfit, true);
+  pctRow(t('summary.grossMargin'), d.grossMargin);
+  moneyRow(t('summary.totalExpenses'), -d.totalExpenses);
+  moneyRow(t('summary.netProfit'), d.netProfit, true);
+  pctRow(t('summary.netMargin'), d.netMargin);
 
-  // Breakdown metode bayar
+  // Payment method breakdown
   ws.addRow([]);
-  const payHeader = ws.addRow(['Metode Bayar', 'Jumlah', 'Transaksi']);
+  const payHeader = ws.addRow([t('summary.paymentMethod'), t('summary.amount'), t('summary.transactions')]);
   styleHeaderRow(payHeader);
   if (d.paymentSummary.size === 0) {
     ws.addRow(['—', 0, 0]);
@@ -287,9 +294,9 @@ function buildSummarySheet(wb: Workbook, d: SummaryData) {
     }
   }
 
-  // Pengeluaran per kategori
+  // Expenses per category
   ws.addRow([]);
-  const expHeader = ws.addRow(['Pengeluaran per Kategori', 'Jumlah']);
+  const expHeader = ws.addRow([t('summary.expensesByCategory'), t('summary.amount')]);
   styleHeaderRow(expHeader);
   if (d.expenseSummary.size === 0) {
     ws.addRow(['—', 0]);
@@ -314,27 +321,29 @@ function setupTable(
 
 function buildTransactionsSheet(
   wb: Workbook,
+  t: ExportT,
   transactions: Transaction[],
   helpers: { paymentName: (id?: number) => string; cashierName: (id?: number) => string },
 ) {
-  const ws = wb.addWorksheet('Transaksi');
+  const ws = wb.addWorksheet(t('sheets.transactions'));
   const columns = [
-    { header: 'No', key: 'no', width: 6 },
-    { header: 'No. Struk', key: 'receipt', width: 16 },
-    { header: 'Tanggal', key: 'date', width: 12 },
-    { header: 'Waktu', key: 'time', width: 8 },
-    { header: 'Pelanggan', key: 'customer', width: 20 },
-    { header: 'Meja', key: 'table', width: 8 },
-    { header: 'Metode Bayar', key: 'payment', width: 16 },
-    { header: 'Dibayar', key: 'paid', width: 14, money: true },
-    { header: 'Hutang Awal', key: 'debt', width: 14, money: true },
-    { header: 'Kasir', key: 'cashier', width: 16 },
-    { header: 'Subtotal', key: 'subtotal', width: 14, money: true },
-    { header: 'Diskon', key: 'discount', width: 12, money: true },
-    { header: 'Total', key: 'total', width: 14, money: true },
-    { header: 'Profit', key: 'profit', width: 14, money: true },
+    { header: t('columns.no'), key: 'no', width: 6 },
+    { header: t('columns.receiptNo'), key: 'receipt', width: 16 },
+    { header: t('columns.date'), key: 'date', width: 12 },
+    { header: t('columns.time'), key: 'time', width: 8 },
+    { header: t('columns.customer'), key: 'customer', width: 20 },
+    { header: t('columns.table'), key: 'table', width: 8 },
+    { header: t('columns.paymentMethod'), key: 'payment', width: 16 },
+    { header: t('columns.paid'), key: 'paid', width: 14, money: true },
+    { header: t('columns.initialDebt'), key: 'debt', width: 14, money: true },
+    { header: t('columns.cashier'), key: 'cashier', width: 16 },
+    { header: t('columns.subtotal'), key: 'subtotal', width: 14, money: true },
+    { header: t('columns.discount'), key: 'discount', width: 12, money: true },
+    { header: t('columns.total'), key: 'total', width: 14, money: true },
+    { header: t('columns.profit'), key: 'profit', width: 14, money: true },
   ];
   setupTable(ws, columns);
+  const debtLabel = t('debt');
 
   transactions.forEach((t, i) => {
     ws.addRow({
@@ -345,7 +354,7 @@ function buildTransactionsSheet(
       customer: t.customerName ?? '-',
       table: t.tableNumber ?? '-',
       payment: t.debtAmount
-        ? `${t.paymentAmount > 0 ? `${helpers.paymentName(t.paymentMethodId)} + ` : ''}Hutang`
+        ? `${t.paymentAmount > 0 ? `${helpers.paymentName(t.paymentMethodId)} + ` : ''}${debtLabel}`
         : helpers.paymentName(t.paymentMethodId),
       paid: Math.min(t.paymentAmount, t.total),
       debt: t.debtAmount ?? 0,
@@ -357,7 +366,7 @@ function buildTransactionsSheet(
     });
   });
 
-  addTotalsRow(ws, columns, transactions.length, {
+  addTotalsRow(ws, columns, transactions.length, t('totalRow'), {
     subtotal: transactions.reduce((s, t) => s + t.subtotal, 0),
     discount: transactions.reduce((s, t) => s + t.discountAmount, 0),
     total: transactions.reduce((s, t) => s + t.total, 0),
@@ -370,24 +379,25 @@ function buildTransactionsSheet(
 
 function buildItemsSheet(
   wb: Workbook,
+  t: ExportT,
   items: TransactionItemRecord[],
   txById: Map<number | undefined, Transaction>,
 ) {
-  const ws = wb.addWorksheet('Detail Item');
+  const ws = wb.addWorksheet(t('sheets.items'));
   const columns = [
-    { header: 'No. Struk', key: 'receipt', width: 16 },
-    { header: 'Tanggal', key: 'date', width: 12 },
-    { header: 'Produk', key: 'product', width: 28 },
-    { header: 'Qty', key: 'qty', width: 8 },
-    { header: 'Harga', key: 'price', width: 14, money: true },
-    { header: 'HPP', key: 'hpp', width: 14, money: true },
-    { header: 'Diskon', key: 'discount', width: 12, money: true },
-    { header: 'Subtotal', key: 'subtotal', width: 14, money: true },
-    { header: 'Laba', key: 'profit', width: 14, money: true },
+    { header: t('columns.receiptNo'), key: 'receipt', width: 16 },
+    { header: t('columns.date'), key: 'date', width: 12 },
+    { header: t('columns.product'), key: 'product', width: 28 },
+    { header: t('columns.qty'), key: 'qty', width: 8 },
+    { header: t('columns.price'), key: 'price', width: 14, money: true },
+    { header: t('columns.cost'), key: 'hpp', width: 14, money: true },
+    { header: t('columns.discount'), key: 'discount', width: 12, money: true },
+    { header: t('columns.subtotal'), key: 'subtotal', width: 14, money: true },
+    { header: t('columns.profit'), key: 'profit', width: 14, money: true },
   ];
   setupTable(ws, columns);
 
-  // Urutkan item mengikuti urutan transaksi (tanggal), lalu nama produk.
+  // Sort items by their transaction order (date).
   const sorted = [...items].sort((a, b) => {
     const ta = txById.get(a.transactionId);
     const tb = txById.get(b.transactionId);
@@ -411,7 +421,7 @@ function buildItemsSheet(
     });
   }
 
-  addTotalsRow(ws, columns, items.length, {
+  addTotalsRow(ws, columns, items.length, t('totalRow'), {
     qty: items.reduce((s, i) => s + i.quantity, 0),
     discount: items.reduce((s, i) => s + i.discountAmount, 0),
     subtotal: items.reduce((s, i) => s + i.subtotal, 0),
@@ -422,18 +432,19 @@ function buildItemsSheet(
 
 function buildExpensesSheet(
   wb: Workbook,
+  t: ExportT,
   expenses: Expense[],
   helpers: { paymentName: (id?: number) => string; categoryName: (id: number) => string },
 ) {
-  const ws = wb.addWorksheet('Pengeluaran');
+  const ws = wb.addWorksheet(t('sheets.expenses'));
   const columns = [
-    { header: 'No', key: 'no', width: 6 },
-    { header: 'Tanggal', key: 'date', width: 12 },
-    { header: 'Judul', key: 'title', width: 30 },
-    { header: 'Kategori', key: 'category', width: 18 },
-    { header: 'Metode Bayar', key: 'payment', width: 16 },
-    { header: 'Nominal', key: 'amount', width: 14, money: true },
-    { header: 'Catatan', key: 'notes', width: 30 },
+    { header: t('columns.no'), key: 'no', width: 6 },
+    { header: t('columns.date'), key: 'date', width: 12 },
+    { header: t('columns.title'), key: 'title', width: 30 },
+    { header: t('columns.category'), key: 'category', width: 18 },
+    { header: t('columns.paymentMethod'), key: 'payment', width: 16 },
+    { header: t('columns.amount'), key: 'amount', width: 14, money: true },
+    { header: t('columns.notes'), key: 'notes', width: 30 },
   ];
   setupTable(ws, columns);
 
@@ -449,7 +460,7 @@ function buildExpensesSheet(
     });
   });
 
-  addTotalsRow(ws, columns, expenses.length, {
+  addTotalsRow(ws, columns, expenses.length, t('totalRow'), {
     amount: expenses.reduce((s, e) => s + e.amount, 0),
   });
   applyMoneyFormat(ws, columns);
@@ -459,11 +470,12 @@ function addTotalsRow(
   ws: Worksheet,
   columns: { key: string; money?: boolean }[],
   count: number,
+  label: string,
   totals: Record<string, number>,
 ) {
   if (count === 0) return;
   const firstKey = columns[0].key;
-  const data: Record<string, string | number> = { [firstKey]: 'TOTAL', ...totals };
+  const data: Record<string, string | number> = { [firstKey]: label, ...totals };
   const row = ws.addRow(data);
   row.font = { bold: true };
   row.eachCell((cell) => {

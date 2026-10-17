@@ -5,7 +5,6 @@ import { ShoppingCart, Package, BarChart3, TrendingUp, AlertTriangle, Receipt, C
 import { Card, CardContent } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
-import { id, enUS, ms } from 'date-fns/locale';
 import { Button } from '@/components/ui/button';
 import BackupReminder, { shouldShowBackupReminder, exportBackupData } from '@/components/BackupReminder';
 import WhatsNewModal from '@/components/WhatsNewModal';
@@ -14,8 +13,7 @@ import { useAuth } from '@/hooks/use-auth';
 import type { PermissionKey } from '@/lib/db';
 import { useTranslation } from 'react-i18next';
 import { CURRENCY_SYMBOL, NUMBER_LOCALE } from '@/lib/currency';
-
-const LOCALES: Record<string, Locale> = { id, en: enUS, ms };
+import { getDateLocale } from '@/i18n';
 
 export default function Dashboard() {
   const { can } = useAuth();
@@ -23,7 +21,7 @@ export default function Dashboard() {
   const [backupDismissed, setBackupDismissed] = useState(false);
   const [whatsNewOpen, setWhatsNewOpen] = useState(false);
 
-  const dateLocale = LOCALES[i18n.language] ?? id;
+  const dateLocale = getDateLocale(i18n.language);
   const numberLocale = NUMBER_LOCALE;
 
   const storeSettings = useLiveQuery(() => db.storeSettings.toCollection().first());

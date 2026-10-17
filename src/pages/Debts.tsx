@@ -1,8 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { format } from 'date-fns';
-import { id, enUS, ms } from 'date-fns/locale';
-import type { Locale } from 'date-fns';
 import { ArrowLeft, Banknote, CheckCircle2, ChevronRight, CreditCard, Receipt, Search, UserRound } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -20,8 +18,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sh
 import { Textarea } from '@/components/ui/textarea';
 import { useTranslation } from 'react-i18next';
 import { CURRENCY_SYMBOL, NUMBER_LOCALE } from '@/lib/currency';
-
-const LOCALES: Record<string, Locale> = { id, en: enUS, ms };
+import { getDateLocale } from '@/i18n';
 
 type DebtFilter = 'active' | 'paid' | 'all';
 
@@ -29,7 +26,7 @@ export default function DebtsPage() {
   const navigate = useNavigate();
   const { can, currentUser } = useAuth();
   const { t, i18n } = useTranslation('settings');
-  const dateLocale = LOCALES[i18n.language] ?? id;
+  const dateLocale = getDateLocale(i18n.language);
   const numberLocale = NUMBER_LOCALE;
   const currencySymbol = CURRENCY_SYMBOL;
 

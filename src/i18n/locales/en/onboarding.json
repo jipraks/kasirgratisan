@@ -29,7 +29,8 @@
     "button": "Install as App",
     "continueBrowser": "Continue in Browser",
     "chromeHint": "To install, open in Chrome browser, then tap menu (⋮) → \"Add to Home screen\" or \"Install app\".",
-    "safariHint": "On Safari iOS: tap the Share button (↑) → \"Add to Home Screen\""
+    "safariHint": "On Safari iOS: tap the Share button (↑) → \"Add to Home Screen\"",
+    "success": "FreeKasir installed successfully!"
   },
   "store": {
     "title": "Set Up Your Store",

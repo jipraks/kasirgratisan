@@ -131,7 +131,7 @@ export default function ReceiptSettings() {
       {/* Live Preview Card */}
       <div className="space-y-2">
         <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block px-1">
-          Preview Struk
+          {t('common:receiptPreview.title')}
         </span>
         <Card className="border border-dashed border-border/80 bg-white dark:bg-zinc-900 shadow-inner rounded-xl overflow-hidden">
           <CardContent className="p-6 font-mono text-[11px] text-zinc-700 dark:text-zinc-300 space-y-4">
@@ -148,16 +148,16 @@ export default function ReceiptSettings() {
             )}
 
             <div className="text-center space-y-1 opacity-55">
-              <p className="font-bold text-xs">TOKO MAJU JAYA</p>
-              <p>Tangerang</p>
-              <p>081208120812</p>
+              <p className="font-bold text-xs">{t('common:receiptPreview.storeName')}</p>
+              <p>{t('common:receiptPreview.address')}</p>
+              <p>{t('common:receiptPreview.phone')}</p>
             </div>
             
             <div className="border-t border-dashed border-zinc-300 dark:border-zinc-700" />
             
             <div className="space-y-1.5 opacity-55">
               <div className="flex justify-between">
-                <span>Nasi Goreng Spesial</span>
+                <span>{t('common:receiptPreview.item')}</span>
                 <span>$ 15.000</span>
               </div>
               <div className="flex justify-between font-bold text-zinc-800 dark:text-zinc-200">
@@ -176,8 +176,8 @@ export default function ReceiptSettings() {
             {/* Watermark preview */}
             {!hideWatermark && (
               <div className="text-center text-[10px] text-zinc-500 pt-2 border-t border-dotted border-zinc-200 dark:border-zinc-800 space-y-0.5">
-                <p>Dicetak Dari Aplikasi</p>
-                <p className="font-semibold">FreeKasir.com</p>
+                <p>{t('common:printer.watermarkLine1')}</p>
+                <p className="font-semibold">{t('common:printer.watermarkLine2')}</p>
               </div>
             )}
           </CardContent>

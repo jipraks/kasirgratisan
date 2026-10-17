@@ -1,9 +1,12 @@
 import { db, type User, type PermissionKey, ALL_PERMISSIONS } from './db';
+import i18n from '@/i18n';
+
+const authError = (key: string) => i18n.t(`authErrors.${key}`, { ns: 'common' }) as string;
 
 // === PIN hashing (SHA-256, hex) ===
 // Note: client-only PWA — this is *obfuscation*, not military-grade security.
 // Anyone with device access could open IndexedDB. The goal is to prevent a
-// nosy karyawan from seeing each other's PIN, not protect against a forensic
+// nosy employee from seeing each other's PIN, not protect against a forensic
 // attacker. We salt with a per-store deviceId to avoid rainbow lookups.
 export async function hashPin(pin: string, deviceId: string): Promise<string> {
   const data = new TextEncoder().encode(`${deviceId}:${pin}`);
@@ -25,57 +28,6 @@ export function isValidUsername(username: string): boolean {
 // === Permissions ===
 export { ALL_PERMISSIONS };
 export type { PermissionKey };
-
-export const PERMISSION_LABELS: Record<PermissionKey, { title: string; desc: string }> = {
-  create_transaction: {
-    title: 'Buat Transaksi',
-    desc: 'Akses Kasir, simpan open bill, dan checkout pembayaran',
-  },
-  delete_transaction: {
-    title: 'Hapus / Batalkan Transaksi',
-    desc: 'Hapus transaksi di Riwayat dan batalkan open bill',
-  },
-  manage_products: {
-    title: 'Kelola Produk',
-    desc: 'Tambah, edit, dan hapus produk',
-  },
-  manage_categories_payments: {
-    title: 'Kelola Kategori & Metode Bayar',
-    desc: 'CRUD kategori produk dan metode pembayaran',
-  },
-  manage_stock_inout: {
-    title: 'Stock In / Stock Out',
-    desc: 'Catat barang masuk dari supplier dan barang keluar non-penjualan',
-  },
-  manage_supplier: {
-    title: 'Kelola Supplier',
-    desc: 'Tambah, edit, dan hapus data supplier',
-  },
-  manage_customers: {
-    title: 'Kelola Pelanggan',
-    desc: 'Tambah, edit, dan hapus data pelanggan',
-  },
-  view_reports: {
-    title: 'Lihat Laporan & Profit',
-    desc: 'Akses laporan penjualan, profit, HPP, dan laporan stok',
-  },
-  manage_backup: {
-    title: 'Backup & Restore',
-    desc: 'Export dan import data toko (restore dapat menimpa semua data)',
-  },
-  manage_store_settings: {
-    title: 'Edit Info Toko & Tema',
-    desc: 'Ubah nama toko, alamat, telepon, logo, warna tema',
-  },
-  manage_expenses: {
-    title: 'Catat Pengeluaran',
-    desc: 'Tambah, edit, dan hapus pengeluaran (listrik, gaji, sewa, dll)',
-  },
-  view_expenses: {
-    title: 'Lihat Pengeluaran',
-    desc: 'Lihat daftar dan total pengeluaran toko',
-  },
-};
 
 // Default permission set for new staff: create transaction only.
 export const DEFAULT_STAFF_PERMISSIONS: PermissionKey[] = ['create_transaction'];
@@ -102,17 +54,17 @@ export interface LoginResult {
 
 export async function login(username: string, pin: string): Promise<LoginResult> {
   const trimmed = username.trim().toLowerCase();
-  if (!trimmed || !pin) return { ok: false, error: 'Username dan PIN wajib diisi' };
+  if (!trimmed || !pin) return { ok: false, error: authError('credentialsRequired') };
 
   const settings = await db.storeSettings.toCollection().first();
-  if (!settings?.deviceId) return { ok: false, error: 'Pengaturan toko belum siap' };
+  if (!settings?.deviceId) return { ok: false, error: authError('storeNotReady') };
 
   const user = await db.users.where('username').equals(trimmed).first();
-  if (!user) return { ok: false, error: 'Username atau PIN salah' };
-  if (!user.isActive) return { ok: false, error: 'Akun ini dinonaktifkan' };
+  if (!user) return { ok: false, error: authError('invalidCredentials') };
+  if (!user.isActive) return { ok: false, error: authError('accountDisabled') };
 
   const hash = await hashPin(pin, settings.deviceId);
-  if (hash !== user.pinHash) return { ok: false, error: 'Username atau PIN salah' };
+  if (hash !== user.pinHash) return { ok: false, error: authError('invalidCredentials') };
 
   // Update lastLoginAt (best-effort, non-blocking semantics OK)
   await db.users.update(user.id!, { lastLoginAt: new Date() });
@@ -183,20 +135,20 @@ export async function createUser(input: {
 }): Promise<{ ok: boolean; userId?: number; error?: string }> {
   const username = input.username.trim().toLowerCase();
   if (!isValidUsername(username)) {
-    return { ok: false, error: 'Username 3-20 karakter, hanya huruf/angka/underscore' };
+    return { ok: false, error: authError('usernameInvalid') };
   }
   if (!isValidPin(input.pin)) {
-    return { ok: false, error: 'PIN harus 4-6 digit angka' };
+    return { ok: false, error: authError('pinInvalid') };
   }
   if (!input.name.trim()) {
-    return { ok: false, error: 'Nama tidak boleh kosong' };
+    return { ok: false, error: authError('nameRequired') };
   }
 
   const settings = await db.storeSettings.toCollection().first();
-  if (!settings?.deviceId) return { ok: false, error: 'Pengaturan toko belum siap' };
+  if (!settings?.deviceId) return { ok: false, error: authError('storeNotReady') };
 
   const existing = await db.users.where('username').equals(username).first();
-  if (existing) return { ok: false, error: `Username "${username}" sudah dipakai` };
+  if (existing) return { ok: false, error: i18n.t('authErrors.usernameTaken', { ns: 'common', username }) as string };
 
   const pinHash = await hashPin(input.pin, settings.deviceId);
   const userId = await db.users.add({
@@ -214,9 +166,9 @@ export async function createUser(input: {
 }
 
 export async function updateUserPin(userId: number, newPin: string): Promise<{ ok: boolean; error?: string }> {
-  if (!isValidPin(newPin)) return { ok: false, error: 'PIN harus 4-6 digit angka' };
+  if (!isValidPin(newPin)) return { ok: false, error: authError('pinInvalid') };
   const settings = await db.storeSettings.toCollection().first();
-  if (!settings?.deviceId) return { ok: false, error: 'Pengaturan toko belum siap' };
+  if (!settings?.deviceId) return { ok: false, error: authError('storeNotReady') };
   const pinHash = await hashPin(newPin, settings.deviceId);
   await db.users.update(userId, { pinHash });
   return { ok: true };

@@ -60,7 +60,7 @@ export default function DailyReportReceipt({ open, onClose, data }: DailyReportR
       toast.success(t('dailyReceipt.downloadSuccess'));
     } catch (err) {
       console.error(err);
-      toast.error('Gagal mengunduh laporan');
+      toast.error(t('common:files.downloadFailed'));
     }
   };
 

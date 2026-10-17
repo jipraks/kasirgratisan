@@ -1,0 +1,180 @@
+{
+  "title": "Reportes",
+  "export": "Exportar",
+  "locked": {
+    "title": "Reportes",
+    "permissionLabel": "Ver reportes y utilidades"
+  },
+  "tabs": {
+    "daily": "Diario",
+    "7days": "7 días",
+    "30days": "30 días"
+  },
+  "daily": {
+    "reportDate": "Fecha del reporte",
+    "includeExpenses": "Incluir gastos",
+    "includeExpensesHint": "Los gastos reducirán la utilidad neta",
+    "printClosingReport": "Imprimir cierre",
+    "noSalesSelectedDate": "* No hay ventas en la fecha seleccionada"
+  },
+  "summary": {
+    "transactions": "Transacciones",
+    "sales": "Ventas",
+    "profit": "Utilidad"
+  },
+  "dailySales": {
+    "title": "Total de ventas diarias",
+    "grossSales": "Ventas brutas",
+    "cashIn": "Ingresos de caja",
+    "avgTransaction": "Ticket promedio",
+    "noSales": "Aún no hay ventas",
+    "transactionCount": "{{count}} transacciones"
+  },
+  "pl": {
+    "title": "Pérdidas y ganancias",
+    "daily": "Pérdidas y ganancias del día",
+    "grossRevenue": "Ingresos brutos",
+    "discount": "Descuento",
+    "netSales": "Ventas netas",
+    "cogs": "Costo de ventas",
+    "grossProfit": "Utilidad bruta",
+    "grossMargin": "Margen bruto",
+    "operationalExpenses": "Gastos operativos",
+    "notIncluded": " (no incluidos)",
+    "netProfit": "Utilidad neta",
+    "netMargin": "Margen neto"
+  },
+  "expenses": {
+    "title": "Gastos por categoría"
+  },
+  "chart": {
+    "title": "Tendencia de ventas",
+    "tooltipLabel": "Ventas"
+  },
+  "products": {
+    "title": "Productos más vendidos",
+    "daily": "Más vendidos del día",
+    "noData": "Aún no hay datos de ventas",
+    "sold": "{{qty}} vendidos · utilidad {{profit}}"
+  },
+  "fallbacks": {
+    "uncategorized": "Sin categoría",
+    "noMethod": "Sin método",
+    "deletedMethod": "Método eliminado",
+    "owner": "Dueño"
+  },
+  "currency": "$ {{amount}}",
+  "exportDialog": {
+    "title": "Exportar reporte a Excel",
+    "description": "Selecciona un rango de fechas. El archivo contiene las hojas Resumen, Transacciones, Detalle de ítems y Gastos. Solo se cuentan las transacciones pagadas.",
+    "fromDate": "Desde",
+    "toDate": "Hasta",
+    "invalidRange": "La fecha final debe ser igual o posterior a la fecha inicial.",
+    "creating": "Creando archivo…",
+    "exportButton": "Exportar Excel",
+    "invalidRangeToast": "Rango de fechas no válido",
+    "noDataToast": "No hay datos en este rango; el archivo se creará vacío",
+    "successToast": "Exportación exitosa: {{txCount}} transacciones, {{expenseCount}} gastos",
+    "errorToast": "No se pudo crear el archivo de Excel"
+  },
+  "dailyReceipt": {
+    "title": "Recibo de cierre",
+    "reportTitle": "REPORTE DIARIO DE VENTAS",
+    "period": "Periodo",
+    "transactionCount": "Transacciones",
+    "itemCount": "Ítems vendidos",
+    "sales": "VENTAS",
+    "grossSales": "Ventas brutas",
+    "discount": "Descuento",
+    "netSales": "Ventas netas",
+    "expensesSection": "GASTOS Y UTILIDAD NETA",
+    "expenses": "Gastos",
+    "netProfit": "Utilidad neta",
+    "payment": "PAGOS",
+    "noPayment": "Aún no hay pagos",
+    "topProducts": "MÁS VENDIDOS",
+    "noSales": "Aún no hay ventas",
+    "endOfReport": "FIN DEL REPORTE",
+    "printedBy": "Impreso por",
+    "download": "Descargar",
+    "share": "Compartir",
+    "print": "Imprimir",
+    "done": "Listo",
+    "storeFallback": "Tienda",
+    "logoAlt": "Logo",
+    "captureError": "No se pudo crear la imagen del reporte",
+    "downloadSuccess": "Reporte descargado correctamente",
+    "shareTitle": "Cierre de caja",
+    "shareText": "Cierre de caja de {{storeName}}",
+    "shareFallbackTitle": "REPORTE DIARIO DE VENTAS - {{storeName}}",
+    "dateLabel": "Fecha",
+    "summary": "RESUMEN",
+    "shareFailed": "No se pudo compartir el recibo",
+    "bluetoothUnavailable": "Bluetooth no está disponible en este navegador. Usa Chrome en Android.",
+    "searchingPrinter": "Buscando impresora Bluetooth...",
+    "printSuccess": "¡Reporte impreso correctamente!",
+    "printFailed": "No se pudo imprimir. Asegúrate de que la impresora Bluetooth esté encendida."
+  },
+  "excelExport": {
+    "shareTitle": "Reporte de Excel",
+    "shareDialogTitle": "Guardar / compartir reporte",
+    "fileNamePrefix": "Reporte_",
+    "defaultStoreName": "Mi tienda",
+    "fileNameFallback": "Tienda",
+    "noPaymentMethod": "Sin método",
+    "noCategory": "Sin categoría",
+    "debt": "Deuda",
+    "totalRow": "TOTAL",
+    "sheets": {
+      "summary": "Resumen",
+      "transactions": "Transacciones",
+      "items": "Detalle de ítems",
+      "expenses": "Gastos"
+    },
+    "summary": {
+      "title": "Reporte {{store}}",
+      "period": "Período",
+      "generated": "Generado",
+      "txCount": "Número de transacciones",
+      "totalSales": "Ventas totales",
+      "cashIn": "Ingresos de caja",
+      "grossRevenue": "Ingresos brutos",
+      "discount": "Descuento",
+      "netSales": "Ventas netas",
+      "cogs": "Costo de ventas",
+      "grossProfit": "Utilidad bruta",
+      "grossMargin": "Margen bruto",
+      "totalExpenses": "Total de gastos",
+      "netProfit": "Utilidad neta",
+      "netMargin": "Margen neto",
+      "paymentMethod": "Método de pago",
+      "amount": "Monto",
+      "transactions": "Transacciones",
+      "expensesByCategory": "Gastos por categoría"
+    },
+    "columns": {
+      "no": "No.",
+      "receiptNo": "No. recibo",
+      "date": "Fecha",
+      "time": "Hora",
+      "customer": "Cliente",
+      "table": "Mesa",
+      "paymentMethod": "Método de pago",
+      "paid": "Pagado",
+      "initialDebt": "Deuda inicial",
+      "cashier": "Cajero",
+      "subtotal": "Subtotal",
+      "discount": "Descuento",
+      "total": "Total",
+      "profit": "Utilidad",
+      "product": "Producto",
+      "qty": "Cant.",
+      "price": "Precio",
+      "cost": "Costo",
+      "title": "Título",
+      "category": "Categoría",
+      "amount": "Monto",
+      "notes": "Notas"
+    }
+  }
+}

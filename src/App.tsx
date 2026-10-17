@@ -41,7 +41,7 @@ const App = () => {
   useEffect(() => {
     if (Capacitor.isNativePlatform()) {
       StatusBar.setOverlaysWebView({ overlay: false }).catch(err => {
-        console.warn("Gagal mengatur StatusBar overlay:", err);
+        console.warn("Failed to set StatusBar overlay:", err);
       });
       document.documentElement.classList.add('is-native');
     }

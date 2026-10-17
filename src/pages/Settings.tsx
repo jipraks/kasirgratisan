@@ -72,7 +72,7 @@ export default function Pengaturan() {
       localStorage.setItem('kg_cashier_layout_mode', val);
       toast.success(t('toast.saveSuccess'));
     } catch {
-      toast.error(t('common:error') || 'Gagal');
+      toast.error(t('common:error'));
     }
   };
 

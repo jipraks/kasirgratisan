@@ -892,18 +892,18 @@ export async function seedDefaultData() {
   const categoryCount = await db.categories.count();
   if (categoryCount === 0) {
     await db.categories.bulkAdd([
-      { name: 'Makanan', color: '#FF6B35', icon: '🍕', createdAt: new Date(), isDeleted: 0, deletedAt: null },
-      { name: 'Minuman', color: '#4ECDC4', icon: '🥤', createdAt: new Date(), isDeleted: 0, deletedAt: null },
-      { name: 'Lainnya', color: '#95A5A6', icon: '📦', createdAt: new Date(), isDeleted: 0, deletedAt: null },
+      { name: 'Comidas', color: '#FF6B35', icon: '🍕', createdAt: new Date(), isDeleted: 0, deletedAt: null },
+      { name: 'Bebidas', color: '#4ECDC4', icon: '🥤', createdAt: new Date(), isDeleted: 0, deletedAt: null },
+      { name: 'Otros', color: '#95A5A6', icon: '📦', createdAt: new Date(), isDeleted: 0, deletedAt: null },
     ]);
   }
 
   const pmCount = await db.paymentMethods.count();
   if (pmCount === 0) {
     await db.paymentMethods.bulkAdd([
-      { name: 'Tunai', category: 'tunai', isDefault: true, createdAt: new Date() },
-      { name: 'Transfer Bank', category: 'transfer', isDefault: false, createdAt: new Date() },
-      { name: 'QRIS', category: 'qris', isDefault: false, createdAt: new Date() },
+      { name: 'Efectivo', category: 'tunai', isDefault: true, createdAt: new Date() },
+      { name: 'Transferencia bancaria', category: 'transfer', isDefault: false, createdAt: new Date() },
+      { name: 'QR', category: 'qris', isDefault: false, createdAt: new Date() },
     ]);
   }
 
@@ -916,20 +916,20 @@ export async function seedDefaultData() {
       { name: 'gram',    isDefault: 1, createdAt: now, isDeleted: 0, deletedAt: null },
       { name: 'liter',   isDefault: 1, createdAt: now, isDeleted: 0, deletedAt: null },
       { name: 'ml',      isDefault: 1, createdAt: now, isDeleted: 0, deletedAt: null },
-      { name: 'porsi',   isDefault: 1, createdAt: now, isDeleted: 0, deletedAt: null },
-      { name: 'cup',     isDefault: 1, createdAt: now, isDeleted: 0, deletedAt: null },
-      { name: 'botol',   isDefault: 1, createdAt: now, isDeleted: 0, deletedAt: null },
-      { name: 'bungkus', isDefault: 1, createdAt: now, isDeleted: 0, deletedAt: null },
+      { name: 'porción', isDefault: 1, createdAt: now, isDeleted: 0, deletedAt: null },
+      { name: 'vaso',    isDefault: 1, createdAt: now, isDeleted: 0, deletedAt: null },
+      { name: 'botella', isDefault: 1, createdAt: now, isDeleted: 0, deletedAt: null },
+      { name: 'paquete', isDefault: 1, createdAt: now, isDeleted: 0, deletedAt: null },
     ]);
   }
 
   const storeCount = await db.storeSettings.count();
   if (storeCount === 0) {
     await db.storeSettings.add({
-      storeName: 'Toko Saya',
+      storeName: 'Mi tienda',
       address: '',
       phone: '',
-      receiptFooter: 'Terima kasih atas kunjungan Anda!',
+      receiptFooter: '¡Gracias por su visita!',
       printLogo: false,
       onboardingDone: false,
       lastBackupAt: null,
@@ -948,12 +948,12 @@ export async function seedDefaultData() {
   if (expenseCatCount === 0) {
     const now = new Date();
     await db.expenseCategories.bulkAdd([
-      { name: 'Listrik & Air',  color: '#FBBF24', icon: '💡', isDefault: 1, createdAt: now, isDeleted: 0, deletedAt: null },
-      { name: 'Sewa',           color: '#8B5CF6', icon: '🏠', isDefault: 1, createdAt: now, isDeleted: 0, deletedAt: null },
-      { name: 'Gaji',           color: '#10B981', icon: '👤', isDefault: 1, createdAt: now, isDeleted: 0, deletedAt: null },
-      { name: 'Transport',      color: '#3B82F6', icon: '🚚', isDefault: 1, createdAt: now, isDeleted: 0, deletedAt: null },
-      { name: 'Operasional',    color: '#F97316', icon: '🧰', isDefault: 1, createdAt: now, isDeleted: 0, deletedAt: null },
-      { name: 'Lainnya',        color: '#6B7280', icon: '📦', isDefault: 1, createdAt: now, isDeleted: 0, deletedAt: null },
+      { name: 'Luz y agua',     color: '#FBBF24', icon: '💡', isDefault: 1, createdAt: now, isDeleted: 0, deletedAt: null },
+      { name: 'Arriendo',       color: '#8B5CF6', icon: '🏠', isDefault: 1, createdAt: now, isDeleted: 0, deletedAt: null },
+      { name: 'Salarios',       color: '#10B981', icon: '👤', isDefault: 1, createdAt: now, isDeleted: 0, deletedAt: null },
+      { name: 'Transporte',     color: '#3B82F6', icon: '🚚', isDefault: 1, createdAt: now, isDeleted: 0, deletedAt: null },
+      { name: 'Operación',      color: '#F97316', icon: '🧰', isDefault: 1, createdAt: now, isDeleted: 0, deletedAt: null },
+      { name: 'Otros',          color: '#6B7280', icon: '📦', isDefault: 1, createdAt: now, isDeleted: 0, deletedAt: null },
     ]);
   }
 

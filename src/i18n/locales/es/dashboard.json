@@ -1,0 +1,31 @@
+{
+  "title": {
+    "storeNameFallback": "FreeKasir"
+  },
+  "stats": {
+    "salesToday": "Ventas de hoy",
+    "transactions": "{{count}} transacciones",
+    "profitToday": "Utilidad de hoy",
+    "expensesToday": "Gastos de hoy",
+    "expenseNotes": "{{count}} registros"
+  },
+  "openBills": {
+    "title": "Cuentas abiertas",
+    "description": "{{count}} cuenta(s) pendiente(s) de pago"
+  },
+  "quickActions": {
+    "title": "Acceso rápido",
+    "cashier": "Caja",
+    "products": "Productos",
+    "reports": "Reportes"
+  },
+  "recentTransactions": {
+    "title": "Transacciones recientes",
+    "viewAll": "Ver todas",
+    "cashFallback": "Efectivo"
+  },
+  "lowStock": {
+    "title": "Stock bajo",
+    "remaining": "Quedan {{stock}} {{unit}}"
+  }
+}

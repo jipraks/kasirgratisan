@@ -2,8 +2,6 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db, type User, ALL_PERMISSIONS } from '@/lib/db';
 import { useState } from 'react';
 import { format } from 'date-fns';
-import { id as idLocale, enUS, ms } from 'date-fns/locale';
-import type { Locale } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, Plus, Edit2, Trash2, KeyRound, UserCircle2, ShieldCheck, UserCheck, UserX, Users as UsersIcon } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -22,19 +20,17 @@ import {
   hashPin,
   isValidPin,
   isValidUsername,
-  PERMISSION_LABELS,
   DEFAULT_STAFF_PERMISSIONS,
   type PermissionKey,
 } from '@/lib/auth';
 import { toast } from 'sonner';
-
-const LOCALES: Record<string, Locale> = { id: idLocale, en: enUS, ms };
+import { getDateLocale } from '@/i18n';
 
 export default function UsersPage() {
   const navigate = useNavigate();
   const { currentUser, isOwner, multiUserEnabled, refresh } = useAuth();
   const { t, i18n } = useTranslation('settings');
-  const dateLocale = LOCALES[i18n.language] ?? idLocale;
+  const dateLocale = getDateLocale(i18n.language);
   const users = useLiveQuery(() => db.users.toArray());
 
   // Add/edit dialog
@@ -393,7 +389,6 @@ export default function UsersPage() {
                 <Label className="text-sm">{t('users.dialog.accessLabel')}</Label>
                 <div className="space-y-1.5">
                   {ALL_PERMISSIONS.map((key) => {
-                    const meta = PERMISSION_LABELS[key];
                     const checked = permissions.includes(key);
                     return (
                       <label
@@ -408,8 +403,8 @@ export default function UsersPage() {
                           className="mt-0.5 shrink-0"
                         />
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-semibold">{meta.title}</p>
-                          <p className="text-[10px] text-muted-foreground leading-snug">{meta.desc}</p>
+                          <p className="text-sm font-semibold">{t(`common:permissions.${key}.title`)}</p>
+                          <p className="text-[10px] text-muted-foreground leading-snug">{t(`common:permissions.${key}.desc`)}</p>
                         </div>
                       </label>
                     );

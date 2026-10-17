@@ -1,0 +1,1116 @@
+{
+  "title": "Ajustes",
+  "storeFallback": "Mi tienda",
+  "notSet": "Sin configurar",
+  "installApp": {
+    "title": "Instalar como aplicación",
+    "hint": "Ábrela directamente desde la pantalla de inicio, sin navegador",
+    "installButton": "Instalar",
+    "installSuccess": "¡FreeKasir se instaló correctamente!",
+    "helpButton": "Cómo instalar"
+  },
+  "installHelp": {
+    "title": "Cómo instalar la aplicación",
+    "description": "Tu navegador no muestra el botón de instalación automática. Sigue los pasos para tu dispositivo.",
+    "iosStep1": "Abre esta aplicación en el navegador <strong>Safari</strong> (no en Chrome).",
+    "iosStep2": "Toca el botón <0 /> <strong>Compartir</strong> en la parte inferior de la pantalla.",
+    "iosStep3": "Selecciona <strong>\"Agregar a inicio\"</strong> y luego toca <strong>Agregar</strong>.",
+    "androidStep1": "Abre esta aplicación en el navegador <strong>Chrome</strong> o <strong>Edge</strong>.",
+    "androidStep2": "Toca el menú <strong>(⋮)</strong> en la esquina superior derecha del navegador.",
+    "androidStep3": "Selecciona <strong>\"Instalar aplicación\"</strong> o <strong>\"Agregar a la pantalla principal\"</strong>.",
+    "troubleshoot": "Si la opción no aparece, recarga la página e intenta de nuevo. Algunos navegadores requieren una segunda visita antes de ofrecer la instalación."
+  },
+  "employees": {
+    "sectionTitle": "Empleados y accesos",
+    "owner": "Propietario",
+    "staff": "Empleado",
+    "logout": "Cerrar sesión",
+    "activate": {
+      "title": "Activar multiusuario",
+      "description": "Crea cuentas de empleados con acceso limitado. Tus datos permanecen seguros.",
+      "button": "Activar"
+    },
+    "manage": {
+      "title": "Gestionar empleados",
+      "description": "{{count}} cuentas registradas · gestiona el acceso de cada empleado"
+    },
+    "active": {
+      "title": "Multiusuario activo",
+      "description": "Los empleados deben iniciar sesión para acceder a la caja",
+      "disable": "Desactivar"
+    },
+    "activateDialog": {
+      "title": "Activar multiusuario",
+      "description": "Crea una cuenta de propietario. Después de activarlo, deberás iniciar sesión con este usuario y PIN cada vez que abras la aplicación. Los datos de tu tienda se conservan.",
+      "nameLabel": "Tu nombre",
+      "namePlaceholder": "p. ej. Juan Pérez",
+      "usernameLabel": "Usuario",
+      "usernamePlaceholder": "p. ej. propietario",
+      "usernameHint": "3-20 caracteres: letras, números o guion bajo. No se puede cambiar.",
+      "pinLabel": "PIN",
+      "pinPlaceholder": "Número de 4-6 dígitos",
+      "pinConfirmLabel": "Confirmar PIN",
+      "pinConfirmPlaceholder": "Vuelve a ingresar el PIN",
+      "warningTitle": "Importante:",
+      "warningText": "Guarda tu usuario y PIN en un lugar seguro. Si los olvidas, la única forma de restablecerlos es borrar los datos de la aplicación (también se borrarán los datos de la tienda). Asegúrate de tener una copia de seguridad.",
+      "submitting": "Activando…",
+      "submit": "Activar multiusuario"
+    },
+    "disableDialog": {
+      "title": "¿Desactivar multiusuario?",
+      "description": "La aplicación volverá al modo sin inicio de sesión. Las cuentas de empleados se conservarán y se activarán de nuevo si vuelves a habilitar el multiusuario. Los datos de las transacciones se conservan.",
+      "confirm": "Desactivar"
+    },
+    "logoutDialog": {
+      "title": "¿Cerrar sesión?",
+      "description": "Serás dirigido a la página de inicio de sesión. Asegúrate de no tener cuentas abiertas sin guardar.",
+      "confirm": "Cerrar sesión"
+    }
+  },
+  "transactionsAndStock": {
+    "sectionTitle": "Transacciones e inventario",
+    "transactionHistory": {
+      "title": "Historial de transacciones",
+      "description": "Ve todas las transacciones y reimprima recibos"
+    },
+    "supplier": {
+      "title": "Proveedores",
+      "description": "Gestiona los datos de proveedores"
+    },
+    "customers": {
+      "title": "Clientes",
+      "description": "Gestiona los datos de clientes"
+    },
+    "debts": {
+      "title": "Lista de deudas",
+      "description": "{{count}} deudas pendientes"
+    },
+    "stockIn": {
+      "title": "Entrada de inventario",
+      "description": "Registra entradas de inventario y costo automático"
+    },
+    "stockOut": {
+      "title": "Salida de inventario",
+      "description": "Registra salidas de inventario que no son ventas"
+    },
+    "expenses": {
+      "title": "Gastos",
+      "description": "Registra costos operativos que no son inventario (luz, salarios, arriendo, etc.)"
+    },
+    "stockReport": {
+      "title": "Reporte de inventario",
+      "description": "Ve los movimientos de inventario por período"
+    }
+  },
+  "masterData": {
+    "sectionTitle": "Datos maestros y preferencias",
+    "allowDebt": {
+      "title": "Permitir deudas",
+      "description": "La caja puede aceptar el pago parcial o total como deuda"
+    },
+    "paymentMethods": {
+      "title": "Métodos de pago",
+      "description": "{{count}} métodos · efectivo, transferencia, billetera digital, QR"
+    },
+    "productCategory": {
+      "title": "Categorías de productos",
+      "description": "{{count}} categorías"
+    },
+    "expenseCategory": {
+      "title": "Categorías de gastos",
+      "description": "{{count}} categorías"
+    },
+    "units": {
+      "title": "Unidades",
+      "description": "{{count}} unidades · und, kg, porción, etc."
+    },
+    "receiptFooter": {
+      "title": "Ajustes del recibo",
+      "description": "Configura el texto del pie del recibo y la impresión del logo",
+      "placeholder": "Ejemplo: ¡Gracias por su visita!",
+      "saveSuccess": "Ajustes del recibo guardados"
+    },
+    "stockOpname": {
+      "title": "Conteo de inventario",
+      "description": "Ajusta el inventario físico de productos y registre las diferencias"
+    },
+    "theme": {
+      "title": "Color del tema",
+      "description": "Personaliza el color de acento de la aplicación",
+      "permissionLabel": "Gestionar ajustes de la tienda"
+    },
+    "backup": {
+      "title": "Copia de seguridad y restauración",
+      "description": "Exporta / importa los datos de la tienda (JSON)"
+    },
+    "cashierLayout": {
+      "title": "Diseño de la caja",
+      "description": "Elige el diseño de cuadrícula (tarjetas) o filas (lista) para los productos",
+      "grid": "Cuadrícula (tarjetas grandes)",
+      "rows": "Filas (lista simple)"
+    }
+  },
+  "bluetoothPrinter": {
+    "title": "Impresora Bluetooth",
+    "default": "Impresora predeterminada",
+    "notSelected": "Sin seleccionar: los recibos se imprimirán en la primera impresora vinculada que se encuentre.",
+    "search": "Buscar impresoras vinculadas",
+    "searching": "Buscando...",
+    "selectPrinter": "Selecciona la impresora:",
+    "unnamed": "Sin nombre",
+    "hint": "Asegúrate de vincular primero la impresora en los ajustes de Bluetooth de Android."
+  },
+  "language": {
+    "title": "Idioma / Language"
+  },
+  "about": {
+    "appName": "FreeKasir",
+    "tagline": "POS gratuito para micro y pequeños negocios 🇨🇴",
+    "version": "v{{version}} • Datos guardados en el dispositivo",
+    "whatsNew": "Novedades de FreeKasir",
+    "storageUsed": "Almacenamiento usado"
+  },
+  "storeDialog": {
+    "title": "Información de la tienda",
+    "logoLabel": "Logo de la tienda",
+    "logoPreviewAlt": "Logo",
+    "logoChange": "Cambiar logo",
+    "logoSelect": "Seleccionar logo",
+    "logoRemove": "Quitar logo",
+    "storeName": "Nombre de la tienda",
+    "address": "Dirección",
+    "phone": "Teléfono",
+    "receiptFooter": "Pie del recibo",
+    "saveSuccess": "Información de la tienda guardada"
+  },
+  "toast": {
+    "saveSuccess": "Ajustes guardados",
+    "noPairedDevices": "No hay dispositivos Bluetooth vinculados",
+    "loadPrintersFailed": "No se pudo cargar la lista de impresoras",
+    "printerDefaultSet": "Impresora predeterminada: {{name}}",
+    "printerDefaultCleared": "Impresora predeterminada eliminada",
+    "debtEnabled": "Pagos con deuda permitidos",
+    "debtDisabled": "Pagos con deuda desactivados",
+    "invalidImage": "El archivo debe ser una imagen",
+    "processImageFailed": "No se pudo procesar la imagen",
+    "nameRequired": "El nombre del propietario es obligatorio",
+    "usernameInvalid": "Usuario de 3-20 caracteres: solo letras, números o guion bajo",
+    "pinInvalid": "El PIN debe tener 4-6 dígitos",
+    "pinMismatch": "La confirmación del PIN no coincide",
+    "createOwnerFailed": "No se pudo crear la cuenta de propietario",
+    "multiUserEnabled": "Multiusuario activado. Iniciaste sesión como propietario.",
+    "multiUserDisabled": "Multiusuario desactivado"
+  },
+  "transactionHistory": {
+    "title": "Historial de transacciones",
+    "searchPlaceholder": "Buscar n.º de recibo o nombre de producto...",
+    "dateFrom": "Desde",
+    "dateTo": "Hasta",
+    "status": {
+      "all": "Todas",
+      "open": "Cuenta abierta",
+      "completed": "Pagada"
+    },
+    "cashierFilter": {
+      "placeholder": "Filtrar cajero",
+      "all": "Todos los cajeros",
+      "unknown": "Sin cajero (datos antiguos)",
+      "cashierLabel": "{{name}} (@{{username}})"
+    },
+    "summary": {
+      "totalTransactions": "Total de transacciones",
+      "totalSales": "Total de ventas"
+    },
+    "empty": {
+      "noDateFilter": "Aún no hay transacciones",
+      "withDateFilter": "No hay transacciones en este rango de fechas"
+    },
+    "groupHeader_zero": "{{date}} · {{count}} transacciones",
+    "groupHeader_one": "{{date}} · {{count}} transacción",
+    "groupHeader_other": "{{date}} · {{count}} transacciones",
+    "badges": {
+      "open": "Abierta",
+      "debt": "Deuda",
+      "paid": "Pagada"
+    },
+    "cashFallback": "Efectivo",
+    "detail": {
+      "title": "Detalle de la transacción",
+      "status": {
+        "label": "Estado",
+        "open": "Cuenta abierta",
+        "paid": "Pagada"
+      },
+      "receiptNumber": "N.º de recibo",
+      "date": "Fecha",
+      "payment": "Pago",
+      "cashier": "Cajero",
+      "customer": "Cliente",
+      "table": "Mesa {{number}}",
+      "notes": "Notas",
+      "items": "Artículos",
+      "quantityFormat": "{{qty}} × {{price}}",
+      "discount": "descuento {{amount}}",
+      "subtotal": "Subtotal",
+      "discountAmount": "Descuento",
+      "total": "Total",
+      "remainingDebt": "Deuda pendiente",
+      "paid": "Pagado",
+      "change": "Cambio",
+      "profit": "Ganancia",
+      "unpaidBill": "Cuenta aún sin pagar",
+      "continueInCashier": "Continuar en la caja",
+      "viewReceipt": "Ver e imprimir recibo",
+      "delete": "Eliminar transacción",
+      "noDeletePermission": "No tienes permiso para eliminar transacciones"
+    },
+    "deleteDialog": {
+      "title": "¿Eliminar transacción?",
+      "description": "La transacción {{receiptNumber}} por {{amount}} se eliminará de forma permanente.",
+      "restoreStock": "Restaurar el inventario de los productos",
+      "cancel": "Cancelar",
+      "confirm": "Eliminar"
+    },
+    "toast": {
+      "hasDebtPayments": "La transacción no se puede eliminar porque ya tiene abonos a la deuda",
+      "deleteSuccess": "Transacción eliminada correctamente",
+      "deleteFailed": "No se pudo eliminar la transacción"
+    }
+  },
+  "supplier": {
+    "locked": {
+      "title": "Proveedores",
+      "permissionLabel": "Gestionar proveedores"
+    },
+    "title": "Proveedores",
+    "add": "Agregar",
+    "searchPlaceholder": "Buscar proveedor...",
+    "count_zero": "{{count}} proveedores",
+    "count_one": "{{count}} proveedor",
+    "count_other": "{{count}} proveedores",
+    "empty": {
+      "title": "Aún no hay proveedores",
+      "add": "Agregar proveedor"
+    },
+    "dialog": {
+      "addTitle": "Agregar proveedor",
+      "editTitle": "Editar proveedor",
+      "nameLabel": "Nombre del proveedor *",
+      "namePlaceholder": "p. ej. Distribuidora La Esperanza S.A.S.",
+      "phoneLabel": "Teléfono",
+      "phonePlaceholder": "3001234567",
+      "addressLabel": "Dirección",
+      "addressPlaceholder": "Dirección del proveedor",
+      "notesLabel": "Notas",
+      "notesPlaceholder": "Notas adicionales",
+      "save": "Guardar"
+    },
+    "deleteDialog": {
+      "title": "¿Eliminar proveedor?",
+      "description": "Los datos del proveedor eliminado no se pueden recuperar.",
+      "cancel": "Cancelar",
+      "confirm": "Eliminar"
+    },
+    "toast": {
+      "updated": "Proveedor actualizado",
+      "added": "Proveedor agregado",
+      "deleted": "Proveedor eliminado"
+    }
+  },
+  "customers": {
+    "locked": {
+      "title": "Clientes",
+      "permissionLabel": "Gestionar clientes"
+    },
+    "title": "Clientes",
+    "add": "Agregar",
+    "searchPlaceholder": "Buscar cliente...",
+    "count_zero": "{{count}} clientes",
+    "count_one": "{{count}} cliente",
+    "count_other": "{{count}} clientes",
+    "empty": {
+      "title": "Aún no hay clientes",
+      "add": "Agregar cliente"
+    },
+    "dialog": {
+      "addTitle": "Agregar cliente",
+      "editTitle": "Editar cliente",
+      "nameLabel": "Nombre del cliente *",
+      "namePlaceholder": "p. ej. Carlos Gómez",
+      "phoneLabel": "Número de teléfono",
+      "phonePlaceholder": "3001234567",
+      "emailLabel": "Correo electrónico",
+      "emailPlaceholder": "nombre@correo.com",
+      "addressLabel": "Dirección",
+      "addressPlaceholder": "Dirección del cliente",
+      "notesLabel": "Notas",
+      "notesPlaceholder": "Notas adicionales",
+      "save": "Guardar"
+    },
+    "deleteDialog": {
+      "title": "¿Eliminar cliente?",
+      "description": "Los datos del cliente eliminado no se pueden recuperar. Las transacciones anteriores conservan el nombre del cliente.",
+      "cancel": "Cancelar",
+      "confirm": "Eliminar"
+    },
+    "viewDialog": {
+      "summary": {
+        "totalTransactions": "Total de transacciones",
+        "totalSpent": "Total gastado",
+        "remainingDebt": "Deuda pendiente"
+      },
+      "openDebts": "Lista de deudas abiertas",
+      "historyTitle": "Historial de transacciones",
+      "loading": "Cargando...",
+      "empty": "Aún no hay transacciones"
+    },
+    "toast": {
+      "updated": "Cliente actualizado",
+      "added": "Cliente agregado",
+      "deleted": "Cliente eliminado"
+    }
+  },
+  "debts": {
+    "locked": {
+      "title": "Lista de deudas",
+      "permissionLabel": "Gestionar clientes"
+    },
+    "title": "Lista de deudas",
+    "summary": {
+      "totalReceivable": "Total por cobrar",
+      "activeDebts": "Deudas activas"
+    },
+    "searchPlaceholder": "Buscar cliente o número de recibo...",
+    "filters": {
+      "active": "Pendientes",
+      "paid": "Pagadas",
+      "all": "Todas"
+    },
+    "empty": "No hay deudas registradas",
+    "labels": {
+      "originalAmount": "Deuda original",
+      "paid": "Pagado",
+      "remaining": "Pendiente"
+    },
+    "recordPayment": "Registrar abono",
+    "deletedMethodFallback": "Método eliminado",
+    "detail": {
+      "title": "Detalle de la deuda",
+      "status": {
+        "paid": "Pagada",
+        "partial": "Parcial",
+        "unpaid": "Pendiente"
+      },
+      "viewTransaction": "Ver transacción",
+      "paymentHistory": "Historial de abonos",
+      "noInstallments": "Aún no hay abonos"
+    },
+    "paymentDialog": {
+      "title": "Registrar abono a la deuda",
+      "remainingDebt": "Deuda pendiente",
+      "amountLabel": "Monto del abono",
+      "methodLabel": "Método de pago",
+      "methodPlaceholder": "Selecciona un método",
+      "notesLabel": "Notas",
+      "notesPlaceholder": "p. ej. primer abono",
+      "saving": "Guardando...",
+      "save": "Guardar abono"
+    },
+    "toast": {
+      "invalidAmount": "El monto del abono debe ser mayor que $0 y no superar la deuda pendiente",
+      "selectMethod": "Selecciona un método de pago",
+      "paidOff": "Deuda saldada correctamente",
+      "recorded": "Abono a la deuda registrado",
+      "failed": "No se pudo registrar el abono a la deuda"
+    }
+  },
+  "stockIn": {
+    "locked": {
+      "title": "Entrada de inventario",
+      "permissionLabel": "Entrada / salida de inventario"
+    },
+    "title": "Entrada de inventario",
+    "add": "Agregar",
+    "supplierFilter": {
+      "placeholder": "Filtrar proveedor",
+      "searchPlaceholder": "Buscar proveedor...",
+      "all": "Todos los proveedores"
+    },
+    "count_zero": "{{count}} registros",
+    "count_one": "{{count}} registro",
+    "count_other": "{{count}} registros",
+    "empty": "Aún no hay entradas de inventario",
+    "item": {
+      "fromSupplier": "de {{supplier}}",
+      "quantity": "+{{qty}}",
+      "unitPrice": "@ $ {{price}}"
+    },
+    "dialog": {
+      "title": "Agregar entrada de inventario",
+      "productLabel": "Producto *",
+      "supplierLabel": "Proveedor *",
+      "quantityLabel": "Cantidad *",
+      "quantityPlaceholder": "10",
+      "buyPriceLabel": "Precio de compra/unidad *",
+      "buyPricePlaceholder": "5000",
+      "notesLabel": "Notas",
+      "notesPlaceholder": "Opcional",
+      "total": "Total: $ {{amount}}",
+      "save": "Guardar entrada"
+    },
+    "toast": {
+      "fillAll": "Completa todos los campos",
+      "success": "Inventario de {{product}} aumentó en {{qty}}. Costo: $ {{hpp}}"
+    }
+  },
+  "stockOut": {
+    "locked": {
+      "title": "Salida de inventario",
+      "permissionLabel": "Entrada / salida de inventario"
+    },
+    "title": "Salida de inventario",
+    "add": "Agregar",
+    "count_zero": "{{count}} registros",
+    "count_one": "{{count}} registro",
+    "count_other": "{{count}} registros",
+    "empty": "Aún no hay salidas de inventario",
+    "item": {
+      "quantity": "-{{qty}}"
+    },
+    "dialog": {
+      "title": "Agregar salida de inventario",
+      "productLabel": "Producto *",
+      "quantityLabel": "Cantidad *",
+      "quantityPlaceholder": "1",
+      "reasonLabel": "Motivo *",
+      "reasonPlaceholder": "Selecciona",
+      "notesLabel": "Notas",
+      "notesPlaceholder": "Opcional",
+      "stockAfter": "Inventario después: {{stock}} {{unit}}",
+      "save": "Guardar salida"
+    },
+    "reasons": {
+      "damaged": "Dañado",
+      "lost": "Perdido",
+      "expired": "Vencido",
+      "returnSupplier": "Devolución al proveedor",
+      "ownUse": "Consumo propio",
+      "opname": "Conteo de inventario",
+      "other": "Otro"
+    },
+    "toast": {
+      "fillAll": "Completa todos los campos",
+      "exceedsStock": "La cantidad supera el inventario disponible",
+      "success": "Inventario de {{product}} disminuyó en {{qty}}"
+    }
+  },
+  "expenses": {
+    "locked": {
+      "title": "Gastos",
+      "permissionLabel": "Ver gastos"
+    },
+    "title": "Gastos",
+    "add": "Agregar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "range": {
+      "today": "Hoy",
+      "last7": "7 días",
+      "last30": "30 días",
+      "thisMonth": "Este mes",
+      "all": "Todo"
+    },
+    "summary": {
+      "totalExpenses": "Total de gastos ({{range}})",
+      "count_zero": "{{count}} registros",
+      "count_one": "{{count}} registro",
+      "count_other": "{{count}} registros"
+    },
+    "categoryFilter": {
+      "placeholder": "Filtrar categoría",
+      "all": "Todas las categorías"
+    },
+    "clearFilter": "Quitar filtro",
+    "empty": {
+      "none": "Aún no hay gastos registrados",
+      "filtered": "Ningún gasto coincide con el filtro"
+    },
+    "dialog": {
+      "addTitle": "Agregar gasto",
+      "editTitle": "Editar gasto",
+      "missingCategories": "Aún no hay categorías de gastos. Agrégalas primero en Ajustes.",
+      "missingPaymentMethods": "Aún no hay métodos de pago. Agrégalos primero en Ajustes.",
+      "titleLabel": "Título *",
+      "titlePlaceholder": "p. ej. Pago del recibo de luz de este mes",
+      "categoryLabel": "Categoría *",
+      "categoryPlaceholder": "Selecciona una categoría",
+      "amountLabel": "Monto *",
+      "amountPlaceholder": "50000",
+      "dateLabel": "Fecha *",
+      "methodLabel": "Método de pago *",
+      "methodPlaceholder": "Selecciona un método",
+      "notesLabel": "Notas",
+      "notesPlaceholder": "Opcional",
+      "addButton": "Registrar gasto",
+      "saveButton": "Guardar cambios"
+    },
+    "deleteDialog": {
+      "title": "¿Eliminar gasto?",
+      "description": "Se eliminará \"{{title}}\" por {{amount}}. Este registro no se incluirá en los reportes.",
+      "cancel": "Cancelar",
+      "confirm": "Eliminar"
+    },
+    "toast": {
+      "titleRequired": "El título del gasto es obligatorio",
+      "categoryRequired": "Selecciona una categoría",
+      "amountInvalid": "El monto debe ser mayor que 0",
+      "methodRequired": "Selecciona un método de pago",
+      "dateRequired": "Selecciona una fecha",
+      "updated": "Gasto actualizado",
+      "added": "Gasto registrado",
+      "saveFailed": "No se pudo guardar el gasto",
+      "deleted": "Gasto eliminado"
+    }
+  },
+  "stockReport": {
+    "locked": {
+      "title": "Reporte de inventario",
+      "permissionLabel": "Ver reportes y ganancias"
+    },
+    "title": "Reporte de inventario",
+    "period": {
+      "7days": "7 días",
+      "30days": "30 días"
+    },
+    "summary": {
+      "in": "Entradas",
+      "out": "Salidas",
+      "available": "Disponible"
+    },
+    "stockInValue": {
+      "title": "Valor de entradas de inventario",
+      "totalPurchase": "Total de compras",
+      "average": "Promedio: {{avg}} por unidad"
+    },
+    "movementChart": {
+      "title": "Movimiento de inventario",
+      "in": "Entradas",
+      "out": "Salidas"
+    },
+    "reasons": {
+      "title": "Motivos de salida de inventario",
+      "damaged": "Dañado",
+      "lost": "Perdido",
+      "return": "Devolución",
+      "expired": "Vencido",
+      "sample": "Muestra",
+      "opname": "Conteo de inventario",
+      "other": "Otro",
+      "unit": "unidad"
+    },
+    "lowStock": {
+      "title": "Inventario bajo ({{count}})",
+      "more_zero": "+{{count}} productos más",
+      "more_one": "+{{count}} producto más",
+      "more_other": "+{{count}} productos más"
+    },
+    "outOfStock": {
+      "title": "Agotados ({{count}})"
+    }
+  },
+  "backupRestore": {
+    "locked": {
+      "title": "Copia de seguridad y restauración",
+      "permissionLabel": "Gestionar copias de seguridad"
+    },
+    "title": "Copia de seguridad y restauración",
+    "exportButton": "Exportar copia de seguridad (JSON)",
+    "importButton": "Importar / restaurar datos",
+    "lastBackup": "Última copia de seguridad: {{time}}",
+    "emptyFile": "Archivo vacío",
+    "restoreSuccess": "¡Datos restaurados correctamente!",
+    "readError": "No se pudo leer el archivo"
+  },
+  "expenseCategory": {
+    "locked": {
+      "title": "Categorías de gastos",
+      "permissionLabel": "Gestionar categorías y pagos"
+    },
+    "title": "Categorías de gastos",
+    "addButton": "Agregar",
+    "empty": "Aún no hay categorías de gastos",
+    "dialog": {
+      "addTitle": "Agregar categoría de gasto",
+      "editTitle": "Editar categoría de gasto",
+      "nameLabel": "Nombre de la categoría",
+      "namePlaceholder": "p. ej. Internet, Publicidad",
+      "iconLabel": "Ícono",
+      "colorLabel": "Color",
+      "save": "Guardar"
+    },
+    "toast": {
+      "saved": "Categoría de gasto guardada",
+      "deleted": "Categoría de gasto eliminada",
+      "inUse": "No se puede eliminar: la usan {{count}} gastos"
+    }
+  },
+  "paymentMethod": {
+    "locked": {
+      "title": "Métodos de pago",
+      "permissionLabel": "Gestionar categorías y pagos"
+    },
+    "title": "Métodos de pago",
+    "addButton": "Agregar",
+    "empty": "Aún no hay métodos de pago",
+    "dialog": {
+      "addTitle": "Agregar método de pago",
+      "editTitle": "Editar método de pago",
+      "nameLabel": "Nombre",
+      "namePlaceholder": "p. ej. Transferencia bancaria",
+      "categoryLabel": "Categoría",
+      "save": "Guardar"
+    },
+    "toast": {
+      "saved": "Método de pago guardado",
+      "deleted": "Eliminado"
+    }
+  },
+  "productCategory": {
+    "locked": {
+      "title": "Categorías de productos",
+      "permissionLabel": "Gestionar categorías y pagos"
+    },
+    "title": "Categorías de productos",
+    "addButton": "Agregar",
+    "empty": "Aún no hay categorías de productos",
+    "dialog": {
+      "addTitle": "Agregar categoría",
+      "editTitle": "Editar categoría",
+      "nameLabel": "Nombre de la categoría",
+      "namePlaceholder": "p. ej. Snacks",
+      "iconLabel": "Ícono",
+      "colorLabel": "Color",
+      "save": "Guardar"
+    },
+    "toast": {
+      "saved": "Categoría guardada",
+      "deleted": "Eliminada"
+    }
+  },
+  "units": {
+    "title": "Unidades",
+    "addButton": "Agregar",
+    "empty": "Aún no hay unidades",
+    "dialog": {
+      "addTitle": "Agregar unidad",
+      "editTitle": "Editar unidad",
+      "nameLabel": "Nombre de la unidad",
+      "namePlaceholder": "p. ej. paquete, docena, plato",
+      "save": "Guardar",
+      "renameHint": "Todos los productos que usan \"{{old}}\" se renombrarán automáticamente a \"{{new}}\"."
+    },
+    "deleteDialog": {
+      "title": "¿Eliminar la unidad \"{{name}}\"?",
+      "inUse": "Actualmente la usan {{count}} productos. Los productos existentes conservarán la unidad \"{{name}}\", pero esta unidad ya no aparecerá en las opciones al agregar o editar productos.",
+      "safe": "Ningún producto usa esta unidad. Se puede eliminar con seguridad.",
+      "cancel": "Cancelar",
+      "confirm": "Eliminar"
+    },
+    "toast": {
+      "saved": "Unidad guardada",
+      "saveFailed": "No se pudo guardar la unidad",
+      "deleted": "Unidad eliminada",
+      "duplicate": "La unidad \"{{name}}\" ya existe",
+      "wasDeleted": "La unidad \"{{name}}\" se eliminó anteriormente. Usa otro nombre o restáurala desde una copia de seguridad."
+    }
+  },
+  "cashier": {
+    "locked": {
+      "title": "Caja",
+      "permissionLabel": "Crear transacción"
+    },
+    "title": "Caja",
+    "editingBill": "Editando cuenta",
+    "openBill": "Cuenta abierta",
+    "searchPlaceholder": "Buscar productos...",
+    "scanPlaceholder": "Escanea / escribe el SKU o código de barras y presiona Enter...",
+    "categoryAll": "Todas",
+    "empty": {
+      "outOfStock": "Todos los productos están agotados. Agrega inventario primero en el menú Entrada de inventario.",
+      "noProducts": "Aún no hay productos. Agrégalos primero en el menú Productos."
+    },
+    "productCard": {
+      "stock": "Inventario: {{stock}} {{unit}}",
+      "alwaysAvailable": "Siempre disponible"
+    },
+    "cart": {
+      "title": "Carrito ({{count}} artículo)",
+      "title_other": "Carrito ({{count}} artículos)",
+      "empty": "El carrito está vacío",
+      "editLabel": "— editar",
+      "editOpenBillLabel": "— editar cuenta abierta"
+    },
+    "itemNotes": {
+      "add": "Agregar nota",
+      "placeholder": "p. ej. con poca azúcar..."
+    },
+    "itemDiscount": {
+      "add": "Agregar descuento",
+      "change": "Cambiar descuento"
+    },
+    "cartDiscount": {
+      "label": "Descuento",
+      "add": "Agregar descuento",
+      "change": "Cambiar",
+      "subtotal": "Subtotal",
+      "discount": "Descuento",
+      "total": "Total"
+    },
+    "buttons": {
+      "saveBill": "Guardar cuenta",
+      "saveAndPrintKitchen": "Guardar e imprimir comanda",
+      "saveOnly": "Solo guardar",
+      "printKitchen": "Imprimir comanda",
+      "pay": "Cobrar",
+      "cancelBill": "Cancelar esta cuenta",
+      "ok": "Aceptar",
+      "cancel": "Cancelar"
+    },
+    "checkout": {
+      "title": "Pago",
+      "totalLabel": "Total a pagar",
+      "debtLabel": "Pagar con deuda",
+      "debtDesc": "El pago puede quedar parcial o totalmente como deuda",
+      "paymentMethod": "Método de pago",
+      "amountLabel": {
+        "debt": "Pago inicial",
+        "full": "Monto del pago"
+      },
+      "amountPlaceholder": "Ingresa el monto del pago...",
+      "exactMoney": "Monto exacto",
+      "reset": "Restablecer",
+      "table": "Mesa",
+      "notes": "Notas adicionales (opcional)",
+      "remainingDebt": "Deuda pendiente",
+      "remainingDebtHint": "Debes seleccionar el cliente de la lista",
+      "changeLabel": "Cambio",
+      "confirmButton": "Confirmar transacción"
+    },
+    "discountDialog": {
+      "title": "Descuento de la transacción",
+      "typeLabel": "Tipo de descuento",
+      "type": {
+        "nominal": "Valor fijo ({{symbol}})",
+        "percentage": "Porcentaje (%)"
+      },
+      "amountLabel": {
+        "nominal": "Valor del descuento",
+        "percentage": "Porcentaje de descuento"
+      },
+      "placeholder": {
+        "nominal": "p. ej. 5000",
+        "percentage": "p. ej. 10"
+      },
+      "percentPreview": "= {{symbol}} {{amount}} de {{symbol}} {{subtotal}}",
+      "delete": "Eliminar",
+      "save": "Guardar descuento"
+    },
+    "itemDiscountDialog": {
+      "title": "Descuento del artículo",
+      "itemLabel": "Artículo",
+      "typeLabel": "Tipo de descuento",
+      "type": {
+        "nominal": "Valor fijo ({{symbol}})",
+        "percentage": "Porcentaje (%)"
+      },
+      "amountLabel": {
+        "nominal": "Valor del descuento",
+        "percentage": "Porcentaje de descuento"
+      },
+      "placeholder": {
+        "nominal": "p. ej. 5000",
+        "percentage": "p. ej. 10"
+      },
+      "cappedPreview": {
+        "exceeds": "Limitado automáticamente a {{cap}}",
+        "normal": "Descuento: -{{amount}} → subtotal {{subtotal}}"
+      },
+      "delete": "Eliminar",
+      "save": "Guardar descuento"
+    },
+    "openBillsSheet": {
+      "title": "Cuentas abiertas ({{count}})",
+      "empty": "No hay cuentas abiertas",
+      "continue": "Continuar",
+      "cancel": "Cancelar",
+      "tablePrefix": "Mesa {{number}}"
+    },
+    "saveConfirmDialog": {
+      "title": "Guardar cuenta",
+      "description": "¿Deseas imprimir una comanda después de guardar esta cuenta?"
+    },
+    "cancelDialog": {
+      "title": "¿Cancelar cuenta?",
+      "description": "Esta cuenta se eliminará y se restaurará el inventario de los productos.",
+      "no": "No",
+      "yes": "Cancelar cuenta"
+    },
+    "paymentMethod": {
+      "cash": "Efectivo",
+      "debt": "Deuda",
+      "initialPayment": "Pago inicial"
+    },
+    "toast": {
+      "stockLow": "Inventario insuficiente",
+      "stockLowWithMax": "Inventario insuficiente, máximo {{max}}",
+      "addedToCart": "Agregado: {{name}}",
+      "productNotFound": "No se encontró el producto con SKU/código de barras \"{{code}}\"",
+      "productOutOfStock": "{{name}} agotado",
+      "billUpdated": "¡Cuenta {{receiptNumber}} actualizada!",
+      "billSaved": "¡Cuenta {{receiptNumber}} guardada!",
+      "billCancelled": "Cuenta {{receiptNumber}} cancelada",
+      "transactionSuccess": "¡Transacción exitosa! {{receiptNumber}}",
+      "cartEmpty": "El carrito está vacío",
+      "selectCustomerForDebt": "Selecciona un cliente de la lista para transacciones con deuda",
+      "paymentAmountRange": "El monto del pago debe estar entre {{symbol}}0 y el total de la transacción",
+      "selectPaymentMethod": "Selecciona un método para el pago inicial",
+      "productNotFoundLoadBill": "No se encontró el producto \"{{name}}\""
+    }
+  },
+  "loginScreen": {
+    "storeFallback": "FreeKasir",
+    "continuePrompt": "Inicia sesión para continuar",
+    "usernameLabel": "Usuario",
+    "usernamePlaceholder": "p. ej. carlos",
+    "pinLabel": "PIN",
+    "pinPlaceholder": "4-6 dígitos",
+    "showPin": "Mostrar PIN",
+    "hidePin": "Ocultar PIN",
+    "loginButton": "Iniciar sesión",
+    "loggingIn": "Iniciando sesión…",
+    "loginFailed": "No se pudo iniciar sesión",
+    "forgotPin": "¿Olvidaste tu PIN? Contacta al propietario de la tienda para restablecerlo.",
+    "logoAlt": "Logo"
+  },
+  "receipt": {
+    "title": "Recibo de la transacción",
+    "logoAlt": "Logo",
+    "storeFallback": "Tienda",
+    "no": "N.º",
+    "cashierLabel": "Cajero",
+    "customerLabel": "Cliente",
+    "tableLabel": "Mesa",
+    "notesLabel": "Notas",
+    "discountLabel": "Descuento",
+    "subtotal": "Subtotal",
+    "discount": "Descuento",
+    "total": "TOTAL",
+    "paid": "Pagado",
+    "change": "Cambio",
+    "remainingDebt": "Deuda pendiente",
+    "footerFallback": "¡Gracias por su visita!",
+    "download": "Descargar",
+    "share": "Compartir",
+    "print": "Imprimir",
+    "printKitchen": "Imprimir comanda",
+    "watermarkLine1": "Impreso desde",
+    "watermarkLine2": "la app FreeKasir.com",
+    "done": "Listo",
+    "toast": {
+      "captureError": "No se pudo crear la imagen del recibo",
+      "downloadSuccess": "Recibo descargado correctamente",
+      "shareFailed": "No se pudo compartir el recibo",
+      "bluetoothUnavailable": "Bluetooth no está disponible en este navegador. Usa Chrome en Android.",
+      "searchingPrinter": "Buscando impresora Bluetooth...",
+      "printSuccess": "¡Recibo impreso correctamente!",
+      "printFailed": "No se pudo imprimir. Asegúrate de que la impresora Bluetooth esté encendida."
+    },
+    "shareTitle": "Recibo {{receiptNumber}}",
+    "shareText": "Recibo de {{storeName}}",
+    "whatsappFallback": "*{{storeName}}*\nRecibo: {{receiptNumber}}\nTotal: {{total}}\nFecha: {{date}}"
+  },
+  "users": {
+    "notEnabled": {
+      "title": "El multiusuario no está activo",
+      "description": "Actívalo primero en Ajustes para gestionar empleados y accesos.",
+      "button": "Abrir Ajustes"
+    },
+    "notOwner": "Solo el propietario de la tienda puede gestionar empleados.",
+    "title": "Empleados y accesos",
+    "desc": "Gestiona quién puede acceder a qué en tu tienda. El propietario siempre tiene acceso total.",
+    "addButton": "Agregar empleado",
+    "card": {
+      "owner": "Propietario",
+      "you": "Tú",
+      "inactive": "Inactivo",
+      "noAccess": "Sin acceso",
+      "accessCount_zero": "{{count}} permisos otorgados",
+      "accessCount_one": "{{count}} permiso otorgado",
+      "accessCount_other": "{{count}} permisos otorgados",
+      "lastLogin": "Último inicio de sesión: {{time}}",
+      "edit": "Editar",
+      "resetPin": "Restablecer PIN",
+      "activate": "Activar",
+      "deactivate": "Desactivar",
+      "delete": "Eliminar"
+    },
+    "dialog": {
+      "addTitle": "Agregar empleado",
+      "editTitle": "Editar empleado",
+      "descAdd": "El empleado iniciará sesión con usuario y PIN.",
+      "descEdit": "Cambia el nombre y los accesos. El usuario no se puede cambiar; usa el botón de restablecer PIN para cambiar el PIN.",
+      "nameLabel": "Nombre completo *",
+      "namePlaceholder": "p. ej. Juan Pérez",
+      "usernameLabel": "Usuario *",
+      "usernamePlaceholder": "p. ej. juanperez",
+      "usernameHint": "3-20 caracteres: solo letras, números o guion bajo",
+      "pinLabel": "PIN *",
+      "pinPlaceholder": "4-6 dígitos",
+      "ownerNotice": "El propietario siempre tiene acceso total a todas las funciones.",
+      "accessLabel": "Permisos de acceso",
+      "saving": "Guardando…",
+      "saveAdd": "Agregar empleado",
+      "saveEdit": "Guardar cambios"
+    },
+    "pinReset": {
+      "title": "Restablecer PIN de {{name}}",
+      "desc": "Ingresa un PIN nuevo. El PIN anterior se reemplazará de inmediato y {{name}} deberá iniciar sesión de nuevo con el PIN nuevo.",
+      "placeholder": "4-6 dígitos",
+      "button": "Guardar PIN nuevo"
+    },
+    "deleteDialog": {
+      "title": "¿Eliminar la cuenta de {{name}}?",
+      "description": "La cuenta se eliminará de forma permanente. El historial de transacciones creado por esta cuenta no se eliminará, pero el nombre del cajero aparecerá como \"—\".",
+      "cancel": "Cancelar",
+      "confirm": "Eliminar"
+    },
+    "toast": {
+      "nameRequired": "El nombre no puede estar vacío",
+      "usernameInvalid": "El usuario debe tener 3-20 caracteres: solo letras, números o guion bajo",
+      "pinInvalid": "El PIN debe tener 4-6 dígitos",
+      "createFailed": "No se pudo agregar el empleado",
+      "staffCreated": "Empleado \"{{name}}\" agregado",
+      "staffUpdated": "Datos del empleado actualizados",
+      "pinReset": "PIN de {{name}} restablecido correctamente",
+      "pinResetFailed": "No se pudo restablecer el PIN",
+      "cannotSelfDisable": "No se puede desactivar la cuenta con la sesión iniciada",
+      "ownerMinRequired": "Se requiere al menos 1 propietario",
+      "cannotSelfDelete": "No puedes eliminar tu propia cuenta",
+      "accountDisabled": "Cuenta desactivada",
+      "accountEnabled": "Cuenta activada",
+      "accountDeleted": "Cuenta \"{{name}}\" eliminada"
+    }
+  },
+  "backupReminder": {
+    "title": "Haz una copia de seguridad de tus datos",
+    "lastBackup": "Última copia de seguridad: {{time}}",
+    "neverBackedUp": "Aún no has hecho una copia de seguridad",
+    "backupNow": "Hacer copia ahora",
+    "shareTitle": "Copia de seguridad FreeKasir",
+    "shareText": "Archivo de copia de seguridad de FreeKasir (JSON)",
+    "shareDialogTitle": "Guardar / compartir copia de seguridad",
+    "successCreated": "¡Copia de seguridad creada correctamente!",
+    "successDownloaded": "Copia de seguridad descargada correctamente",
+    "errorCreateShare": "No se pudo crear / compartir el archivo de copia de seguridad"
+  },
+  "customerPicker": {
+    "placeholder": "Nombre del cliente",
+    "addLabel": "Agregar cliente \"{{name}}\"",
+    "toastAdded": "Cliente \"{{name}}\" agregado",
+    "toastFailed": "No se pudo agregar el cliente"
+  },
+  "searchableSelect": {
+    "placeholder": "Selecciona...",
+    "searchPlaceholder": "Buscar...",
+    "notFound": "Sin resultados"
+  },
+  "productPicker": {
+    "placeholder": "Buscar por nombre, SKU o código de barras...",
+    "stockLabel": "inventario:",
+    "hppLabel": "Último costo:",
+    "notFound": "Producto no encontrado",
+    "skuBarcodeNotFound": "No se encontró el producto con SKU/código de barras \"{{code}}\""
+  },
+  "stockOpname": {
+    "title": "Conteo de inventario",
+    "initButton": "Iniciar nuevo conteo",
+    "historyTitle": "Historial de conteos de inventario",
+    "noHistory": "Aún no hay conteos de inventario",
+    "emptyDraft": "Actualmente no hay productos con control de inventario",
+    "differenceText": "Diferencia",
+    "systemStockText": "Inventario en sistema",
+    "realStockText": "Inventario físico",
+    "status": {
+      "draft": "Borrador",
+      "completed": "Completado"
+    },
+    "excel": {
+      "downloadTemplate": "Descargar plantilla de Excel",
+      "uploadExcel": "Cargar Excel",
+      "uploadSuccess": "Se cargaron {{count}} productos desde Excel correctamente",
+      "uploadError": "Formato de archivo no válido o no se pudieron leer los datos de Excel",
+      "templateButton": "Plantilla de Excel",
+      "sheetName": "Conteo de inventario",
+      "templateTitle": "PLANTILLA DE CONTEO DE INVENTARIO",
+      "instruction": "Instrucciones: llena SOLO la columna \"Inventario físico\". No cambies las demás columnas.",
+      "headerProductId": "ID del producto",
+      "headerProductName": "Nombre del producto",
+      "headerSku": "SKU",
+      "headerBarcode": "Código de barras",
+      "headerSystemStock": "Inventario en sistema",
+      "headerPhysicalStock": "Inventario físico (LLENA AQUÍ)",
+      "fileNamePrefix": "Plantilla_Conteo_Inventario",
+      "dialogTitle": "Guardar / Compartir plantilla",
+      "shareTitle": "Plantilla de conteo de inventario",
+      "downloadSuccess": "Plantilla de Excel descargada correctamente",
+      "downloadError": "No se pudo descargar la plantilla"
+    },
+    "dialog": {
+      "submitTitle": "¿Completar el conteo de inventario?",
+      "submitDescription": "Los saldos de inventario en el sistema se actualizarán de forma permanente según tu conteo físico. Las diferencias se registrarán en los movimientos de inventario.",
+      "submitConfirm": "Completar",
+      "submitCancel": "Cancelar"
+    },
+    "toast": {
+      "draftStarted": "Nuevo conteo iniciado correctamente",
+      "saved": "Conteo de inventario completado correctamente",
+      "saveFailed": "No se pudo completar el conteo de inventario",
+      "notesPlaceholder": "Notas del conteo (opcional)",
+      "startFailed": "No se pudo iniciar el conteo de inventario",
+      "cancelled": "Conteo de inventario cancelado",
+      "cancelFailed": "No se pudo cancelar el conteo",
+      "historyLoadFailed": "No se pudo cargar el detalle del historial"
+    },
+    "deletedProduct": "Producto eliminado",
+    "activeSession": "Conteo activo ({{date}})",
+    "activeSessionHint": "Compara el inventario físico de los productos de abajo.",
+    "sessionNotes": "Notas del conteo",
+    "searchPlaceholder": "Busca por nombre o SKU del producto...",
+    "completeButton": "Completar conteo de inventario",
+    "processing": "Procesando...",
+    "close": "Cerrar",
+    "adjustmentNote": "Ajuste por conteo de inventario (Conteo #{{id}})",
+    "detail": {
+      "title": "Detalle del conteo de inventario #{{id}}",
+      "date": "Fecha: {{date}}",
+      "notes": "Notas: {{notes}}",
+      "physical": "Físico: {{qty}} {{unit}}",
+      "system": "Sistema: {{qty}}"
+    },
+    "cancelConfirm": "¿Cancelar el conteo de inventario activo? Se eliminarán todos los cambios del borrador."
+  },
+  "receiptSettings": {
+    "title": "Ajustes del recibo",
+    "printLogoLabel": "Imprimir logo de la tienda",
+    "printLogoDescription": "Imprime el logo de la tienda en la parte superior del recibo físico. Asegúrate de que tu impresora térmica admita la impresión de imágenes/mapas de bits.",
+    "footerLabel": "Texto del pie del recibo",
+    "hideWatermarkLabel": "Ocultar marca de agua de la aplicación",
+    "hideWatermarkDescActive": "Oculta la marca de agua \"Impreso desde la app FreeKasir.com\" en la parte inferior del recibo.",
+    "saveSuccess": "Ajustes del recibo guardados correctamente",
+    "saveFailed": "No se pudieron guardar los ajustes del recibo"
+  },
+  "kitchenTicket": {
+    "title": "Comanda",
+    "done": "Listo"
+  }
+}

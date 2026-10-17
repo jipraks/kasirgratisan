@@ -1,7 +1,5 @@
 import { useRef, useState } from 'react';
 import { format } from 'date-fns';
-import { id, enUS, ms } from 'date-fns/locale';
-import type { Locale } from 'date-fns';
 import html2canvas from 'html2canvas';
 import { Download, Share2, Printer, Utensils } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -13,8 +11,7 @@ import { isNativePlatform, printNativeBluetooth, getESCPOSData, printKitchenTick
 import { Capacitor } from '@capacitor/core';
 import { downloadOrShareFile } from '@/lib/file-utils';
 import { CURRENCY_SYMBOL, NUMBER_LOCALE } from '@/lib/currency';
-
-const LOCALES: Record<string, Locale> = { id, en: enUS, ms };
+import { getDateLocale } from '@/i18n';
 
 interface ReceiptProps {
   open: boolean;
@@ -31,7 +28,7 @@ export default function Receipt({ open, onClose, transaction, items, storeSettin
   const receiptRef = useRef<HTMLDivElement>(null);
   const [generating, setGenerating] = useState(false);
 
-  const dateLocale = LOCALES[i18n.language] || id;
+  const dateLocale = getDateLocale(i18n.language);
   const numberLocale = NUMBER_LOCALE;
 
   const rp = (n: number) => `${CURRENCY_SYMBOL} ${n.toLocaleString(numberLocale)}`;
@@ -73,7 +70,7 @@ export default function Receipt({ open, onClose, transaction, items, storeSettin
       toast.success(t('receipt.toast.downloadSuccess'));
     } catch (err) {
       console.error(err);
-      toast.error('Gagal mengunduh struk');
+      toast.error(t('common:files.downloadFailed'));
     }
   };
 

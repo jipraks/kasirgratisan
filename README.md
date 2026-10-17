@@ -9,7 +9,7 @@ A free, offline-first, open source Point of Sale (POS) Progressive Web App built
 - **POS / Cashier** — Full cashier interface with cart, per-item & per-transaction discounts, payment method selection, and automatic change calculation
 - **Open Bill** — Save transactions as open bills for later checkout, with customer name, table number, per-item notes, and remarks (also shown on the receipt)
 - **Multi-User Mode** — Optional opt-in mode with owner + staff roles and granular per-staff permissions (e.g. manage products, view reports, do refunds). Staff log in with username + 4-6 digit PIN
-- **Multi-Language** — Full Bahasa Indonesia, English, and Bahasa Malaysia translations via i18next. Language can be switched from Settings or during onboarding
+- **Multi-Language** — Spanish (default) and English translations via i18next. Language can be switched from Settings or during onboarding
 - **Responsive Layout** — Mobile-first phone UI with landscape/tablet mode featuring side-by-side cashier (products + cart) and adaptive grid columns
 - **Barcode Scanning** — Scan product barcodes via camera (supports EAN-13, EAN-8, UPC-A, UPC-E, Code-128, Code-39, ITF, Code-93, QR) with robust permission handling for installed PWAs, or manual keyboard entry
 - **Product Management** — Complete CRUD with categories, SKU (unique & required), units, optional descriptions (searchable, previewable in cashier), photos, and barcode support
@@ -173,9 +173,8 @@ src/
 ├── i18n/
 │   ├── index.ts             # i18next initialization
 │   └── locales/
-│       ├── id/               # Bahasa Indonesia
-│       ├── en/               # English
-│       └── ms/               # Bahasa Malaysia
+│       ├── es/               # Spanish (default and fallback)
+│       └── en/               # English
 ├── pages/
 │   ├── Dashboard.tsx        # Home: stats, quick actions, low stock alerts
 │   ├── Cashier.tsx          # POS / cashier (barcode scan input, camera scanner, side-by-side cart on landscape)
@@ -247,7 +246,7 @@ Contributions are welcome! Here's how:
 - Currency and number formatting should be locale-aware using `i18n.language` and `NUMBER_LOCALES` / `CURRENCY_SYMBOL` maps
 - Date formatting should use `date-fns` with locale from `LOCALES` map
 - Use existing `shadcn/ui` components from `src/components/ui/`
-- All monetary values are stored as numbers representing Indonesian Rupiah (no decimals)
+- All monetary values are stored as integer Colombian pesos (COP, no decimals)
 - Format numbers using `toLocaleString('id-ID')`
 - New features must work fully offline (no API calls)
 - Use `useLiveQuery()` from `dexie-react-hooks` for reactive data binding

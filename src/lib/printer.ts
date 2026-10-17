@@ -2,6 +2,19 @@ import { Capacitor } from '@capacitor/core';
 import { format } from 'date-fns';
 import type { Transaction, StoreSettings, TransactionItemRecord } from './db';
 import { CURRENCY_SYMBOL, NUMBER_LOCALE } from '@/lib/currency';
+import i18n, { resolveLanguage } from '@/i18n';
+
+// Thermal printers use single-byte code pages, so printed labels drop accents and inverted marks.
+const toPlain = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[¡¿]/g, '');
+
+/** Translator for printed labels (common:printer.*), defaulting to the current UI language. */
+const printLabels = (language?: string) => {
+  const t = i18n.getFixedT(resolveLanguage(language ?? i18n.language), 'common', 'printer');
+  return (key: string, options?: Record<string, unknown>) => toPlain(t(key, options) as string);
+};
+
+const toastText = (key: string, options?: Record<string, unknown>) =>
+  i18n.t(`printer.toast.${key}`, { ns: 'common', ...options }) as string;
 
 declare global {
   interface Window {
@@ -72,7 +85,7 @@ export const listPairedBluetoothDevices = async (): Promise<BluetoothPrinter[]> 
           err => reject(new Error(err)),
         );
       },
-      () => reject(new Error('Bluetooth tidak aktif')),
+      () => reject(new Error(toastText('bluetoothOff'))),
     );
   });
 };
@@ -86,18 +99,19 @@ export const getESCPOSData = ({
   language,
 }: PrintData): string => {
   const lines: string[] = [];
+  const t = printLabels(language);
   
   lines.push('\x1B\x61\x01'); // Center align
-  lines.push(`${storeSettings?.storeName || 'Toko'}\n`);
+  lines.push(`${storeSettings?.storeName || t('store')}\n`);
   if (storeSettings?.address) lines.push(`${storeSettings.address}\n`);
   if (storeSettings?.phone) lines.push(`${storeSettings.phone}\n`);
   lines.push('--------------------------------\n');
-  lines.push(`No: ${transaction.receiptNumber}\n`);
+  lines.push(`${t('receiptNo')}: ${transaction.receiptNumber}\n`);
   lines.push(`${format(new Date(transaction.date), 'dd/MM/yyyy HH:mm')}\n`);
-  if (cashierName) lines.push(`Kasir: ${cashierName}\n`);
-  if (transaction.customerName) lines.push(`Pelanggan: ${transaction.customerName}\n`);
-  if (transaction.tableNumber) lines.push(`Meja: ${transaction.tableNumber}\n`);
-  if (transaction.remarks) lines.push(`Catatan: ${transaction.remarks}\n`);
+  if (cashierName) lines.push(`${t('cashier')}: ${cashierName}\n`);
+  if (transaction.customerName) lines.push(`${t('customer')}: ${transaction.customerName}\n`);
+  if (transaction.tableNumber) lines.push(`${t('table')}: ${transaction.tableNumber}\n`);
+  if (transaction.remarks) lines.push(`${t('notes')}: ${transaction.remarks}\n`);
   lines.push('--------------------------------\n');
   
   lines.push('\x1B\x61\x00'); // Left align
@@ -114,34 +128,24 @@ export const getESCPOSData = ({
   }
   
   lines.push('--------------------------------\n');
-  lines.push(formatRow('Subtotal:', rp(transaction.subtotal)));
+  lines.push(formatRow(`${t('subtotal')}:`, rp(transaction.subtotal)));
   if (transaction.discountAmount > 0) {
-    lines.push(formatRow('Diskon:', `-${rp(transaction.discountAmount)}`));
+    lines.push(formatRow(`${t('discount')}:`, `-${rp(transaction.discountAmount)}`));
   }
-  lines.push(formatRow('TOTAL:', rp(transaction.total)));
-  lines.push(formatRow('Bayar:', rp(transaction.paymentAmount)));
+  lines.push(formatRow(`${t('total')}:`, rp(transaction.total)));
+  lines.push(formatRow(`${t('paid')}:`, rp(transaction.paymentAmount)));
   if (transaction.debtAmount && transaction.debtAmount > 0) {
-    lines.push(formatRow('Hutang:', rp(transaction.debtAmount)));
+    lines.push(formatRow(`${t('debt')}:`, rp(transaction.debtAmount)));
   } else {
-    lines.push(formatRow('Kembali:', rp(transaction.change)));
+    lines.push(formatRow(`${t('change')}:`, rp(transaction.change)));
   }
   lines.push('--------------------------------\n');
   lines.push('\x1B\x61\x01'); // Center
-  lines.push(`${storeSettings?.receiptFooter || 'Terima kasih!'}\n`);
+  lines.push(`${storeSettings?.receiptFooter || t('thanks')}\n`);
   
   const hideWatermark = !!storeSettings?.hideWatermark;
   if (!hideWatermark) {
-    const lang = language || 'id';
-    let line1 = 'Dicetak Dari Aplikasi';
-    let line2 = 'FreeKasir.com';
-    if (lang === 'en') {
-      line1 = 'Printed From';
-      line2 = 'FreeKasir.com App';
-    } else if (lang === 'ms') {
-      line1 = 'Dicetak Daripada Aplikasi';
-      line2 = 'FreeKasir.com';
-    }
-    lines.push(`\n${line1}\n${line2}\n`);
+    lines.push(`\n${t('watermarkLine1')}\n${t('watermarkLine2')}\n`);
   }
   lines.push('\n\n\n');
 
@@ -184,6 +188,7 @@ export const getDailyReportESCPOSData = ({
   language,
 }: DailyReportPrintData): string => {
   const lines: string[] = [];
+  const t = printLabels(language);
   const rp = (n: number) => `${CURRENCY_SYMBOL} ${n.toLocaleString(NUMBER_LOCALE)}`;
 
   const formatRow = (label: string, value: string) => {
@@ -192,46 +197,47 @@ export const getDailyReportESCPOSData = ({
   };
 
   lines.push('\x1B\x61\x01'); // Center align
-  lines.push(`${storeSettings?.storeName || 'Toko'}\n`);
+  lines.push(`${storeSettings?.storeName || t('store')}\n`);
   if (storeSettings?.address) lines.push(`${storeSettings.address}\n`);
   if (storeSettings?.phone) lines.push(`${storeSettings.phone}\n`);
   lines.push('================================\n');
-  lines.push('       DAILY SALES REPORT       \n');
-  lines.push(`           ${dateStr}           \n`);
+  lines.push(`${t('dailyTitle')}\n`);
+  lines.push(`${dateStr}\n`);
   lines.push('================================\n\n');
 
   lines.push('\x1B\x61\x00'); // Left align
-  lines.push(`Periode:\n`);
+  lines.push(`${t('period')}:\n`);
   lines.push(`${periodStr}\n\n`);
 
-  lines.push(`Jumlah Transaksi : ${txCount}\n`);
-  lines.push(`Jumlah Item      : ${itemCount}\n\n`);
+  lines.push(formatRow(t('txCount'), String(txCount)));
+  lines.push(formatRow(t('itemCount'), String(itemCount)));
+  lines.push('\n');
 
   lines.push('--------------------------------\n');
-  lines.push('PENJUALAN\n');
+  lines.push(`${t('sales')}\n`);
   lines.push('--------------------------------\n');
-  lines.push(formatRow('Gross Sales', rp(grossSales)));
+  lines.push(formatRow(t('grossSales'), rp(grossSales)));
   if (discount > 0) {
-    lines.push(formatRow('Discount', `-${rp(discount)}`));
+    lines.push(formatRow(t('discount'), `-${rp(discount)}`));
   }
-  lines.push(formatRow('Net Sales', rp(netSales)));
+  lines.push(formatRow(t('netSales'), rp(netSales)));
   lines.push('\n');
 
   if (includeExpenses && expensesAmount > 0) {
     lines.push('--------------------------------\n');
-    lines.push('PENGELUARAN & LABA NETTO\n');
+    lines.push(`${t('expensesSection')}\n`);
     lines.push('--------------------------------\n');
-    lines.push(formatRow('Net Sales', rp(netSales)));
-    lines.push(formatRow('Expenses', `-${rp(expensesAmount)}`));
-    lines.push(formatRow('Net Profit', rp(netProfit)));
+    lines.push(formatRow(t('netSales'), rp(netSales)));
+    lines.push(formatRow(t('expenses'), `-${rp(expensesAmount)}`));
+    lines.push(formatRow(t('netProfit'), rp(netProfit)));
     lines.push('\n');
   }
 
   lines.push('--------------------------------\n');
-  lines.push('PEMBAYARAN\n');
+  lines.push(`${t('payment')}\n`);
   lines.push('--------------------------------\n');
   if (paymentBreakdown.length === 0) {
-    lines.push('Belum ada pembayaran\n');
+    lines.push(`${t('noPayment')}\n`);
   } else {
     paymentBreakdown.forEach(method => {
       lines.push(formatRow(method.name, rp(method.amount)));
@@ -240,10 +246,10 @@ export const getDailyReportESCPOSData = ({
   lines.push('\n');
 
   lines.push('--------------------------------\n');
-  lines.push('PRODUK TERLARIS\n');
+  lines.push(`${t('topProducts')}\n`);
   lines.push('--------------------------------\n');
   if (topProducts.length === 0) {
-    lines.push('Belum ada penjualan produk\n');
+    lines.push(`${t('noSales')}\n`);
   } else {
     topProducts.forEach((p, idx) => {
       const num = `${idx + 1}. `;
@@ -258,22 +264,12 @@ export const getDailyReportESCPOSData = ({
 
   lines.push('================================\n');
   lines.push('\x1B\x61\x01'); // Center
-  lines.push('         END OF REPORT          \n');
-  if (cashierName) lines.push(`Dicetak oleh: ${cashierName}\n`);
+  lines.push(`${t('endOfReport')}\n`);
+  if (cashierName) lines.push(`${t('printedBy')}: ${cashierName}\n`);
   
   const hideWatermark = !!storeSettings?.hideWatermark;
   if (!hideWatermark) {
-    const lang = language || 'id';
-    let line1 = 'Dicetak Dari Aplikasi';
-    let line2 = 'FreeKasir.com';
-    if (lang === 'en') {
-      line1 = 'Printed From';
-      line2 = 'FreeKasir.com App';
-    } else if (lang === 'ms') {
-      line1 = 'Dicetak Daripada Aplikasi';
-      line2 = 'FreeKasir.com';
-    }
-    lines.push(`\n${line1}\n${line2}\n`);
+    lines.push(`\n${t('watermarkLine1')}\n${t('watermarkLine2')}\n`);
   }
   
   lines.push('================================\n\n\n\n');
@@ -369,40 +365,40 @@ export const printRawNativeBluetooth = async (
   toast: { info: (m: string) => void; success: (m: string) => void; error: (m: string) => void }
 ): Promise<boolean> => {
   if (!window.bluetoothSerial) {
-    toast.error('Plugin Bluetooth tidak tersedia.');
+    toast.error(toastText('pluginUnavailable'));
     return false;
   }
 
   const defaultPrinter = getDefaultBluetoothPrinter();
   if (!defaultPrinter) {
-    toast.error('Printer default belum dipilih. Silakan atur printer di menu Pengaturan terlebih dahulu.');
+    toast.error(toastText('noDefaultPrinter'));
     return false;
   }
 
   return new Promise((resolve) => {
     window.bluetoothSerial?.isEnabled(
       () => {
-        toast.info('Mencari printer Bluetooth berpasangan...');
+        toast.info(toastText('searching'));
         window.bluetoothSerial?.list(
           async (devices) => {
             if (devices.length === 0) {
-              toast.error('Tidak ada printer Bluetooth yang dipasangkan (paired). Hubungkan di Pengaturan Android dulu.');
+              toast.error(toastText('noPaired'));
               resolve(false);
               return;
             }
 
             const printer = devices.find(d => d.address === defaultPrinter.address);
             if (!printer) {
-              toast.error(`Printer "${defaultPrinter.name}" tidak terdeteksi. Pastikan printer menyala dan terhubung.`);
+              toast.error(toastText('printerNotFound', { name: defaultPrinter.name }));
               resolve(false);
               return;
             }
 
-            toast.info(`Menghubungkan ke ${printer.name}...`);
+            toast.info(toastText('connecting', { name: printer.name }));
             window.bluetoothSerial?.connect(
               printer.address,
               () => {
-                toast.info('Mencetak...');
+                toast.info(toastText('printing'));
                 const data = typeof rawText === 'string'
                   ? new TextEncoder().encode(rawText)
                   : rawText;
@@ -410,31 +406,31 @@ export const printRawNativeBluetooth = async (
                 window.bluetoothSerial?.write(
                   data,
                   () => {
-                    toast.success('Berhasil dicetak!');
+                    toast.success(toastText('success'));
                     window.bluetoothSerial?.disconnect(() => {}, () => {});
                     resolve(true);
                   },
                   (err) => {
-                    toast.error(`Gagal mencetak: ${err}`);
+                    toast.error(toastText('printFailed', { error: err }));
                     window.bluetoothSerial?.disconnect(() => {}, () => {});
                     resolve(false);
                   }
                 );
               },
               (err) => {
-                toast.error(`Koneksi gagal: ${err}`);
+                toast.error(toastText('connectFailed', { error: err }));
                 resolve(false);
               }
             );
           },
           (err) => {
-            toast.error(`Gagal mendapatkan daftar printer: ${err}`);
+            toast.error(toastText('listFailed', { error: err }));
             resolve(false);
           }
         );
       },
       () => {
-        toast.error('Bluetooth tidak aktif. Silakan aktifkan Bluetooth.');
+        toast.error(toastText('bluetoothOffHint'));
         resolve(false);
       }
     );
@@ -479,24 +475,27 @@ export const getKitchenTicketESCPOSData = ({
   transaction,
   items,
   cashierName,
+  language,
 }: {
   transaction: Transaction;
   items: TransactionItemRecord[];
   cashierName?: string;
+  language?: string;
 }): string => {
   const lines: string[] = [];
+  const t = printLabels(language);
   
   lines.push('\x1B\x61\x01'); // Center align
   lines.push('\x1B\x21\x10'); // Double height text
-  lines.push('KITCHEN TICKET\n');
+  lines.push(`${t('kitchenTicket')}\n`);
   lines.push('\x1B\x21\x00'); // Reset text size
   lines.push('--------------------------------\n');
-  lines.push(`No: ${transaction.receiptNumber}\n`);
-  lines.push(`Waktu: ${format(new Date(transaction.date), 'dd/MM/yyyy HH:mm')}\n`);
-  if (cashierName) lines.push(`Kasir: ${cashierName}\n`);
-  if (transaction.customerName) lines.push(`Pelanggan: ${transaction.customerName}\n`);
-  if (transaction.tableNumber) lines.push(`Meja: ${transaction.tableNumber}\n`);
-  if (transaction.remarks) lines.push(`Catatan: ${transaction.remarks}\n`);
+  lines.push(`${t('receiptNo')}: ${transaction.receiptNumber}\n`);
+  lines.push(`${t('time')}: ${format(new Date(transaction.date), 'dd/MM/yyyy HH:mm')}\n`);
+  if (cashierName) lines.push(`${t('cashier')}: ${cashierName}\n`);
+  if (transaction.customerName) lines.push(`${t('customer')}: ${transaction.customerName}\n`);
+  if (transaction.tableNumber) lines.push(`${t('table')}: ${transaction.tableNumber}\n`);
+  if (transaction.remarks) lines.push(`${t('notes')}: ${transaction.remarks}\n`);
   lines.push('--------------------------------\n');
   
   lines.push('\x1B\x61\x00'); // Left align
@@ -508,7 +507,7 @@ export const getKitchenTicketESCPOSData = ({
     } else {
       lines.push(`${leftText}  [ ]\n`);
     }
-    if (item.notes) lines.push(`  * Catatan: ${item.notes}\n`);
+    if (item.notes) lines.push(`  * ${t('itemNote')}: ${item.notes}\n`);
   }
   
   lines.push('--------------------------------\n');
@@ -521,6 +520,7 @@ export const printKitchenTicketBluetooth = async (
     transaction: Transaction;
     items: TransactionItemRecord[];
     cashierName?: string;
+    language?: string;
   },
   toast: { info: (m: string) => void; success: (m: string) => void; error: (m: string) => void }
 ): Promise<boolean> => {

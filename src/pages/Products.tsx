@@ -195,20 +195,20 @@ export default function Produk() {
       const ExcelJSModule = await import('exceljs');
       const ExcelJS = (ExcelJSModule as unknown as { default?: typeof ExcelJSModule }).default ?? ExcelJSModule;
       const workbook = new ExcelJS.Workbook();
-      const worksheet = workbook.addWorksheet('Template Produk');
+      const worksheet = workbook.addWorksheet(t('excel.template.sheetName'));
 
       // Setup headers
       worksheet.columns = [
-        { header: 'Nama Produk *', key: 'name', width: 25 },
-        { header: 'SKU *', key: 'sku', width: 15 },
-        { header: 'Kategori *', key: 'category', width: 18 },
-        { header: 'Harga Jual *', key: 'price', width: 15 },
-        { header: 'HPP', key: 'hpp', width: 15 },
-        { header: 'Kelola Stok (Ya/Tidak)', key: 'trackStock', width: 22 },
-        { header: 'Stok Awal', key: 'stock', width: 15 },
-        { header: 'Satuan *', key: 'unit', width: 12 },
-        { header: 'Barcode', key: 'barcode', width: 15 },
-        { header: 'Deskripsi', key: 'description', width: 30 }
+        { header: t('excel.template.headerName'), key: 'name', width: 25 },
+        { header: t('excel.template.headerSku'), key: 'sku', width: 15 },
+        { header: t('excel.template.headerCategory'), key: 'category', width: 18 },
+        { header: t('excel.template.headerPrice'), key: 'price', width: 15 },
+        { header: t('excel.template.headerHpp'), key: 'hpp', width: 15 },
+        { header: t('excel.template.headerTrackStock'), key: 'trackStock', width: 22 },
+        { header: t('excel.template.headerStock'), key: 'stock', width: 15 },
+        { header: t('excel.template.headerUnit'), key: 'unit', width: 12 },
+        { header: t('excel.template.headerBarcode'), key: 'barcode', width: 15 },
+        { header: t('excel.template.headerDescription'), key: 'description', width: 30 }
       ];
 
       // Style header row
@@ -226,37 +226,37 @@ export default function Produk() {
 
       // Add a couple of examples
       worksheet.addRow({
-        name: 'Kopi Susu Gula Aren',
-        sku: 'KOPI-001',
-        category: 'Minuman',
+        name: t('excel.template.sample1Name'),
+        sku: t('excel.template.sample1Sku'),
+        category: t('excel.template.sample1Category'),
         price: 15000,
         hpp: 8000,
-        trackStock: 'Ya',
+        trackStock: t('excel.template.yes'),
         stock: 50,
         unit: 'pcs',
         barcode: '8991234567890',
-        description: 'Kopi susu segar dengan gula aren murni'
+        description: t('excel.template.sample1Description')
       });
 
       worksheet.addRow({
-        name: 'Nasi Goreng Spesial',
-        sku: 'NASGOR-001',
-        category: 'Makanan',
+        name: t('excel.template.sample2Name'),
+        sku: t('excel.template.sample2Sku'),
+        category: t('excel.template.sample2Category'),
         price: 22000,
         hpp: 10000,
-        trackStock: 'Tidak',
+        trackStock: t('excel.template.no'),
         stock: 0,
-        unit: 'porsi',
+        unit: t('excel.template.sample2Unit'),
         barcode: '',
-        description: 'Nasi goreng dengan topping telur dadar dan ayam suwir'
+        description: t('excel.template.sample2Description')
       });
 
       // Add a secondary sheet for referencing active categories and units
-      const refSheet = workbook.addWorksheet('Daftar Referensi');
+      const refSheet = workbook.addWorksheet(t('excel.template.refSheetName'));
       refSheet.columns = [
-        { header: 'Kategori yang Tersedia', key: 'categories', width: 25 },
+        { header: t('excel.template.refCategories'), key: 'categories', width: 25 },
         { header: '', width: 5 },
-        { header: 'Satuan yang Tersedia', key: 'units', width: 25 }
+        { header: t('excel.template.refUnits'), key: 'units', width: 25 }
       ];
 
       const refHeaderRow = refSheet.getRow(1);
@@ -287,15 +287,15 @@ export default function Produk() {
       // Write to file
       const buffer = await workbook.xlsx.writeBuffer();
       await downloadOrShareFile(buffer as ArrayBuffer, {
-        fileName: 'Template_Import_Produk.xlsx',
+        fileName: t('excel.template.fileName'),
         mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        dialogTitle: 'Simpan / Bagikan Template',
-        shareTitle: 'Template Import Produk',
+        dialogTitle: t('excel.template.shareDialogTitle'),
+        shareTitle: t('excel.template.shareTitle'),
       });
-      toast.success('Template berhasil diunduh!');
+      toast.success(t('excel.toastTemplateDownloaded'));
     } catch (err) {
       console.error(err);
-      toast.error('Gagal mengunduh template');
+      toast.error(t('excel.toastTemplateFailed'));
     }
   };
 
@@ -320,7 +320,7 @@ export default function Produk() {
 
           const worksheet = workbook.worksheets[0];
           if (!worksheet) {
-            toast.error('File Excel kosong atau tidak valid.');
+            toast.error(t('excel.toastFileEmpty'));
             setIsValidating(false);
             return;
           }
@@ -458,11 +458,15 @@ export default function Produk() {
               errors.push(t('excel.errorHppInvalid'));
             }
 
-            // Kelola Stok boolean: default to true
+            // Track stock boolean: defaults to true. Columns are read by index, so
+            // templates with Indonesian, Spanish or English headers all import.
+            // Falsy values accept es/en ("No", "False", "Falso") and legacy
+            // Indonesian ("Tidak", "Salah") answers.
             let trackStock = true;
             if (trackStockStr) {
-              const lower = trackStockStr.toLowerCase();
-              if (lower === 'tidak' || lower === 'no' || lower === 'false' || lower === '0' || lower === 'salah') {
+              const lower = trackStockStr.toLowerCase().trim();
+              const falsyValues = ['no', 'false', 'falso', '0', 'tidak', 'salah'];
+              if (falsyValues.includes(lower)) {
                 trackStock = false;
               }
             }
@@ -492,20 +496,20 @@ export default function Produk() {
           setIsValidating(false);
         } catch (err) {
           console.error(err);
-          toast.error('Gagal membaca file Excel.');
+          toast.error(t('excel.toastReadExcelFailed'));
           setIsValidating(false);
         }
       };
 
       reader.onerror = () => {
-        toast.error('Gagal membaca file.');
+        toast.error(t('excel.toastReadFileFailed'));
         setIsValidating(false);
       };
 
       reader.readAsArrayBuffer(file);
     } catch (err) {
       console.error(err);
-      toast.error('Gagal memproses file.');
+      toast.error(t('excel.toastProcessFailed'));
       setIsValidating(false);
     }
   };
@@ -513,7 +517,7 @@ export default function Produk() {
   const handleSaveImport = async () => {
     const validRows = importRows.filter(r => r.isValid);
     if (validRows.length === 0) {
-      toast.error('Tidak ada data valid yang bisa disimpan.');
+      toast.error(t('excel.toastNoValidRows'));
       return;
     }
 
@@ -554,7 +558,7 @@ export default function Produk() {
       setImportFile(null);
     } catch (err) {
       console.error(err);
-      toast.error('Gagal menyimpan produk ke database.');
+      toast.error(t('excel.toastSaveFailed'));
     }
   };
 
@@ -936,7 +940,7 @@ export default function Produk() {
               // Loading screen
               <div className="flex flex-col items-center justify-center py-20 gap-3">
                 <Loader2 className="w-10 h-10 animate-spin text-primary" />
-                <p className="text-sm font-medium text-muted-foreground">Memproses dan memvalidasi data...</p>
+                <p className="text-sm font-medium text-muted-foreground">{t('excel.validating')}</p>
               </div>
             ) : (
               // Validation Preview screen
@@ -969,11 +973,11 @@ export default function Produk() {
                       <TableHeader className="bg-muted/55 sticky top-0 z-10">
                         <TableRow>
                           <TableHead className="w-[60px] text-center font-bold">{t('excel.row')}</TableHead>
-                          <TableHead className="font-bold">Nama Produk</TableHead>
-                          <TableHead className="font-bold">SKU</TableHead>
-                          <TableHead className="font-bold">Kategori</TableHead>
-                          <TableHead className="font-bold text-right">Harga</TableHead>
-                          <TableHead className="font-bold">Satuan</TableHead>
+                          <TableHead className="font-bold">{t('excel.colName')}</TableHead>
+                          <TableHead className="font-bold">{t('excel.colSku')}</TableHead>
+                          <TableHead className="font-bold">{t('excel.colCategory')}</TableHead>
+                          <TableHead className="font-bold text-right">{t('excel.colPrice')}</TableHead>
+                          <TableHead className="font-bold">{t('excel.colUnit')}</TableHead>
                           <TableHead className="font-bold">{t('excel.status')}</TableHead>
                         </TableRow>
                       </TableHeader>
@@ -995,7 +999,7 @@ export default function Produk() {
                               {row.isValid ? (
                                 <span className="flex items-center gap-1 text-xs text-success font-medium">
                                   <CheckCircle2 className="w-3.5 h-3.5" />
-                                  Valid
+                                  {t('excel.valid')}
                                 </span>
                               ) : (
                                 <div className="space-y-1">

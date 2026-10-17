@@ -13,11 +13,8 @@ import LockedPage from '@/components/LockedPage';
 import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { format } from 'date-fns';
-import { id as localeId, enUS, ms as localeMs } from 'date-fns/locale';
-import type { Locale } from 'date-fns';
 import { downloadOrShareFile } from '@/lib/file-utils';
-
-const DATE_LOCALES: Record<string, Locale> = { id: localeId, en: enUS, ms: localeMs };
+import { getDateLocale } from '@/i18n';
 
 interface DraftItem {
   productId: number;
@@ -33,7 +30,7 @@ export default function StockOpnamePage() {
   const { t, i18n } = useTranslation('settings');
   const { can, currentUser } = useAuth();
   const navigate = useNavigate();
-  const dateLocale = DATE_LOCALES[i18n.language] ?? localeId;
+  const dateLocale = getDateLocale(i18n.language);
 
   // Active Draft state
   const [activeOpname, setActiveOpname] = useState<StockOpname | null>(null);
@@ -70,7 +67,7 @@ export default function StockOpnamePage() {
           const p = prodMap.get(item.productId);
           return {
             productId: item.productId,
-            productName: p?.name ?? 'Produk Terhapus',
+            productName: p?.name ?? t('stockOpname.deletedProduct'),
             sku: p?.sku ?? '',
             barcode: p?.barcode ?? '',
             systemStock: item.systemStock,
@@ -85,7 +82,7 @@ export default function StockOpnamePage() {
       }
     };
     loadActiveDraft();
-  }, [products]);
+  }, [products, t]);
 
   if (!can('manage_stock_inout')) {
     return <LockedPage title={t('stockOpname.title')} permissionLabel={t('masterData.theme.permissionLabel')} />;
@@ -143,7 +140,7 @@ export default function StockOpnamePage() {
       toast.success(t('stockOpname.toast.draftStarted'));
     } catch (err) {
       console.error(err);
-      toast.error('Gagal memulai sesi stock opname');
+      toast.error(t('stockOpname.toast.startFailed'));
     }
   };
 
@@ -184,24 +181,31 @@ export default function StockOpnamePage() {
       const ExcelJSModule = await import('exceljs');
       const ExcelJS = (ExcelJSModule as unknown as { default?: typeof ExcelJSModule }).default ?? ExcelJSModule;
       const wb = new ExcelJS.Workbook();
-      const ws = wb.addWorksheet('Stock Opname');
+      const ws = wb.addWorksheet(t('stockOpname.excel.sheetName'));
 
       // Title & Instructions
       ws.mergeCells('A1:F1');
       const titleCell = ws.getCell('A1');
-      titleCell.value = 'TEMPLAT STOCK OPNAME';
+      titleCell.value = t('stockOpname.excel.templateTitle');
       titleCell.font = { name: 'Arial', size: 14, bold: true, color: { argb: 'FFFFFF' } };
       titleCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: '3B82F6' } };
       titleCell.alignment = { horizontal: 'center' };
 
       ws.mergeCells('A2:F2');
       const instructionCell = ws.getCell('A2');
-      instructionCell.value = 'Petunjuk: HANYA ISI kolom "Stok Fisik". Jangan mengubah kolom lainnya.';
+      instructionCell.value = t('stockOpname.excel.instruction');
       instructionCell.font = { name: 'Arial', size: 10, italic: true };
       instructionCell.alignment = { horizontal: 'center' };
 
-      // Headers
-      const headers = ['ID Produk', 'Nama Produk', 'SKU', 'Barcode', 'Stok Sistem', 'Stok Fisik (ISI DI SINI)'];
+      // Headers (labels only; import reads values by row/column index, not by header text)
+      const headers = [
+        t('stockOpname.excel.headerProductId'),
+        t('stockOpname.excel.headerProductName'),
+        t('stockOpname.excel.headerSku'),
+        t('stockOpname.excel.headerBarcode'),
+        t('stockOpname.excel.headerSystemStock'),
+        t('stockOpname.excel.headerPhysicalStock'),
+      ];
       ws.getRow(4).values = headers;
       ws.getRow(4).font = { bold: true };
       ws.getRow(4).eachCell(c => {
@@ -249,17 +253,17 @@ export default function StockOpnamePage() {
       ws.getColumn(6).width = 25;
 
       const buffer = await wb.xlsx.writeBuffer();
-      const fileName = `Templat_Stock_Opname_${format(new Date(), 'yyyyMMdd_HHmmss')}.xlsx`;
+      const fileName = `${t('stockOpname.excel.fileNamePrefix')}_${format(new Date(), 'yyyyMMdd_HHmmss')}.xlsx`;
       await downloadOrShareFile(buffer as ArrayBuffer, {
         fileName,
         mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        dialogTitle: 'Simpan / Bagikan Templat',
-        shareTitle: 'Templat Stock Opname',
+        dialogTitle: t('stockOpname.excel.dialogTitle'),
+        shareTitle: t('stockOpname.excel.shareTitle'),
       });
-      toast.success('Templat Excel berhasil diunduh');
+      toast.success(t('stockOpname.excel.downloadSuccess'));
     } catch (err) {
       console.error(err);
-      toast.error('Gagal mengunduh templat');
+      toast.error(t('stockOpname.excel.downloadError'));
     }
   };
 
@@ -279,7 +283,8 @@ export default function StockOpnamePage() {
       let updatedCount = 0;
       const updatedDraftItems = [...draftItems];
 
-      // Read rows starting from row 5
+      // Read rows starting from row 5 by column index (1 = product ID, 6 = physical stock),
+      // so templates generated in any language (including older Indonesian ones) stay importable
       ws.eachRow((row, rowNum) => {
         if (rowNum >= 5) {
           const productId = Number(row.getCell(1).value);
@@ -330,7 +335,7 @@ export default function StockOpnamePage() {
   // Cancel Opname draft
   const handleCancelOpname = async () => {
     if (!activeOpname?.id) return;
-    if (confirm('Batalkan sesi stock opname aktif? Semua perubahan draf akan dihapus.')) {
+    if (confirm(t('stockOpname.cancelConfirm'))) {
       try {
         await db.transaction('rw', [db.stockOpnames, db.stockOpnameItems], async () => {
           await db.stockOpnameItems.where('opnameId').equals(activeOpname.id!).delete();
@@ -338,10 +343,10 @@ export default function StockOpnamePage() {
         });
         setActiveOpname(null);
         setDraftItems([]);
-        toast.info('Sesi stock opname dibatalkan');
+        toast.info(t('stockOpname.toast.cancelled'));
       } catch (err) {
         console.error(err);
-        toast.error('Gagal membatalkan sesi');
+        toast.error(t('stockOpname.toast.cancelFailed'));
       }
     }
   };
@@ -383,7 +388,7 @@ export default function StockOpnamePage() {
               buyPrice: prod?.hpp ?? 0,
               totalPrice: (prod?.hpp ?? 0) * diff,
               date: now,
-              notes: `Adjustment Stock Opname (Sesi #${activeOpname.id})`,
+              notes: t('stockOpname.adjustmentNote', { id: activeOpname.id }),
               createdBy: currentUser?.id
             });
           } else if (diff < 0) {
@@ -393,7 +398,7 @@ export default function StockOpnamePage() {
               quantity: Math.abs(diff),
               reason: 'opname',
               date: now,
-              notes: `Adjustment Stock Opname (Sesi #${activeOpname.id})`,
+              notes: t('stockOpname.adjustmentNote', { id: activeOpname.id }),
               createdBy: currentUser?.id
             });
           }
@@ -424,7 +429,7 @@ export default function StockOpnamePage() {
         const p = prodMap.get(item.productId);
         return {
           ...item,
-          productName: p?.name ?? 'Produk Terhapus',
+          productName: p?.name ?? t('stockOpname.deletedProduct'),
           sku: p?.sku ?? '',
           unit: p?.unit ?? 'pcs'
         };
@@ -434,7 +439,7 @@ export default function StockOpnamePage() {
       setHistoryDetailOpen(true);
     } catch (err) {
       console.error(err);
-      toast.error('Gagal membaca detail riwayat');
+      toast.error(t('stockOpname.toast.historyLoadFailed'));
     }
   };
 
@@ -460,10 +465,10 @@ export default function StockOpnamePage() {
             <CardHeader className="pb-3 flex flex-row items-center justify-between space-y-0">
               <div>
                 <CardTitle className="text-sm font-bold">
-                  Sesi Aktif ({format(new Date(activeOpname.date), 'dd MMMM yyyy HH:mm', { locale: dateLocale })})
+                  {t('stockOpname.activeSession', { date: format(new Date(activeOpname.date), 'dd MMMM yyyy HH:mm', { locale: dateLocale }) })}
                 </CardTitle>
                 <p className="text-[10px] text-muted-foreground mt-0.5">
-                  Lakukan pencocokan stok fisik produk di bawah ini.
+                  {t('stockOpname.activeSessionHint')}
                 </p>
               </div>
               <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={handleCancelOpname}>
@@ -475,11 +480,11 @@ export default function StockOpnamePage() {
               <div className="grid grid-cols-2 gap-2">
                 <Button variant="outline" size="sm" className="gap-1.5 h-9" onClick={handleExportTemplate}>
                   <Download className="w-4 h-4" />
-                  Templat Excel
+                  {t('stockOpname.excel.templateButton')}
                 </Button>
                 <Button variant="outline" size="sm" className="gap-1.5 h-9" onClick={() => fileInputRef.current?.click()}>
                   <Upload className="w-4 h-4" />
-                  Unggah Excel
+                  {t('stockOpname.excel.uploadExcel')}
                 </Button>
                 <input
                   ref={fileInputRef}
@@ -491,7 +496,7 @@ export default function StockOpnamePage() {
               </div>
 
               <div className="space-y-1.5">
-                <Label htmlFor="opname-notes" className="text-xs">Catatan Sesi</Label>
+                <Label htmlFor="opname-notes" className="text-xs">{t('stockOpname.sessionNotes')}</Label>
                 <Input
                   id="opname-notes"
                   value={notes}
@@ -508,7 +513,7 @@ export default function StockOpnamePage() {
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
-                placeholder="Cari nama atau SKU produk..."
+                placeholder={t('stockOpname.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-9 h-10"
@@ -563,7 +568,7 @@ export default function StockOpnamePage() {
           {/* Action buttons */}
           <Button className="w-full h-11 font-bold mt-2" onClick={() => setConfirmOpen(true)}>
             <Check className="w-5 h-5 mr-1.5" />
-            Selesaikan Stock Opname
+            {t('stockOpname.completeButton')}
           </Button>
         </div>
       ) : (
@@ -630,7 +635,7 @@ export default function StockOpnamePage() {
               {t('stockOpname.dialog.submitCancel')}
             </Button>
             <Button size="sm" onClick={handleSubmitOpname} disabled={submitting}>
-              {submitting ? 'Memproses...' : t('stockOpname.dialog.submitConfirm')}
+              {submitting ? t('stockOpname.processing') : t('stockOpname.dialog.submitConfirm')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -641,11 +646,11 @@ export default function StockOpnamePage() {
         <DialogContent className="max-w-[95vw] rounded-xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-sm font-bold">
-              Detail Stock Opname #{selectedHistory?.id}
+              {t('stockOpname.detail.title', { id: selectedHistory?.id })}
             </DialogTitle>
             <DialogDescription className="text-[10px] pt-1">
-              Tanggal: {selectedHistory && format(new Date(selectedHistory.date), 'dd MMMM yyyy HH:mm', { locale: dateLocale })}
-              {selectedHistory?.notes && <span className="block mt-1 italic">Catatan: {selectedHistory.notes}</span>}
+              {selectedHistory && t('stockOpname.detail.date', { date: format(new Date(selectedHistory.date), 'dd MMMM yyyy HH:mm', { locale: dateLocale }) })}
+              {selectedHistory?.notes && <span className="block mt-1 italic">{t('stockOpname.detail.notes', { notes: selectedHistory.notes })}</span>}
             </DialogDescription>
           </DialogHeader>
 
@@ -659,8 +664,8 @@ export default function StockOpnamePage() {
                     <p className="text-[9px] text-muted-foreground">SKU: {item.sku || '-'}</p>
                   </div>
                   <div className="text-right shrink-0 space-y-0.5 ml-2">
-                    <p className="font-bold">Fisik: {item.realStock} {item.unit}</p>
-                    <p className="text-[9px] text-muted-foreground">Sistem: {item.systemStock}</p>
+                    <p className="font-bold">{t('stockOpname.detail.physical', { qty: item.realStock, unit: item.unit })}</p>
+                    <p className="text-[9px] text-muted-foreground">{t('stockOpname.detail.system', { qty: item.systemStock })}</p>
                     <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded inline-block ${
                       diff > 0 ? 'bg-success/10 text-success' :
                       diff < 0 ? 'bg-destructive/10 text-destructive' : 'bg-zinc-100 text-zinc-500'
@@ -675,7 +680,7 @@ export default function StockOpnamePage() {
 
           <DialogFooter className="mt-4">
             <Button className="w-full" onClick={() => setHistoryDetailOpen(false)}>
-              Tutup
+              {t('stockOpname.close')}
             </Button>
           </DialogFooter>
         </DialogContent>

@@ -165,7 +165,7 @@
   },
   "about": {
     "appName": "FreeKasir",
-    "tagline": "Free POS for Indonesian MSMEs 🇮🇩",
+    "tagline": "Free POS for small businesses 🇨🇴",
     "version": "v{{version}} • Data stored on device",
     "whatsNew": "What's New in FreeKasir",
     "storageUsed": "Storage Used"
@@ -1048,7 +1048,22 @@
       "downloadTemplate": "Download Excel Template",
       "uploadExcel": "Upload Excel",
       "uploadSuccess": "Successfully loaded {{count}} products from Excel",
-      "uploadError": "Invalid file format or failed to read Excel data"
+      "uploadError": "Invalid file format or failed to read Excel data",
+      "templateButton": "Excel Template",
+      "sheetName": "Stock Opname",
+      "templateTitle": "STOCK OPNAME TEMPLATE",
+      "instruction": "Instructions: ONLY FILL IN the \"Physical Stock\" column. Do not change the other columns.",
+      "headerProductId": "Product ID",
+      "headerProductName": "Product Name",
+      "headerSku": "SKU",
+      "headerBarcode": "Barcode",
+      "headerSystemStock": "System Stock",
+      "headerPhysicalStock": "Physical Stock (FILL IN HERE)",
+      "fileNamePrefix": "Stock_Opname_Template",
+      "dialogTitle": "Save / Share Template",
+      "shareTitle": "Stock Opname Template",
+      "downloadSuccess": "Excel template downloaded successfully",
+      "downloadError": "Failed to download template"
     },
     "dialog": {
       "submitTitle": "Complete Stock Opname?",
@@ -1060,8 +1075,29 @@
       "draftStarted": "New opname session started successfully",
       "saved": "Stock opname completed successfully",
       "saveFailed": "Failed to complete stock opname",
-      "notesPlaceholder": "Opname session notes (optional)"
-    }
+      "notesPlaceholder": "Opname session notes (optional)",
+      "startFailed": "Failed to start stock opname session",
+      "cancelled": "Stock opname session cancelled",
+      "cancelFailed": "Failed to cancel session",
+      "historyLoadFailed": "Failed to load history details"
+    },
+    "deletedProduct": "Deleted Product",
+    "activeSession": "Active Session ({{date}})",
+    "activeSessionHint": "Match the physical stock of the products below.",
+    "sessionNotes": "Session Notes",
+    "searchPlaceholder": "Search product name or SKU...",
+    "completeButton": "Complete Stock Opname",
+    "processing": "Processing...",
+    "close": "Close",
+    "adjustmentNote": "Stock Opname Adjustment (Session #{{id}})",
+    "detail": {
+      "title": "Stock Opname Detail #{{id}}",
+      "date": "Date: {{date}}",
+      "notes": "Notes: {{notes}}",
+      "physical": "Physical: {{qty}} {{unit}}",
+      "system": "System: {{qty}}"
+    },
+    "cancelConfirm": "Cancel the active stock opname session? All draft changes will be deleted."
   },
   "receiptSettings": {
     "title": "Receipt Settings",

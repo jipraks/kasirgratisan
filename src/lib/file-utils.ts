@@ -1,6 +1,7 @@
 import { Capacitor } from '@capacitor/core';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
+import i18n from '@/i18n';
 
 /**
  * Converts an ArrayBuffer to a Base64 string safely without causing stack overflow on large files.
@@ -36,8 +37,8 @@ export async function downloadOrShareFile(
 ): Promise<void> {
   const {
     fileName,
-    dialogTitle = 'Simpan / Bagikan File',
-    shareTitle = 'Bagikan File',
+    dialogTitle = i18n.t('files.saveShareTitle', { ns: 'common' }) as string,
+    shareTitle = i18n.t('files.shareTitle', { ns: 'common' }) as string,
     shareText = fileName,
     mimeType = 'application/octet-stream',
   } = options;
