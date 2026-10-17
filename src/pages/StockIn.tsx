@@ -18,17 +18,16 @@ import ProductPicker from '@/components/ProductPicker';
 import SearchableSelect from '@/components/SearchableSelect';
 import NumberInput from '@/components/NumberInput';
 import { useTranslation } from 'react-i18next';
+import { CURRENCY_SYMBOL, NUMBER_LOCALE } from '@/lib/currency';
 
-const CURRENCY_SYMBOL: Record<string, string> = { id: 'Rp', en: 'Rp', ms: 'Rp' };
-const NUMBER_LOCALES: Record<string, string> = { id: 'id-ID', en: 'en-US', ms: 'ms-MY' };
 const LOCALES: Record<string, Locale> = { id: idLocale, en: enUS, ms };
 
 export default function StockInPage() {
   const { currentUser, can } = useAuth();
   const { t, i18n } = useTranslation('settings');
   const dateLocale = LOCALES[i18n.language] ?? idLocale;
-  const numberLocale = NUMBER_LOCALES[i18n.language] ?? 'id-ID';
-  const currencySymbol = CURRENCY_SYMBOL[i18n.language] ?? 'Rp';
+  const numberLocale = NUMBER_LOCALE;
+  const currencySymbol = CURRENCY_SYMBOL;
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [productId, setProductId] = useState('');

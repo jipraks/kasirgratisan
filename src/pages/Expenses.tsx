@@ -27,20 +27,11 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/use-auth';
 import LockedPage from '@/components/LockedPage';
 import { useTranslation } from 'react-i18next';
+import { CURRENCY_SYMBOL, NUMBER_LOCALE } from '@/lib/currency';
 
 type RangePreset = 'today' | '7' | '30' | 'month' | 'all';
 
-const CURRENCY_SYMBOL: Record<string, string> = {
-  id: 'Rp',
-  en: '$',
-  ms: 'Rp',
-};
 
-const NUMBER_LOCALES: Record<string, string> = {
-  id: 'id-ID',
-  en: 'en-US',
-  ms: 'ms-MY',
-};
 
 const LOCALES: Record<string, Locale> = {
   id,
@@ -70,8 +61,8 @@ export default function ExpensesPage() {
 
   const lang = i18n.language?.split('-')[0] || 'id';
   const dateLocale = LOCALES[lang] || id;
-  const numberLocale = NUMBER_LOCALES[lang] || 'id-ID';
-  const currencySymbol = CURRENCY_SYMBOL[lang] || 'Rp';
+  const numberLocale = NUMBER_LOCALE;
+  const currencySymbol = CURRENCY_SYMBOL;
 
   const rp = (n: number) => `${currencySymbol} ${n.toLocaleString(numberLocale)}`;
 

@@ -13,9 +13,9 @@ import { getUnseenFeatures } from '@/lib/whats-new';
 import { useAuth } from '@/hooks/use-auth';
 import type { PermissionKey } from '@/lib/db';
 import { useTranslation } from 'react-i18next';
+import { CURRENCY_SYMBOL, NUMBER_LOCALE } from '@/lib/currency';
 
 const LOCALES: Record<string, Locale> = { id, en: enUS, ms };
-const NUMBER_LOCALES: Record<string, string> = { id: 'id-ID', en: 'en-US', ms: 'ms-MY' };
 
 export default function Dashboard() {
   const { can } = useAuth();
@@ -24,7 +24,7 @@ export default function Dashboard() {
   const [whatsNewOpen, setWhatsNewOpen] = useState(false);
 
   const dateLocale = LOCALES[i18n.language] ?? id;
-  const numberLocale = NUMBER_LOCALES[i18n.language] ?? 'id-ID';
+  const numberLocale = NUMBER_LOCALE;
 
   const storeSettings = useLiveQuery(() => db.storeSettings.toCollection().first());
 
@@ -127,7 +127,7 @@ export default function Dashboard() {
         <Card className="border-0 shadow-sm bg-primary text-primary-foreground">
           <CardContent className="p-4">
             <p className="text-xs opacity-80">{t('stats.salesToday')}</p>
-            <p className="text-xl font-bold mt-1">Rp {totalSales.toLocaleString(numberLocale)}</p>
+            <p className="text-xl font-bold mt-1">{CURRENCY_SYMBOL} {totalSales.toLocaleString(numberLocale)}</p>
             <p className="text-xs opacity-70 mt-1">{t('stats.transactions', { count: txCount })}</p>
           </CardContent>
         </Card>
@@ -138,7 +138,7 @@ export default function Dashboard() {
                 <TrendingUp className="w-4 h-4" />
                 <p className="text-xs font-medium">{t('stats.profitToday')}</p>
               </div>
-              <p className="text-xl font-bold mt-1">Rp {totalProfit.toLocaleString(numberLocale)}</p>
+              <p className="text-xl font-bold mt-1">{CURRENCY_SYMBOL} {totalProfit.toLocaleString(numberLocale)}</p>
             </CardContent>
           </Card>
         )}
@@ -150,7 +150,7 @@ export default function Dashboard() {
                   <Wallet className="w-4 h-4" />
                   <p className="text-xs font-medium">{t('stats.expensesToday')}</p>
                 </div>
-                <p className="text-xl font-bold mt-1">Rp {totalExpensesToday.toLocaleString(numberLocale)}</p>
+                <p className="text-xl font-bold mt-1">{CURRENCY_SYMBOL} {totalExpensesToday.toLocaleString(numberLocale)}</p>
                 <p className="text-xs text-muted-foreground mt-1">{t('stats.expenseNotes', { count: expenseCount })}</p>
               </CardContent>
             </Card>
@@ -225,7 +225,7 @@ export default function Dashboard() {
                         <p className="text-[10px] text-muted-foreground shrink-0 ml-2">{format(new Date(tx.date), 'HH:mm')}</p>
                       </div>
                       <div className="flex items-center justify-between mt-0.5">
-                        <p className="text-sm font-bold text-primary">Rp {tx.total.toLocaleString(numberLocale)}</p>
+                        <p className="text-sm font-bold text-primary">{CURRENCY_SYMBOL} {tx.total.toLocaleString(numberLocale)}</p>
                         <p className="text-[10px] text-muted-foreground">{paymentMethods?.find(pm => pm.id === tx.paymentMethodId)?.name || t('recentTransactions.cashFallback')}</p>
                       </div>
                     </div>

@@ -63,7 +63,7 @@
     "deletedMethod": "Metode dihapus",
     "owner": "Owner"
   },
-  "currency": "Rp {{amount}}",
+  "currency": "$ {{amount}}",
   "exportDialog": {
     "title": "Export Laporan ke Excel",
     "description": "Pilih rentang tanggal. File berisi sheet Ringkasan, Transaksi, Detail Item, dan Pengeluaran. Hanya transaksi lunas yang dihitung.",

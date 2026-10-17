@@ -63,7 +63,7 @@
     "deletedMethod": "Method deleted",
     "owner": "Owner"
   },
-  "currency": "Rp {{amount}}",
+  "currency": "$ {{amount}}",
   "exportDialog": {
     "title": "Export Report to Excel",
     "description": "Select a date range. The file contains Summary, Transactions, Item Details, and Expenses sheets. Only paid transactions are counted.",

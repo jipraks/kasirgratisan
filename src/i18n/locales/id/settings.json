@@ -417,7 +417,7 @@
       "save": "Simpan Pembayaran"
     },
     "toast": {
-      "invalidAmount": "Nominal pembayaran harus lebih dari Rp0 dan tidak melebihi sisa hutang",
+      "invalidAmount": "Nominal pembayaran harus lebih dari $0 dan tidak melebihi sisa hutang",
       "selectMethod": "Pilih metode pembayaran",
       "paidOff": "Hutang berhasil dilunasi",
       "recorded": "Pembayaran hutang dicatat",
@@ -443,7 +443,7 @@
     "item": {
       "fromSupplier": "dari {{supplier}}",
       "quantity": "+{{qty}}",
-      "unitPrice": "@ Rp {{price}}"
+      "unitPrice": "@ $ {{price}}"
     },
     "dialog": {
       "title": "Tambah Stock In",
@@ -455,12 +455,12 @@
       "buyPricePlaceholder": "5000",
       "notesLabel": "Catatan",
       "notesPlaceholder": "Opsional",
-      "total": "Total: Rp {{amount}}",
+      "total": "Total: $ {{amount}}",
       "save": "Simpan Stock In"
     },
     "toast": {
       "fillAll": "Lengkapi semua field",
-      "success": "Stok {{product}} bertambah {{qty}}. HPP: Rp {{hpp}}"
+      "success": "Stok {{product}} bertambah {{qty}}. HPP: $ {{hpp}}"
     }
   },
   "stockOut": {

@@ -18,8 +18,8 @@ import LockedPage from '@/components/LockedPage';
 import ProductPicker from '@/components/ProductPicker';
 import NumberInput from '@/components/NumberInput';
 import { useTranslation } from 'react-i18next';
+import { NUMBER_LOCALE } from '@/lib/currency';
 
-const NUMBER_LOCALES: Record<string, string> = { id: 'id-ID', en: 'en-US', ms: 'ms-MY' };
 const LOCALES: Record<string, Locale> = { id: idLocale, en: enUS, ms };
 
 const REASON_VALUES = ['Rusak', 'Hilang', 'Kadaluarsa', 'Retur ke Supplier', 'Pemakaian Sendiri', 'Lainnya'];
@@ -29,7 +29,7 @@ export default function StockOutPage() {
   const { currentUser, can } = useAuth();
   const { t, i18n } = useTranslation('settings');
   const dateLocale = LOCALES[i18n.language] ?? idLocale;
-  const numberLocale = NUMBER_LOCALES[i18n.language] ?? 'id-ID';
+  const numberLocale = NUMBER_LOCALE;
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [productId, setProductId] = useState('');

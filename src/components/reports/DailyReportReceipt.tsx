@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { isNativePlatform, printRawNativeBluetooth, getDailyReportESCPOSData, type DailyReportPrintData } from '@/lib/printer';
 import { Capacitor } from '@capacitor/core';
 import { downloadOrShareFile } from '@/lib/file-utils';
+import { CURRENCY_SYMBOL, NUMBER_LOCALE } from '@/lib/currency';
 
 interface DailyReportReceiptProps {
   open: boolean;
@@ -15,13 +16,11 @@ interface DailyReportReceiptProps {
   data: DailyReportPrintData;
 }
 
-const CURRENCY_SYMBOL: Record<string, string> = { id: 'Rp', en: 'Rp', ms: 'Rp' };
-const NUMBER_LOCALES: Record<string, string> = { id: 'id-ID', en: 'en-US', ms: 'ms-MY' };
 
 export default function DailyReportReceipt({ open, onClose, data }: DailyReportReceiptProps) {
   const { t, i18n } = useTranslation(['reports', 'settings']);
-  const numberLocale = NUMBER_LOCALES[i18n.language] ?? 'id-ID';
-  const currencySymbol = CURRENCY_SYMBOL[i18n.language] ?? 'Rp';
+  const numberLocale = NUMBER_LOCALE;
+  const currencySymbol = CURRENCY_SYMBOL;
   const receiptRef = useRef<HTMLDivElement>(null);
   const [generating, setGenerating] = useState(false);
   const [printing, setPrinting] = useState(false);

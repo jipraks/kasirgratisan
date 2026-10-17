@@ -417,7 +417,7 @@
       "save": "Save Payment"
     },
     "toast": {
-      "invalidAmount": "Payment amount must be more than Rp0 and not exceed the remaining debt",
+      "invalidAmount": "Payment amount must be more than $0 and not exceed the remaining debt",
       "selectMethod": "Select a payment method",
       "paidOff": "Debt paid off successfully",
       "recorded": "Debt payment recorded",
@@ -443,7 +443,7 @@
     "item": {
       "fromSupplier": "from {{supplier}}",
       "quantity": "+{{qty}}",
-      "unitPrice": "@ Rp {{price}}"
+      "unitPrice": "@ $ {{price}}"
     },
     "dialog": {
       "title": "Add Stock In",
@@ -455,12 +455,12 @@
       "buyPricePlaceholder": "5000",
       "notesLabel": "Notes",
       "notesPlaceholder": "Optional",
-      "total": "Total: Rp {{amount}}",
+      "total": "Total: $ {{amount}}",
       "save": "Save Stock In"
     },
     "toast": {
       "fillAll": "Please complete all fields",
-      "success": "Stock {{product}} increased by {{qty}}. COGS: Rp {{hpp}}"
+      "success": "Stock {{product}} increased by {{qty}}. COGS: $ {{hpp}}"
     }
   },
   "stockOut": {

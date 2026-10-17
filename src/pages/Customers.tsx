@@ -18,18 +18,17 @@ import { toast } from 'sonner';
 import { useAuth } from '@/hooks/use-auth';
 import LockedPage from '@/components/LockedPage';
 import { useTranslation } from 'react-i18next';
+import { CURRENCY_SYMBOL, NUMBER_LOCALE } from '@/lib/currency';
 
 const LOCALES: Record<string, Locale> = { id, en: enUS, ms };
-const CURRENCY_SYMBOL: Record<string, string> = { id: 'Rp', en: 'Rp', ms: 'Rp' };
-const NUMBER_LOCALES: Record<string, string> = { id: 'id-ID', en: 'en-US', ms: 'ms-MY' };
 
 export default function CustomersPage() {
   const { can } = useAuth();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation('settings');
   const dateLocale = LOCALES[i18n.language] ?? id;
-  const numberLocale = NUMBER_LOCALES[i18n.language] ?? 'id-ID';
-  const currencySymbol = CURRENCY_SYMBOL[i18n.language] ?? 'Rp';
+  const numberLocale = NUMBER_LOCALE;
+  const currencySymbol = CURRENCY_SYMBOL;
 
   const [search, setSearch] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);

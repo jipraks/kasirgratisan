@@ -10,14 +10,14 @@ import { exportBackupData } from '@/components/BackupReminder';
 import { restoreFromBackupData } from '@/lib/backup';
 import { useAuth } from '@/hooks/use-auth';
 import LockedPage from '@/components/LockedPage';
+import { NUMBER_LOCALE } from '@/lib/currency';
 
-const NUMBER_LOCALES: Record<string, string> = { id: 'id-ID', en: 'en-US', ms: 'ms-MY' };
 
 export default function BackupRestoreSettings() {
   const { t, i18n } = useTranslation('settings');
   const { can } = useAuth();
   const storeSettings = useLiveQuery(() => db.storeSettings.toCollection().first());
-  const numberLocale = NUMBER_LOCALES[i18n.language] ?? 'id-ID';
+  const numberLocale = NUMBER_LOCALE;
 
   if (!can('manage_backup')) {
     return <LockedPage title={t('backupRestore.locked.title')} permissionLabel={t('backupRestore.locked.permissionLabel')} />;

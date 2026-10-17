@@ -6,12 +6,8 @@ import { toast } from 'sonner';
 import type { Product } from '@/lib/db';
 import BarcodeScanner from '@/components/BarcodeScanner';
 import { useTranslation } from 'react-i18next';
+import { CURRENCY_SYMBOL, NUMBER_LOCALE } from '@/lib/currency';
 
-const NUMBER_LOCALES: Record<string, string> = {
-  id: 'id-ID',
-  en: 'en-US',
-  ms: 'id-ID',
-};
 
 interface ProductPickerProps {
   products: Product[];
@@ -31,7 +27,7 @@ export default function ProductPicker({
   showHpp = false,
 }: ProductPickerProps) {
   const { t, i18n } = useTranslation('settings');
-  const numberLocale = NUMBER_LOCALES[i18n.language] || 'id-ID';
+  const numberLocale = NUMBER_LOCALE;
   const [query, setQuery] = useState('');
   const [scannerOpen, setScannerOpen] = useState(false);
 
@@ -67,7 +63,7 @@ export default function ProductPicker({
           </p>
           {showHpp && (
             <p className="text-xs text-muted-foreground">
-              {t('productPicker.hppLabel')} Rp {selected.hpp.toLocaleString(numberLocale)}
+              {t('productPicker.hppLabel')} {CURRENCY_SYMBOL} {selected.hpp.toLocaleString(numberLocale)}
             </p>
           )}
         </div>

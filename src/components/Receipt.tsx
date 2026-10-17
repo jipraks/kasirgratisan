@@ -12,9 +12,9 @@ import type { Transaction, StoreSettings, TransactionItemRecord } from '@/lib/db
 import { isNativePlatform, printNativeBluetooth, getESCPOSData, printKitchenTicketBluetooth, getKitchenTicketESCPOSData } from '@/lib/printer';
 import { Capacitor } from '@capacitor/core';
 import { downloadOrShareFile } from '@/lib/file-utils';
+import { CURRENCY_SYMBOL, NUMBER_LOCALE } from '@/lib/currency';
 
 const LOCALES: Record<string, Locale> = { id, en: enUS, ms };
-const NUMBER_LOCALES: Record<string, string> = { id: 'id-ID', en: 'en-US', ms: 'ms-MY' };
 
 interface ReceiptProps {
   open: boolean;
@@ -32,9 +32,9 @@ export default function Receipt({ open, onClose, transaction, items, storeSettin
   const [generating, setGenerating] = useState(false);
 
   const dateLocale = LOCALES[i18n.language] || id;
-  const numberLocale = NUMBER_LOCALES[i18n.language] || 'id-ID';
+  const numberLocale = NUMBER_LOCALE;
 
-  const rp = (n: number) => `Rp ${n.toLocaleString(numberLocale)}`;
+  const rp = (n: number) => `${CURRENCY_SYMBOL} ${n.toLocaleString(numberLocale)}`;
 
   const storeName = storeSettings?.storeName || t('receipt.storeFallback');
 

@@ -54,35 +54,35 @@ describe('getESCPOSData formatting', () => {
 
     const lines = output.split('\n');
 
-    // Find the item quantity and subtotal line: "  1 x Rp 15.000        Rp 15.000"
-    const itemLine = lines.find(line => line.includes('1 x Rp 15.000'));
+    // Find the item quantity and subtotal line: "  1 x $ 15.000        $ 15.000"
+    const itemLine = lines.find(line => line.includes('1 x $ 15.000'));
     expect(itemLine).toBeDefined();
     expect(itemLine?.length).toBe(32); // Must be exactly 32 characters
-    expect(itemLine?.endsWith('Rp 15.000')).toBe(true);
+    expect(itemLine?.endsWith('$ 15.000')).toBe(true);
 
-    // Find the Subtotal line: "Subtotal:              Rp 65.000"
+    // Find the Subtotal line: "Subtotal:              $ 65.000"
     const subtotalLine = lines.find(line => line.startsWith('Subtotal:'));
     expect(subtotalLine).toBeDefined();
     expect(subtotalLine?.length).toBe(32);
-    expect(subtotalLine?.endsWith('Rp 65.000')).toBe(true);
+    expect(subtotalLine?.endsWith('$ 65.000')).toBe(true);
 
-    // Find the TOTAL line: "TOTAL:                 Rp 65.000"
+    // Find the TOTAL line: "TOTAL:                 $ 65.000"
     const totalLine = lines.find(line => line.startsWith('TOTAL:'));
     expect(totalLine).toBeDefined();
     expect(totalLine?.length).toBe(32);
-    expect(totalLine?.endsWith('Rp 65.000')).toBe(true);
+    expect(totalLine?.endsWith('$ 65.000')).toBe(true);
 
-    // Find the Bayar line: "Bayar:                 Rp 65.000"
+    // Find the Bayar line: "Bayar:                 $ 65.000"
     const bayarLine = lines.find(line => line.startsWith('Bayar:'));
     expect(bayarLine).toBeDefined();
     expect(bayarLine?.length).toBe(32);
-    expect(bayarLine?.endsWith('Rp 65.000')).toBe(true);
+    expect(bayarLine?.endsWith('$ 65.000')).toBe(true);
 
-    // Find the Kembali line: "Kembali:                    Rp 0"
+    // Find the Kembali line: "Kembali:                    $ 0"
     const kembaliLine = lines.find(line => line.startsWith('Kembali:'));
     expect(kembaliLine).toBeDefined();
     expect(kembaliLine?.length).toBe(32);
-    expect(kembaliLine?.endsWith('Rp 0')).toBe(true);
+    expect(kembaliLine?.endsWith('$ 0')).toBe(true);
   });
 
   const baseTransaction: Transaction = {

@@ -20,9 +20,8 @@ import BarcodeScanner from '@/components/BarcodeScanner';
 import { useTranslation } from 'react-i18next';
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '@/components/ui/table';
 import { downloadOrShareFile } from '@/lib/file-utils';
+import { CURRENCY_SYMBOL, NUMBER_LOCALE } from '@/lib/currency';
 
-const CURRENCY_SYMBOL: Record<string, string> = { id: 'Rp', en: 'Rp', ms: 'Rp' };
-const NUMBER_LOCALES: Record<string, string> = { id: 'id-ID', en: 'en-US', ms: 'ms-MY' };
 
 interface ParsedRow {
   rowNum: number;
@@ -44,8 +43,8 @@ export default function Produk() {
   const { currentUser, can } = useAuth();
   const canManage = can('manage_products');
   const { t, i18n } = useTranslation('products');
-  const numberLocale = NUMBER_LOCALES[i18n.language] ?? 'id-ID';
-  const currencySymbol = CURRENCY_SYMBOL[i18n.language] ?? 'Rp';
+  const numberLocale = NUMBER_LOCALE;
+  const currencySymbol = CURRENCY_SYMBOL;
 
   const [search, setSearch] = useState('');
   const [filterCategory, setFilterCategory] = useState<string>('all');
@@ -423,10 +422,10 @@ export default function Produk() {
               errors.push(t('excel.errorUnitNotFound') + `: "${unit}"`);
             }
 
-            // Parse numbers (handling Rp, spaces, commas, dots)
+            // Parse numbers (handling $, COP, spaces, commas, dots)
             const cleanNumber = (val: string): number => {
               if (!val) return 0;
-              let clean = val.replace(/Rp/gi, '').replace(/\s+/g, '');
+              let clean = val.replace(/COP|\$/gi, '').replace(/\s+/g, '');
               const lastDot = clean.lastIndexOf('.');
               const lastComma = clean.lastIndexOf(',');
               if (lastDot > lastComma) {

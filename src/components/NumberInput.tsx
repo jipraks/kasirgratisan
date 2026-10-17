@@ -1,7 +1,7 @@
 import { Input } from '@/components/ui/input';
 import { useTranslation } from 'react-i18next';
+import { NUMBER_LOCALE } from '@/lib/currency';
 
-const NUMBER_LOCALES: Record<string, string> = { id: 'id-ID', en: 'en-US', ms: 'ms-MY' };
 
 interface NumberInputProps {
   /** Raw numeric value as string. Integer mode: "10000". Decimal mode: dot-decimal "1.5". */
@@ -52,7 +52,7 @@ const parseDecimal = (input: string): string => {
  */
 export default function NumberInput({ value, onChange, placeholder, className, decimal }: NumberInputProps) {
   const { i18n } = useTranslation();
-  const numberLocale = NUMBER_LOCALES[i18n.language] ?? 'id-ID';
+  const numberLocale = NUMBER_LOCALE;
 
   return (
     <Input

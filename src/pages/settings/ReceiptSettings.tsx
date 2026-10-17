@@ -158,11 +158,11 @@ export default function ReceiptSettings() {
             <div className="space-y-1.5 opacity-55">
               <div className="flex justify-between">
                 <span>Nasi Goreng Spesial</span>
-                <span>Rp 15.000</span>
+                <span>$ 15.000</span>
               </div>
               <div className="flex justify-between font-bold text-zinc-800 dark:text-zinc-200">
                 <span>TOTAL</span>
-                <span>Rp 15.000</span>
+                <span>$ 15.000</span>
               </div>
             </div>
 

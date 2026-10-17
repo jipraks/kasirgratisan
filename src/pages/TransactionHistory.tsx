@@ -21,14 +21,14 @@ import ReceiptDialog from '@/components/Receipt';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/use-auth';
 import { useTranslation } from 'react-i18next';
+import { CURRENCY_SYMBOL, NUMBER_LOCALE } from '@/lib/currency';
 
 const LOCALES: Record<string, Locale> = { id: idLocale, en: enUS, ms };
-const NUMBER_LOCALES: Record<string, string> = { id: 'id-ID', en: 'en-US', ms: 'ms-MY' };
 
 export default function TransactionHistory() {
   const { t, i18n } = useTranslation('settings');
   const dateLocale = LOCALES[i18n.language] ?? idLocale;
-  const numberLocale = NUMBER_LOCALES[i18n.language] ?? 'id-ID';
+  const numberLocale = NUMBER_LOCALE;
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -179,7 +179,7 @@ export default function TransactionHistory() {
     }
   };
 
-  const rp = (n: number) => `Rp ${n.toLocaleString(numberLocale)}`;
+  const rp = (n: number) => `${CURRENCY_SYMBOL} ${n.toLocaleString(numberLocale)}`;
 
   return (
     <div className="px-4 pt-6 pb-4">

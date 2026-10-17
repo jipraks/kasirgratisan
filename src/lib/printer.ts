@@ -1,6 +1,7 @@
 import { Capacitor } from '@capacitor/core';
 import { format } from 'date-fns';
 import type { Transaction, StoreSettings, TransactionItemRecord } from './db';
+import { CURRENCY_SYMBOL, NUMBER_LOCALE } from '@/lib/currency';
 
 declare global {
   interface Window {
@@ -100,7 +101,7 @@ export const getESCPOSData = ({
   lines.push('--------------------------------\n');
   
   lines.push('\x1B\x61\x00'); // Left align
-  const rp = (n: number) => `Rp ${n.toLocaleString('id-ID')}`;
+  const rp = (n: number) => `${CURRENCY_SYMBOL} ${n.toLocaleString(NUMBER_LOCALE)}`;
   const formatRow = (left: string, right: string) => {
     const spaceCount = 32 - left.length - right.length;
     return `${left}${' '.repeat(Math.max(1, spaceCount))}${right}\n`;
@@ -183,7 +184,7 @@ export const getDailyReportESCPOSData = ({
   language,
 }: DailyReportPrintData): string => {
   const lines: string[] = [];
-  const rp = (n: number) => `Rp ${n.toLocaleString('id-ID')}`;
+  const rp = (n: number) => `${CURRENCY_SYMBOL} ${n.toLocaleString(NUMBER_LOCALE)}`;
 
   const formatRow = (label: string, value: string) => {
     const spaceCount = 32 - label.length - value.length;

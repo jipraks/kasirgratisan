@@ -11,16 +11,15 @@ import { useAuth } from '@/hooks/use-auth';
 import LockedPage from '@/components/LockedPage';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { CURRENCY_SYMBOL, NUMBER_LOCALE } from '@/lib/currency';
 
-const CURRENCY_SYMBOL: Record<string, string> = { id: 'Rp', en: 'Rp', ms: 'Rp' };
-const NUMBER_LOCALES: Record<string, string> = { id: 'id-ID', en: 'en-US', ms: 'ms-MY' };
 
 export default function StockReport() {
   const navigate = useNavigate();
   const { can } = useAuth();
   const { t, i18n } = useTranslation('settings');
-  const numberLocale = NUMBER_LOCALES[i18n.language] ?? 'id-ID';
-  const currencySymbol = CURRENCY_SYMBOL[i18n.language] ?? 'Rp';
+  const numberLocale = NUMBER_LOCALE;
+  const currencySymbol = CURRENCY_SYMBOL;
   const [period, setPeriod] = useState<'7' | '30'>('7');
   const days = Number(period);
   const since = startOfDay(subDays(new Date(), days));
